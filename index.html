@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>涩图time</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 300;
+            letter-spacing: -1px;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        
+        /* 新增的QQ好友按钮容器 */
+    /* QQ好友按钮容器 */
+    .qq-button-container {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto 20px;
+        animation: fadeIn 0.5s ease-out;
+    }
+    
+    /* QQ好友按钮样式 */
+    .qq-button {
+        background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 100%);
+        color: white;
+        text-decoration: none;
+        padding: 14px 30px;
+        border-radius: 50px;
+        font-size: 1.15rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 16px rgba(255, 182, 193, 0.3);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+        max-width: 300px;
+        width: 100%;
+    }
+    
+    .qq-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10极 25px rgba(255, 182, 193, 0.4);
+        background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+    }
+    
+    .qq-button:active {
+        transform: translateY(1px);
+        box-shadow: 0 4px 10px rgba(255, 182, 193, 0.3);
+    }
+    
+    .qq-button i {
+        font-size: 1.4rem;
+        margin-right: 10px;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+        
+        .file-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .file-btn {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 22px 15px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            min-height: 120px;
+        }
+        
+        .file-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+            background: rgba(255, 255, 255, 1);
+            border-color: rgba(73, 80, 87, 0.1);
+        }
+        
+        .file-btn i {
+            font-size: 30px;
+            margin-bottom: 15px;
+            color: #6c757d;
+        }
+        
+        .file-btn .btn-title {
+            font-weight: 500;
+            font-size: 1.05rem;
+            color: #495057;
+        }
+        
+        input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        #display {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 25px;
+            min-height: 300px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .result-image {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            background: #f8f9fa;
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: transform 0.3s ease;
+        }
+        
+        .result-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .result-image img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #adb5bd;
+        }
+        
+        .empty-state i {
+            font-size: 52px;
+            margin-bottom: 20px;
+            color: #e9ecef;
+        }
+        
+        .empty-state p {
+            font-size: 1.1rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .file-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .file-btn {
+                padding: 18px 12px;
+                min-height: 110px;
+            }
+            
+            .qq-button {
+                padding: 12px 20px;
+                font-size: 1.05rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .qq-button {
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>涩图time <br> ๑>ᴗO๑ </h1>
+    </header>
+    
+    <!-- 新增的QQ好友按钮 -->
+    <div class="qq-button-container">
+        <a href="https://qm.qq.com/q/1DiqLHqEK4" class="qq-button" target="_blank">
+            <i class="fab fa-qq"></i> 点击加我为QQ好友
+        </a>
+    </div>
+    
+    <main>
+        <div class="file-actions">
+            <div class="file-btn">
+                <span class="btn-title">提取图片</span>
+                <input id="ipt3" type="file" accept="image/*" multiple="">
+            </div>
+        </div>
+        
+        <div id="display">
+            <div class="empty-state">
+                <p></p>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+      
+    </footer>
+    
+ <script>
+        (function(){let table=[0x00000000,0x77073096,0xEE0E612C,0x990951BA,0x076DC419,0x706AF48F,0xE963A535,0x9E6495A3,0x0EDB8832,0x79DCB8A4,0xE0D5E91E,0x97D2D988,0x09B64C2B,0x7EB17CBD,0xE7B82D07,0x90BF1D91,0x1DB71064,0x6AB020F2,0xF3B97148,0x84BE41DE,0x1ADAD47D,0x6DDDE4EB,0xF4D4B551,0x83D385C7,0x136C9856,0x646BA8C0,0xFD62F97A,0x8A65C9EC,0x14015C4F,0x63066CD9,0xFA0F3D63,0x8D080DF5,0x3B6E20C8,0x4C69105E,0xD56041E4,0xA2677172,0x3C03E4D1,0x4B04D447,0xD20D85FD,0xA50AB56B,0x35B5A8FA,0x42B2986C,0xDBBBC9D6,0xACBCF940,0x32D86CE3,0x45DF5C75,0xDCD60DCF,0xABD13D59,0x26D930AC,0x51DE003A,0xC8D75180,0xBFD06116,0x21B4F4B5,0x56B3C423,0xCFBA9599,0xB8BDA50F,0x2802B89E,0x5F058808,0xC60CD9B2,0xB10BE924,0x2F6F7C87,0x58684C11,0xC1611DAB,0xB6662D3D,0x76DC4190,0x01DB7106,0x98D220BC,0xEFD5102A,0x71B18589,0x06B6B51F,0x9FBFE4A5,0xE8B8D433,0x7807C9A2,0x0F00F934,0x9609A88E,0xE10E9818,0x7F6A0DBB,0x086D3D2D,0x91646C97,0xE6635C01,0x6B6B51F4,0x1C6C6162,0x856530D8,0xF262004E,0x6C0695ED,0x1B01A57B,0x8208F4C1,0xF50FC457,0x65B0D9C6,0x12B7E950,0x8BBEB8EA,0xFCB9887C,0x62DD1DDF,0x15DA2D49,0x8CD37CF3,0xFBD44C65,0x4DB26158,0x3AB551CE,0xA3BC0074,0xD4BB30E2,0x4ADFA541,0x3DD895D7,0xA4D1C46D,0xD3D6F4FB,0x4369E96A,0x346ED9FC,0xAD678846,0xDA60B8D0,0x44042D73,0x33031DE5,0xAA0A4C5F,0xDD0D7CC9,0x5005713C,0x270241AA,0xBE0B1010,0xC90C2086,0x5768B525,0x206F85B3,0xB966D409,0xCE61E49F,0x5EDEF90E,0x29D9C998,0xB0D09822,0xC7D7A8B4,0x59B33D17,0x2EB40D81,0xB7BD5C3B,0xC0BA6CAD,0xEDB88320,0x9ABFB3B6,0x03B6E20C,0x74B1D29A,0xEAD54739,0x9DD277AF,0x04DB2615,0x73DC1683,0xE3630B12,0x94643B84,0x0D6D6A3E,0x7A6A5AA8,0xE40ECF0B,0x9309FF9D,0x0A00AE27,0x7D079EB1,0xF00F9344,0x8708A3D2,0x1E01F268,0x6906C2FE,0xF762575D,0x806567CB,0x196C3671,0x6E6B06E7,0xFED41B76,0x89D32BE0,0x10DA7A5A,0x67DD4ACC,0xF9B9DF6F,0x8EBEEFF9,0x17B7BE43,0x60B08ED5,0xD6D6A3E8,0xA1D1937E,0x38D8C2C4,0x4FDFF252,0xD1BB67F1,0xA6BC5767,0x3FB506DD,0x48B2364B,0xD80D2BDA,0xAF0A1B4C,0x36034AF6,0x41047A60,0xDF60EFC3,0xA867DF55,0x316E8EEF,0x4669BE79,0xCB61B38C,0xBC66831A,0x256FD2A0,0x5268E236,0xCC0C7795,0xBB0B4703,0x220216B9,0x5505262F,0xC5BA3BBE,0xB2BD0B28,0x2BB45A92,0x5CB36A04,0xC2D7FFA7,0xB5D0CF31,0x2CD99E8B,0x5BDEAE1D,0x9B64C2B0,0xEC63F226,0x756AA39C,0x026D930A,0x9C0906A9,0xEB0E363F,0x72076785,0x05005713,0x95BF4A82,0xE2B87A14,0x7BB12BAE,0x0CB61B38,0x92D28E9B,0xE5D5BE0D,0x7CDCEFB7,0x0BDBDF21,0x86D3D2D4,0xF1D4E242,0x68DDB3F8,0x1FDA836E,0x81BE16CD,0xF6B9265B,0x6FB077E1,0x18B74777,0x88085AE6,0xFF0F6A70,0x66063BCA,0x11010B5C,0x8F659EFF,0xF862AE69,0x616BFFD3,0x166CCF45,0xA00AE278,0xD70DD2EE,0x4E048354,0x3903B3C2,0xA7672661,0xD06016F7,0x4969474D,0x3E6E77DB,0xAED16A4A,0xD9D65ADC,0x40DF0B66,0x37D83BF0,0xA9BCAE53,0xDEBB9EC5,0x47B2CF7F,0x30B5FFE9,0xBDBDF21C,0xCABAC28A,0x53B39330,0x24B4A3A6,0xBAD03605,0xCDD70693,0x54DE5729,0x23D967BF,0xB3667A2E,0xC4614AB8,0x5D681B02,0x2A6F2B94,0xB40BBE37,0xC30C8EA1,0x5A05DF1B,0x2D02EF8D];let crc32=window.crc32=(arr,crc)=>{crc=crc||0;let n=0;let x=0;crc^=-1;for(let i=0;i<arr.length;i++){n=(crc^arr[i])&0xFF;x=table[n];crc=(crc>>>8)^x}crc^=-1;return crc};return crc32})()
+        function crc32arr(arr){return arr.reduce((a,b)=>crc32(b,a),0)}
+        function arraytostring(arr){return Array.from(arr).map(x=>String.fromCharCode(x)).join("")}
+        function getint32(arr,start){start=start||0;return(arr[start]<<24)|(arr[start+1]<<16)|(arr[start+2]<<8)|arr[start+3]}
+        let code=getint32(new Uint8Array([116,112,87,106]))
+        function extract(arr,code){if(getint32(arr,0)!=(0x89504e47|0)){return false}code=code|0;let i=8;let result=[];while(i<arr.length-12){let length=getint32(arr,i);if(getint32(arr,i+4)==code){result.push(arr.slice(i+8,i+8+length))}i+=length+12}return result}
+        function unwraptofile(arr){let i=0;while(arr[i]!=0){i++}let meta=JSON.parse(arraytostring(arr.slice(0,i)));return new Blob([arr.slice(i+1).buffer],{type:meta.mime})}
+        function decode(file,code,returnfunc){let reader=new FileReader();reader.readAsArrayBuffer(file);reader.onload=e=>{let extracted=extract(new Uint8Array(e.target.result),code);if(!(extracted&&extracted.length>0)){returnfunc(false);return}let result=[];extracted.map(x=>{try{result.push(unwraptofile(x))}catch(e){}});if(result.length>0){returnfunc(result)}else{returnfunc(false)}}}
+        let srclist=[];let display=document.getElementById("display");function clear(){display.innerHTML='<div class="empty-state"><p>(◍︎ ´꒳` ◍︎)</p></div>';srclist.map(x=>URL.revokeObjectURL(x));srclist=[]}
+        function showImage(src){if(display.querySelector('.empty-state')){display.innerHTML='<div class="image-container"></div>'}let container=display.querySelector('.image-container');let imgContainer=document.createElement("div");imgContainer.className="result-image";let img=document.createElement("img");img.src=src;imgContainer.appendChild(img);container.appendChild(imgContainer)}
+        let ipt3=document.getElementById("ipt3");ipt3.onchange=()=>{clear();let container=document.createElement("div");container.className="image-container";display.appendChild(container);Array.from(ipt3.files).map(f=>{decode(f,code,r=>{if(r){r.map(x=>{let src=URL.createObjectURL(x);srclist.push(src);let imgContainer=document.createElement("div");imgContainer.className="result-image";let img=document.createElement("img");img.src=src;imgContainer.appendChild(img);container.appendChild(imgContainer)})}})})};clear();
+    </script>
+</body>
+</html>
