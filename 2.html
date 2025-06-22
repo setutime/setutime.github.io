@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>涩图time</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* 容器 */
+        .container {
+            max-width: 100%;
+            padding: 15px;
+        }
+        
+        /* 标题样式 */
+        .header {
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+			text-align: center;
+        }
+        
+        .title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .meta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* 图片布局 */
+        .image-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 80px;
+        }
+        
+        .image-item {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background-color: #f9f9f9;
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .image-item img:hover {
+            transform: scale(1.02);
+        }
+        
+        /* 固定按钮 */
+        .fixed-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 500px;
+            z-index: 100;
+        }
+        
+        .fixed-button a {
+            display: block;
+            background: #5ca8e6;  
+            color: white;
+            text-align: center;
+            padding: 10px 14px;
+            border-radius: 999px; 
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 6px 16px rgba(92, 168, 230, 0.4);  /* 匹配的加深阴影 */
+            transition: all 0.3s ease;
+        }
+        
+        .fixed-button a:hover {
+            background: #4b96d8;  /* 加深悬停状态 */
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(75, 150, 216, 0.5);  /* 匹配的加深阴影 */
+        }
+        
+        /* 响应式调整 */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部信息 -->
+        <div class="header" >
+            <h1 class="title">涩图time No.2</h1>
+            <div class="meta"></div>
+        </div>
+        
+        <!-- 图片展示区域 -->
+        <div class="image-grid">
+      <div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_940519_X4WdrcigNvIDubjl_1750571936" alt="1"></div>
+      <div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_933066_MxsRPrrNtkISuOY8_1750572005" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_156837_2IHPnqtroN4ZHgA3_1750572049" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_831805_1z91ytfAnWBUNwd3_1750572068" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_313057_FHMo72j7RdPqLn2n_1750572119" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_321511_3ppcY4T7nxayQRLW_1750572120" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_188335_rqt8RsY-4CrTf7Og_1750572121" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_167524_yixNvisr1BcyQhKX_1750572122" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_93553_IcUhkY4JQ_a0numk_1750572123" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_172066_CpHwzfN2t6lrO4va_1750572181" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_31978_1kXr9WuAlzSOSqng_1750572182" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_54195_mZSKsgCnpgYGh-Mx_1750572183" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_894056__08PYSOn3w9VZgWY_1750572183" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_753012_clFPrzUotAIL3Vyz_1750572184" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_655085_cBBcZm5jwfsLBlpk_1750572185" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_580931_x-YhDPiVe62jaf64_1750572186" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_342473_ajFgy5JMe-c4_YoM_1750572187" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_284297_xwjqGD30Iz1V1jTr_1750572188" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_203109_4bBWj4fu0fXhToY6_1750572189" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_100434_juHNfFMYiP5hBkWG_1750572190" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_84161_B5leUn3C4Hfy5chP_1750572191" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_995288_IgaTJ3enGEl9U3x3_1750572191" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_67404_QBzoivbvNuXvE_0H_1750572193" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_211337_R143ES1zip0pqdxY_1750572194" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_89373_Ua02BZuynXHSpUde_1750572195" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_836325__gYXdXn-isi0vGxO_1750572195" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_693572_JWJtazcflTg43P0-_1750572196" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_300590_m6LLoeQbMIXRzKTK_1750572197" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_281177_k0U_69GB7Y9nzEv8_1750572198" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_184456_famZ0d3YuWrfZtTC_1750572199" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_885956_h2HkHIzyWhSUssPE_1750572199" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_489347_K0WtHkaNX-ebWtFq_1750572200" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_76551_7UgdjiPSX3VCaKKZ_1750572201" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_735473__eezXUuPmYl1a_h__1750572201" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_386690_DYNSJtgaU2V0txEC_1750572202" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_83028_z_smkZ9P8X6Obope_1750572203" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_792790_oayUYlXj8Sdwb8Ye_1750572203" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_446611_D7CLwc3eV6ian2Ok_1750572204" alt="1"></div>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_122845_AIm27iw__jWTHgLW_1750572205" alt="1"></div>
+      <div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_882600_c5oC_YA0v7a8EPg4_1750572205" alt="1"></div>
+            <p style="text-align: center; font-size: 24px;">上一期↓↓↓</p>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_532288_dh0JsrsHh3hdEy8K_1750572560" alt="1"></div>
+        </div>
+        
+        <!-- 底部固定按钮 -->
+        <div class="fixed-button">
+            <a href="https://qm.qq.com/q/1DiqLHqEK4" target="_blank">点击加我为好友</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const lazyImages = document.querySelectorAll('.image-item img');
+            
+            const lazyLoad = function() {
+                lazyImages.forEach(img => {
+                    if (img.getAttribute('data-src') && img.getBoundingClientRect().top < window.innerHeight + 100) {
+                        img.src = img.getAttribute('data-src');
+                        img.removeAttribute('data-src');
+                    }
+                });
+            };
+            
+            lazyLoad();
+            window.addEventListener('scroll', lazyLoad);
+            window.addEventListener('resize', lazyLoad);
+        });
+    </script>
+</body>
+</html>
