@@ -1,1 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>涩图time</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* 容器 */
+        .container {
+            max-width: 100%;
+            padding: 15px;
+        }
+        
+        /* 标题样式 */
+        .header {
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+			text-align: center;
+        }
+        
+        .title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .meta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* 图片布局 */
+        .image-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 80px;
+        }
+        
+        .image-item {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background-color: #f9f9f9;
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .image-item img:hover {
+            transform: scale(1.02);
+        }
+        
+        /* 固定按钮 */
+        .fixed-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 500px;
+            z-index: 100;
+        }
+        
+        .fixed-button a {
+            display: block;
+            background: #5ca8e6;  
+            color: white;
+            text-align: center;
+            padding: 10px 14px;
+            border-radius: 999px; 
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 6px 16px rgba(92, 168, 230, 0.4);  /* 匹配的加深阴影 */
+            transition: all 0.3s ease;
+        }
+        
+        .fixed-button a:hover {
+            background: #4b96d8;  /* 加深悬停状态 */
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(75, 150, 216, 0.5);  /* 匹配的加深阴影 */
+        }
+        
+        /* 响应式调整 */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部信息 -->
+        <div class="header" >
+            <h1 class="title">涩图time No.1</h1>
+            <div class="meta"></div>
+        </div>
+        
+        <!-- 图片展示区域 -->
+        <div class="image-grid">
+            <div class="image-item"><img src="" alt="1"></div>
+            <div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+			<div class="image-item"><img src="" alt="1"></div>
+            <p style="text-align: center; font-size: 24px;">下一期↓↓↓</p>
+			<div class="image-item"><img src="" alt="1"></div>
+        </div>
+        
+        <!-- 底部固定按钮 -->
+        <div class="fixed-button">
+            <a href="https://qm.qq.com/q/1DiqLHqEK4" target="_blank">点击加我为好友</a>
+        </div>
+    </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const lazyImages = document.querySelectorAll('.image-item img');
+            
+            const lazyLoad = function() {
+                lazyImages.forEach(img => {
+                    if (img.getAttribute('data-src') && img.getBoundingClientRect().top < window.innerHeight + 100) {
+                        img.src = img.getAttribute('data-src');
+                        img.removeAttribute('data-src');
+                    }
+                });
+            };
+            
+            lazyLoad();
+            window.addEventListener('scroll', lazyLoad);
+            window.addEventListener('resize', lazyLoad);
+        });
+    </script>
+</body>
+</html>
