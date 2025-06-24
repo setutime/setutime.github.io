@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64解码器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #4b6cb7, #182848);
+            color: white;
+            padding: 28px 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-weight: 500;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .content {
+            padding: 30px 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: #2d3748;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 18px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            resize: none;
+            font-size: 16px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #4b6cb7;
+            box-shadow: inset 0 2px 8px rgba(75, 108, 183, 0.15), 0 0 0 3px rgba(75, 108, 183, 0.1);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        button:active {
+            transform: translateY(2px);
+        }
+        
+        .decode-btn {
+            background: linear-gradient(to right, #4b6cb7, #3a5795);
+            color: white;
+            box-shadow: 0 4px 10px rgba(75, 108, 183, 0.3);
+        }
+        
+        .decode-btn:active {
+            box-shadow: 0 2px 5px rgba(75, 108, 183, 0.3);
+        }
+        
+        .copy-result-btn {
+            background: linear-gradient(to right, #2bbf7a, #1e9c6d);
+            color: white;
+            box-shadow: 0 4px 10px rgba(43, 191, 122, 0.3);
+        }
+        
+        .copy-result-btn:active {
+            box-shadow: 0 2px 5px rgba(43, 191, 122, 0.3);
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 25px 0;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 12px;
+            }
+            
+            header {
+                padding: 22px 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .content {
+                padding: 20px 15px;
+            }
+            
+            textarea {
+                height: 120px;
+                padding: 14px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Base64解码器</h1>
+        </header>
+        
+        <div class="content">
+            <div class="input-group">
+                <label for="input">输入Base64编码</label>
+                <textarea id="input" placeholder="在此输入Base64编码内容..." autofocus></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button class="decode-btn" id="decode-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                        <polyline points="4 17 10 11 4 5"></polyline>
+                        <line x1="12" y1="19" x2="20" y2="19"></line>
+                    </svg>
+                    解码
+                </button>
+                <button class="copy-result-btn" id="copy-result-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    复制结果
+                </button>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="input-group">
+                <label for="output">解码结果</label>
+                <textarea id="output" placeholder="解码结果将显示在此处..." readonly></textarea>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Base64解码工具 - 专为移动端优化</p>
+        </footer>
+    </div>
+
+    <script>
+		
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputTextarea = document.getElementById('input');
+            const outputTextarea = document.getElementById('output');
+            const decodeBtn = document.getElementById('decode-btn');
+            const copyResultBtn = document.getElementById('copy-result-btn');
+            
+            // 解码函数
+            function decodeBase64() {
+                const inputText = inputTextarea.value.trim();
+                
+                if (!inputText) {
+                    outputTextarea.value = "请输入要解码的Base64内容";
+                    return;
+                }
+                
+                try {
+                    // 尝试解码为UTF-8文本
+                    const decodedText = atob(inputText);
+                    
+                    // 检查是否是有效的UTF-8文本
+                    if (/^[\u0000-\u007F]*$/.test(decodedText)) {
+                        outputTextarea.value = decodedText;
+                    } else {
+                        // 处理UTF-8字符
+                        const utf8Decoder = new TextDecoder();
+                        const binaryString = atob(inputText);
+                        const bytes = new Uint8Array(binaryString.length);
+                        for (let i = 0; i < binaryString.length; i++) {
+                            bytes[i] = binaryString.charCodeAt(i);
+                        }
+                        outputTextarea.value = utf8Decoder.decode(bytes);
+                    }
+                    outputTextarea.style.borderColor = '#4b6cb7';
+                } catch (error) {
+                    outputTextarea.value = "解码失败: " + error.message + 
+                                          "\n请检查输入的Base64格式是否正确";
+                }
+            }
+            
+            // 复制结果按钮
+            function copyResult() {
+                if (!outputTextarea.value) {
+                    // 如果输出为空，尝试解码后再复制
+                    decodeBase64();
+                    if (outputTextarea.value) {
+                        copyToClipboard();
+                        showCopiedFeedback();
+                    }
+                    return;
+                }
+                
+                copyToClipboard();
+                showCopiedFeedback();
+            }
+            
+            // 复制到剪贴板
+            function copyToClipboard() {
+                if (!outputTextarea.value) return;
+                
+                outputTextarea.select();
+                try {
+                    navigator.clipboard.writeText(outputTextarea.value).then(() => {
+                        showCopiedFeedback();
+                    });
+                } catch (error) {
+                    alert("无法复制到剪贴板，请手动复制");
+                }
+            }
+            
+            // 显示复制成功反馈
+            function showCopiedFeedback() {
+                const originalText = copyResultBtn.innerHTML;
+                copyResultBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                        <polyline points="9 11 12 14 22 4"></polyline>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                    已复制!
+                `;
+                setTimeout(() => {
+                    copyResultBtn.innerHTML = originalText;
+                }, 2000);
+            }
+            
+            // 添加事件监听器
+            decodeBtn.addEventListener('click', decodeBase64);
+            copyResultBtn.addEventListener('click', copyResult);
+            
+            // 在键盘上按Enter时自动解码
+            inputTextarea.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.ctrlKey) {
+                    decodeBase64();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
