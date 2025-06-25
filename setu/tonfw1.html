@@ -22,17 +22,17 @@
         }
         
         /* 容器 */
-        。container {
+        .container {
             max-width: 100%;
             padding: 15px;
         }
         
         /* 标题样式 */
-        。header {
+        .header {
             padding: 20px 0;
             border-bottom: 1px solid #f0f0f0;
             margin-bottom: 20px;
-            text-align: center;
+			text-align: center;
         }
         
         .title {
@@ -75,8 +75,18 @@
             transform: scale(1.02);
         }
         
-        /* 加好友按钮（修改为普通按钮） */
-        .friend-button {
+        /* 固定按钮 */
+        .fixed-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 500px;
+            z-index: 100;
+        }
+        
+        .fixed-button a {
             display: block;
             background: #5ca8e6;  
             color: white;
@@ -86,65 +96,14 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 1.1rem;
-            box-shadow: 0 6px 16px rgba(92, 168, 230, 0.4);
+            box-shadow: 0 6px 16px rgba(92, 168, 230, 0.4);  /* 匹配的加深阴影 */
             transition: all 0.3s ease;
-            margin: 0 auto 25px;
-            width: 80%;
-            max-width: 300px;
         }
         
-        .friend-button:hover {
-            background: #4b96d8;
+        .fixed-button a:hover {
+            background: #4b96d8;  /* 加深悬停状态 */
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(75, 150, 216, 0.5);
-        }
-        
-        /* 直播区域样式（从文档1复制） */
-        .explanation {
-            background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
-            border-radius: 16px;
-            padding: 20px;
-            font-size: 15px;
-            color: #4a5568;
-            line-height: 1.7;
-            border: 1px solid #e9ecef;
-            text-align: center;
-            margin: 15px 0;
-        }
-        
-        .explanation h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: #ff416c;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-        
-        .app-download {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 12px 25px;
-            background: linear-gradient(to right, #ff416c, #ff4b2b);
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
-            transition: all 0.3s;
-        }
-        
-        .app-download:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 75, 43, 0.5);
-        }
-        
-        .app-download:active {
-            transform: translateY(0);
-        }
-        
-        .app-name {
-            font-weight: 700;
-            color: #ff416c;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(75, 150, 216, 0.5);  /* 匹配的加深阴影 */
         }
         
         /* 响应式调整 */
@@ -163,17 +122,14 @@
 <body>
     <div class="container">
         <!-- 头部信息 -->
-        <div class="header">
+        <div class="header" >
             <h1 class="title">涩图time No.1</h1>
             <div class="meta"></div>
         </div>
         
-        <!-- 加好友按钮（移到标题下方） -->
-        <a href="https://qm.qq.com/q/1DiqLHqEK4" target="_blank" class="friend-button">点击加我为好友</a>
-        
         <!-- 图片展示区域 -->
         <div class="image-grid">
-<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_496934_gQ91of-T0_AElggx_1750569172" alt="1"></div>
+            <div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_496934_gQ91of-T0_AElggx_1750569172" alt="1"></div>
             <div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_648642_GOKst9Wkpzc6L0j7_1750569244" alt="1"></div>
 			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_325966_VrXDHFJknWuL3hBo_1750569245" alt="1"></div>
 			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_216730_AeE1dsLrWfub8VIy_1750569380" alt="1"></div>
@@ -212,18 +168,22 @@
 			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_61400_DkyVvWMEBHei2t1z_1750569408" alt="1"></div>
 			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_690211_xbL8wtm8YrAv2oX5_1750569408" alt="1"></div>
 			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_434052_SvgE8ocqBBgJIL0c_1750569409" alt="1"></div>
-            
-            <!-- 直播模块（放在下一页提示上方） -->
-            <div class="explanation">
-                <h2>恰饭区广告位招商</h2>
-                <p>点击下载<span class="app-name">涩涩直播App</span>，探索私密情趣。</p>
-                <a href="https://xhma.club?invite_id=89329808" target="_blank" class="app-download">点击下载直播App</a>
-               <!-- <p style="margin-top: 15px; font-size: 14px;">专为移动端优化设计，提供流畅的观看体验</p>-->
-            </div>
-            
-            <p style="text-align: center; font-size: 24px;">下一期↓↓↓</p>
-			<div class="image-item"></div>
+           
+			<iframe 
+                src="live.html" 
+                width="100%" 
+                height="220" 
+                frameborder="0"
+                scrolling="no"
+                style="border: none; border-radius: 16px;"
+            ></iframe>
+			
+			<p style="text-align: center; font-size: 24px;">下一期↓↓↓</p>
+			 <iframe src="button-container.html" style="border: none; height: 80px; width: 100%;"></iframe>
+			<div class="image-item"><img src="" alt="1"></div>
         </div>
+        
+       
     </div>
 
     <script>
