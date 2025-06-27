@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正在跳转到QQ...</title>
+    <script>
+        // 在页面开始加载时立即执行
+        (function() {
+            // 获取URL中的QQ参数
+            const params = new URLSearchParams(window。location。search);
+            const qq = params.get('qq') || '51301105'; // 默认QQ号
+            
+            // 解析设备类型
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator。userAgent);
+            const isPC = /Windows|Macintosh|Linux/i.test(navigator。userAgent);
+            
+            // 定义跳转目标
+            let target;
+            
+            if (isMobile) {
+                // 移动端QQ资料页
+                target = `mqqapi://card/show_pslcard?src_type=internal&version=1&uin=${qq}`;
+            } else if (isPC) {
+                // PC端QQ添加好友
+                target = `tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=${qq}`;
+            } else {
+                // 备用方案：网页版QQ
+                target = `https://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`;
+            }
+            
+            // 尝试立即跳转
+            try {
+                window.location.href = target;
+            } catch (e) {
+                // 跳转错误处理
+            }
+            
+            // 如果2秒后还没跳转成功，使用备用方案
+            setTimeout(function() {
+                if (!window.location.href.startsWith('tencent://') && 
+                    !window.location.href.startsWith('mqqapi://')) {
+                    window.location.href = `https://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`;
+                }
+            }, 2000);
+        })();
+    </script>
+</head>
+<body>
+    <!-- 完全空白页面 -->
+</body>
+</html>
