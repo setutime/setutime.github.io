@@ -1,0 +1,245 @@
+zr空白模版无div
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>涩图time</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* 容器 */
+        .container {
+            max-width: 100%;
+            padding: 15px;
+        }
+        
+        /* 标题样式 */
+        .header {
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+			text-align: center;
+        }
+        
+        .title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .meta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* 图片布局 */
+        .image-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 80px;
+        }
+        
+        .image-item {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background-color: #f9f9f9;
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .image-item img:hover {
+            transform: scale(1.02);
+        }
+        
+        /* 固定按钮 */
+        .fixed-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 500px;
+            z-index: 100;
+        }
+        
+        .fixed-button a {
+            display: block;
+            background: #5ca8e6;  
+            color: white;
+            text-align: center;
+            padding: 10px 14px;
+            border-radius: 999px; 
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 6px 16px rgba(92, 168, 230, 0.4);  /* 匹配的加深阴影 */
+            transition: all 0.3s ease;
+        }
+        
+        .fixed-button a:hover {
+            background: #4b96d8;  /* 加深悬停状态 */
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(75, 150, 216, 0.5);  /* 匹配的加深阴影 */
+        }
+        
+        /* 响应式调整 */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部信息 -->
+        <div class="header" >
+            <h1 class="title">涩图time No.2</h1>
+            <div class="meta"></div>
+        </div>
+        
+        <!-- 图片展示区域 -->
+        <div class="image-grid">
+<div class="image-item"><img src="https://github.com/user-attachments/assets/18cfe349-bffd-47b8-82af-638ddaca6000" alt="1"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/282e9de0-c5f8-4c52-a4c8-b95a5b8ab172" alt="2"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/269bb1fe-1eae-4f9c-ac3e-32159e47f211" alt="3"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/1a3ebe22-25b4-46d3-9941-1dcb78e938b5" alt="4"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/e0521749-b49b-4faa-8da0-f0491ad4eacc" alt="5"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/3b2931f4-219e-45e3-9184-b810005d59bb" alt="6"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/c457867f-c7b9-48a5-9495-a5dbe43d9b6f" alt="7"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/83e56425-73b7-4ee1-9dea-9a7830336185" alt="8"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/297cccc0-f3f3-42c4-aab1-0a24a773abd5" alt="9"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/83f7de1b-ba94-4b8d-8135-2e42b4a06172" alt="10"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/d96e16dd-f74f-41e9-b36a-0e4a407d2ea0" alt="11"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/b0ebe23e-0f84-45e5-8d6e-9e602025a7be" alt="12"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/14af468d-4790-41dc-967e-aa584fed3d66" alt="13"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/d7db5d21-9689-4ed7-a780-11577e2e3ba4" alt="14"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/267d03b0-a302-421f-a6e3-2d1395edd814" alt="15"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/7177ff94-cf69-4924-a5ec-14edded8ed23" alt="16"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/a50e45c2-f49a-4f4d-8ad5-87167ada1571" alt="17"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/95d55fac-0351-4341-bc35-236e94f8c31d" alt="18"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/3ab64569-c0e6-434c-9916-f106b7755d56" alt="19"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/31ef6275-4caa-4b33-935a-2330242e63cb" alt="20"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/e43079b1-8955-4aa0-bbc6-65f7a8294ad6" alt="21"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/81c02000-5dc2-489b-809a-1b99afb1c5a0" alt="22"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/96ecd828-e9c7-4061-809b-1d2223a26b67" alt="23"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/d070078b-bab3-47c1-9839-9b02c993b53f" alt="24"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/3216dc59-a3b1-46da-895a-b5824c101336" alt="25"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/99fad626-ac10-40d4-8e36-76391683582c" alt="26"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/f0043a74-758d-432d-bd07-527b31a558d0" alt="27"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/acefa36b-ae69-40e4-974f-1056bcac8166" alt="28"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/461c6f41-53df-40f1-ae6a-3e3d622303c7" alt="29"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/28f7a37a-a302-4029-aab9-b2dca4f93ab3" alt="30"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/d470b7a2-c2b1-4d9f-ad1c-a583b5557ab0" alt="31"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/b301ae88-de2b-4645-885c-f8430179d0b7" alt="32"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/56236b3f-b678-49e6-95a8-105af8a057b5" alt="33"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/863b09fb-b798-46d6-908f-599bbd6b3a03" alt="34"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/4692e221-68ae-48ec-89f5-1dbfef41ffd7" alt="35"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/c2539a8a-e219-4fa1-b68d-8f024bd412c5" alt="36"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/9588d00f-5ce8-4896-abce-5205d40add86" alt="37"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/5c0b367f-80ec-4811-b456-9e2426412874" alt="38"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/9edf7bd5-fb5c-4c57-a93b-eb9688176122" alt="39"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/03371037-322c-40e8-b5e0-b237b5d80480" alt="40"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/b4f3e70e-58ba-466e-a74c-5e4fc02ca094" alt="41"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/186c3162-e410-4360-bdeb-23b75aff5060" alt="42"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/762ab75d-390b-4e19-8fa4-0d1733d5ad67" alt="43"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/3b92ec2f-4c0b-4710-ac28-a32d892a2ac3" alt="44"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/b88b3102-ea35-4373-b612-1d0c7ba33f51" alt="45"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/c061be6c-75f8-45b7-8186-adb5b2e5e2f8" alt="46"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/a86c1b8e-45db-47c2-b309-02a7fccbd8d0" alt="47"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/8ed5dabc-95b6-4ebc-8fb6-dd4b0fa57cbd" alt="48"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/a2cafda5-5c18-4fde-be05-a90ab4d50562" alt="49"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/dd818f0b-c20a-4828-acf0-41970f3ae20b" alt="50"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/909b7d10-0494-4092-9dad-6cdb59b19182" alt="51"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/74700fe6-9ad6-437f-a348-9dadfe943eba" alt="52"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/bf0e127b-64c1-4e67-b9c9-2eaebd5c1741" alt="53"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/db9522d4-bd9c-48e1-b64d-374934bdd5db" alt="54"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/187ba6b9-aa8a-483c-9f7e-a5440c826add" alt="55"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/4a70e1ea-dac1-4b7a-9e92-9369ec9cdf51" alt="56"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/00082125-b05b-4cf8-82f1-6b9951c03e9b" alt="57"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/770ea6a1-85aa-470d-83d6-8eb220650ddf" alt="58"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/20f86756-3ca0-4a82-b176-f8dfa8d318e0" alt="59"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/21663e20-43ee-40b5-bfe1-02316f7261ce" alt="60"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/a2459321-fa7e-45d2-ac4d-6b56a09e42e1" alt="61"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/3a01ed29-361b-4f17-a485-11776ce9620b" alt="62"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/46773cee-268b-49ba-af16-65c59dca0d80" alt="63"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/13f509f4-7fc8-4560-a289-b0c74c2fc6ab" alt="64"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/6a048349-8da1-49bf-8763-ff64a3c809e7" alt="65"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/c33abd6d-37e0-4254-ae21-8a87c371dd22" alt="66"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/ef5e78f6-efdb-473d-9437-d854ca1b5b4c" alt="67"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/1ac02064-1f4b-468f-879d-ac5c4f464fd5" alt="68"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/009a1443-02d1-4912-bb9d-875163d5a92b" alt="69"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/f3da5ed1-98b2-4ca7-8bcf-3ed01a81bc79" alt="70"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/84b4a8a6-3dad-421d-a558-959acecb6ab9" alt="71"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/cf5654fa-85ba-46c5-a57e-828576270c97" alt="72"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/133644e2-771a-45f4-b246-2b57c228b9d9" alt="73"></div>
+<div class="image-item"><img src="https://github.com/user-attachments/assets/73da1ee9-bcf8-4a24-845d-0bafc997eb97" alt="74"></div>
+           <center><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_665913_WdaMOg2hdRPotVsk_1751200018" alt="emoji"></center>
+<center><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_665913_WdaMOg2hdRPotVsk_1751200018" alt="tip"></center>
+			<!--<iframe 
+                src="https://setutime.github.io/live.html" 
+                width="100%" 
+                height="230" 
+                frameborder="0"
+                scrolling="no"
+                style="border: none; border-radius: 16px;"
+            ></iframe>-->
+			
+			<p style="text-align: center; font-size: 24px;">下一期↓↓↓</p>
+			 <iframe src="https://setutime.github.io/button-container.html" style="border: none; height: 80px; width: 100%;"></iframe>
+			<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_949393_vT7NLdk3NB8Ow_zF_1752073099" alt="1"></div>
+        </div>
+        
+       
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const lazyImages = document.querySelectorAll('.image-item img');
+            
+            const lazyLoad = function() {
+                lazyImages.forEach(img => {
+                    if (img.getAttribute('data-src') && img.getBoundingClientRect().top < window.innerHeight + 100) {
+                        img.src = img.getAttribute('data-src');
+                        img.removeAttribute('data-src');
+                    }
+                });
+            };
+            
+            lazyLoad();
+            window.addEventListener('scroll', lazyLoad);
+            window.addEventListener('resize', lazyLoad);
+        });
+    </script>
+</body>
+</html>
