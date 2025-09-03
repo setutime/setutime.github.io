@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>牢奈发过的setutime</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ffffff;
+            color: rgb(0, 174, 255);
+            padding: 2rem;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            max-width: 90%;
+            margin: 1rem auto;
+            padding: 0.5rem;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            color: #374151;
+            font-weight: 600;
+            text-align: center;
+        }
+        .slider-container {
+            overflow-x: auto;
+            display: flex;
+            scroll-snap-type: x mandatory;
+            gap: 1rem;
+            padding: 1rem;
+            scrollbar-width: thin;
+        }
+        .card {
+            flex: 0 0 250px;
+            height: 350px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.15);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            background-size: cover;
+            background-position: center;
+            scroll-snap-align: start;
+            position: relative;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+        .card-title {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 0.5rem 1rem;
+            border-radius: 0 0 12px 12px;
+            width: 100%;
+            text-align: center;
+        }
+        #ts {
+            color: #b91c1c;
+            background-color: #fef2f2;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin: 1.5rem auto;
+            text-align: center;
+            max-width: 500px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border: 1px solid #fca5a5;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <header>牢奈发过的setutime</header>
+    <div id="ts">群友看看得了，别到处传这个网站</div>
+    <div id="main"></div>
+    <footer>&copy; 2025</footer>
+
+    <script>
+        const rootUrl = 'https://setutime.github.io/';
+        const repoApi = 'https://api.github.com/repos/setutime/setutime.github.io/contents/';
+
+        function extractNumber(filename) {
+            const match = filename.match(/(\d+)/);
+            return match ? parseInt(match[1]) : Number.MAX_SAFE_INTEGER;
+        }
+
+        function jumpTo(url) {
+            window.open(url, '_blank');
+        }
+
+        async function getFirstImageUrl(pageUrl) {
+            try {
+                const response = await fetch(pageUrl);
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const img = doc.querySelector('img');
+                if (img) {
+                    let src = img.src;
+                    if (src.startsWith('/')) {
+                        src = rootUrl + src.substring(1);
+                    }
+                    return src;
+                }
+                return null; // No image found, will use fallback
+            } catch (err) {
+                console.error('Failed to fetch page:', err);
+                return null;
+            }
+        }
+
+        function createSection(folder, files) {
+            const section = document.createElement('div');
+            section.className = 'section';
+
+            const title = document.createElement('div');
+            title.className = 'section-title';
+            title.textContent = folder;
+            section.appendChild(title);
+
+            const container = document.createElement('div');
+            container.className = 'slider-container';
+
+            files.forEach(file => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                const pageUrl = `${rootUrl}${folder}/${file}`;
+                card.onclick = () => jumpTo(pageUrl);
+
+                const cardTitle = document.createElement('div');
+                cardTitle.className = 'card-title';
+                cardTitle.textContent = file.replace('.html', '');
+                card.appendChild(cardTitle);
+
+                // Load image asynchronously
+                getFirstImageUrl(pageUrl).then(imgSrc => {
+                    if (imgSrc) {
+                        card.style.backgroundImage = `url(${imgSrc})`;
+                    } else {
+                        // Fallback if no image
+                        card.style.backgroundColor = '#a8c0ff';
+                        card.style.justifyContent = 'center';
+                        card.style.alignItems = 'center';
+                        cardTitle.style.backgroundColor = 'transparent';
+                        cardTitle.style.color = '#2563eb';
+                    }
+                });
+
+                container.appendChild(card);
+            });
+
+            section.appendChild(container);
+            return section;
+        }
+
+        async function fetchDir(path = '') {
+            const response = await fetch(repoApi + path);
+            if (!response.ok) throw new Error(`GitHub API 请求失败：${response.status}`);
+            return await response.json();
+        }
+
+        async function loadPage() {
+            const main = document.getElementById('main');
+            main.innerHTML = '';
+
+            try {
+                const root = await fetchDir();
+
+                for (const folder of root) {
+                    if (folder.type !== 'dir') continue;
+
+                    const subdir = await fetchDir(folder.name);
+                    const htmlFiles = subdir
+                        .filter(f => f.type === 'file' && f.name.endsWith('.html'))
+                        .map(f => f.name)
+                        .sort((a, b) => extractNumber(a) - extractNumber(b));
+
+                    if (htmlFiles.length > 0) {
+                        const section = createSection(folder.name, htmlFiles);
+                        main.appendChild(section);
+                    }
+                }
+            } catch (err) {
+                console.error('加载失败:', err);
+                main.innerHTML = '<p style="color:red; text-align:center;">加载失败,可能是请求频繁被github api 限制了</p>';
+            }
+        }
+
+        window.onload = loadPage;
+    </script>
+</body>
+</html>
