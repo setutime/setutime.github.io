@@ -1,213 +1,455 @@
-<!DOCTYPE html>
-<html lang="zh">
+<!doctype html>
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>牢奈发过的setutime</title>
-    <style>
-        body {
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #ffffff;
-            color: rgb(0, 174, 255);
-            padding: 2rem;
-            text-align: center;
-            font-size: 2rem;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .section {
-            max-width: 90%;
-            margin: 1rem auto;
-            padding: 0.5rem;
-        }
-        .section-title {
-            font-size: 1.5rem;
-            margin: 1rem 0;
-            color: #374151;
-            font-weight: 600;
-            text-align: center;
-        }
-        .slider-container {
-            overflow-x: auto;
-            display: flex;
-            scroll-snap-type: x mandatory;
-            gap: 1rem;
-            padding: 1rem;
-            scrollbar-width: thin;
-        }
-        .card {
-            flex: 0 0 250px;
-            height: 350px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.15);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            background-size: cover;
-            background-position: center;
-            scroll-snap-align: start;
-            position: relative;
-        }
-        .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
-        }
-        .card-title {
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 600;
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 0.5rem 1rem;
-            border-radius: 0 0 12px 12px;
-            width: 100%;
-            text-align: center;
-        }
-        #ts {
-            color: #b91c1c;
-            background-color: #fef2f2;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            margin: 1.5rem auto;
-            text-align: center;
-            max-width: 500px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            border: 1px solid #fca5a5;
-        }
-        footer {
-            text-align: center;
-            padding: 2rem;
-            font-size: 0.9rem;
-            color: #6b7280;
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>涩图合集 · setutime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 细体（Light）作为主标题与标签 -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f3f4f6; /* 灰白背景基色 */
+    --glass: rgba(255,255,255,0.7);
+    --glass-border: rgba(0,0,0,0.06);
+    --accent: 228 70% 50%; /* 用于高亮（hsl via CSS color syntax isn't used directly here）*/
+    --text: #0f172a;
+    --muted: #64748b;
+    --card-radius: 18px;
+    --card-gap: 22px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%; margin:0; font-family: "Inter", -apple-system, "SF Pro Text", "PingFang SC", "Noto Sans", Roboto, Helvetica, Arial, sans-serif; color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+  body{
+    background: linear-gradient(180deg, #f6f7f8 0%, #eef1f3 100%);
+    overflow:hidden; /* 不允许整体纵向滚动，页面内用横向滚动 */
+    position:relative;
+  }
+
+  /* 背景毛玻璃卡片层（大面积模糊） */
+  .bg-frost {
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background: radial-gradient(800px 400px at 10% 10%, rgba(255,255,255,0.35), transparent 20%),
+                radial-gradient(800px 400px at 90% 90%, rgba(240,240,245,0.35), transparent 20%),
+                linear-gradient(180deg, rgba(250,250,250,0.6), rgba(240,240,245,0.6));
+    backdrop-filter: blur(18px) saturate(110%);
+    -webkit-backdrop-filter: blur(18px) saturate(110%);
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  /* 顶栏，纯文本标签（细体），无按钮样式 */
+  header{
+    position:relative; z-index:6; padding:18px 18px 6px 18px; display:flex; align-items:center; gap:18px;
+    background: transparent;
+  }
+  .brand{
+    display:flex; align-items:center; gap:12px;
+  }
+  .logo{
+    width:36px; height:36px; border-radius:10px;
+    background: linear-gradient(135deg,#e6eefc,#f6e7ff);
+    box-shadow: 0 6px 18px rgba(16,24,40,0.06);
+  }
+  h1{
+    margin:0; font-weight:300; font-size:18px;
+  }
+  nav.tabs{
+    margin-left:18px; display:flex; gap:14px; align-items:center;
+  }
+  .tab {
+    cursor:pointer;
+    font-weight:300; font-size:15px; color:var(--muted);
+    user-select:none; -webkit-tap-highlight-color: transparent;
+    padding:6px 4px; border-radius:6px;
+  }
+  .tab.active{ color: var(--text); border-bottom: 2px solid rgba(16,24,40,0.10); font-weight:600; }
+
+  /* 主容器：横向翻页区域 */
+  main{
+    position:relative; z-index:5; height: calc(100vh - 70px); padding-bottom: 18px;
+    display:flex; align-items:center;
+  }
+
+  .carousel{
+    height:100%;
+    display:flex; align-items:center;
+    gap: var(--card-gap);
+    padding: 0 20px;
+    overflow-x:auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+    width:100%;
+  }
+  .carousel::-webkit-scrollbar{ height:10px }
+  .carousel::-webkit-scrollbar-thumb{ background: rgba(16,24,40,0.08); border-radius:10px }
+
+  /* 每张卡片是横向居中的大尺寸 */
+  .card {
+    scroll-snap-align: center;
+    flex:0 0 auto;
+    width: min(86vw, 980px); /* 大卡片，移动端取86vw，桌面最大980px */
+    height: calc(100vh - 160px); /* 留顶部与底部间距 */
+    border-radius: var(--card-radius);
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,252,0.9));
+    box-shadow: 0 20px 60px rgba(16,24,40,0.14);
+    display:flex; flex-direction:column; overflow:hidden; position:relative;
+    border:1px solid rgba(16,24,40,0.04);
+    transform-style: preserve-3d;
+  }
+
+  /* 立体堆叠的背景层（视觉深度） */
+  .card::before, .card::after{
+    content:""; position:absolute; inset:0; border-radius:inherit; z-index:-1;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+    transform: translateZ(-12px) scale(0.996);
+    box-shadow: 0 10px 30px rgba(16,24,40,0.06);
+    pointer-events:none;
+  }
+  .card::after{ transform: translateZ(-24px) scale(0.992); opacity:0.85 }
+
+  /* 封面图：完整显示（contain），且保持大尺寸 */
+  .cover-wrap{
+    flex:1 1 auto; display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(180deg, rgba(240,240,245,0.6), rgba(250,250,250,0.6));
+    padding: 14px;
+  }
+  .cover{
+    max-width:100%; max-height:100%; width: auto; height:auto;
+    display:block; object-fit: contain; border-radius:12px; box-shadow: 0 12px 36px rgba(2,6,23,0.08);
+    background: linear-gradient(180deg, #ffffff, #fafafa);
+  }
+
+  /* 标题栏（底部） */
+  .meta{
+    padding: 14px 18px; display:flex; align-items:center; gap:12px; justify-content:space-between;
+    border-top: 1px solid rgba(16,24,40,0.03);
+    background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(250,250,250,0.85));
+  }
+  .title{ font-weight:400; font-size:15px; color:var(--text); margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sub{ font-size:13px; color:var(--muted); white-space:nowrap; }
+
+  /* 点击反馈：无视觉点击效果（按你说的），但保留按键辅助焦点 */
+  .card:focus { outline: 2px solid rgba(16,24,40,0.06); outline-offset:4px; }
+
+  /* 响应式：小屏时卡片高度更紧凑 */
+  @media (max-width:640px){
+    header{ padding:12px 12px 6px 12px }
+    .brand h1{ font-size:16px }
+    .card{ width: 92vw; height: calc(100vh - 120px); }
+    .meta{ padding:10px 12px }
+  }
+
+  /* 无内容占位 */
+  .empty {
+    display:flex; align-items:center; justify-content:center; width:100%;
+    height:100%; color:var(--muted); font-size:15px;
+  }
+
+  /* 顶部小说明（隐） */
+  .sr { position: absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+</style>
 </head>
 <body>
-    <header>牢奈发过的setutime</header>
-    <div id="ts">群友看看得了，别到处传这个网站</div>
-    <div id="main"></div>
-    <footer>&copy; 2025</footer>
+  <div class="bg-frost" aria-hidden="true"></div>
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <h1>涩图合集</h1>
+    </div>
 
-    <script>
-        const rootUrl = 'https://setutime.github.io/';
-        const repoApi = 'https://api.github.com/repos/setutime/setutime.github.io/contents/';
+    <nav class="tabs" role="tablist" aria-label="分类切换">
+      <div class="tab active" role="tab" data-cat="setu">涩图 time</div>
+      <div class="tab" role="tab" data-cat="zrsetu">涩图·真人篇</div>
+    </nav>
+    <div class="sr" id="status">正在加载…</div>
+  </header>
 
-        function extractNumber(filename) {
-            const match = filename.match(/(\d+)/);
-            return match ? parseInt(match[1]) : Number.MAX_SAFE_INTEGER;
-        }
+  <main>
+    <div id="carousel" class="carousel" tabindex="0" aria-live="polite" aria-roledescription="carousel">
+      <!-- 卡片会被 JS 填充 -->
+    </div>
+  </main>
 
-        function jumpTo(url) {
-            window.open(url, '_blank');
-        }
+  <!-- 水滴横向划过的 Canvas（背景，pointer-events none） -->
+  <canvas id="drops" style="position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:overlay;opacity:0.7"></canvas>
 
-        async function getFirstImageUrl(pageUrl) {
-            try {
-                const response = await fetch(pageUrl);
-                const html = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const img = doc.querySelector('img');
-                if (img) {
-                    let src = img.src;
-                    if (src.startsWith('/')) {
-                        src = rootUrl + src.substring(1);
-                    }
-                    return src;
-                }
-                return null; // No image found, will use fallback
-            } catch (err) {
-                console.error('Failed to fetch page:', err);
-                return null;
-            }
-        }
+<script>
+/* ================== 配置区（可选：填入只读 token 以免被限流） ================== */
+const GITHUB_TOKEN = ""; // 可选：只读 token 提升 API 限额
+const OWNER="setutime", REPO="setutime.github.io", BRANCH="main";
+const CATEGORIES = [{key:'setu',label:'涩图 time'},{key:'zrsetu',label:'涩图·真人篇'}];
+const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 小时
+/* ============================================================================== */
 
-        function createSection(folder, files) {
-            const section = document.createElement('div');
-            section.className = 'section';
+const tabs = document.querySelectorAll('.tab');
+const carousel = document.getElementById('carousel');
+const statusEl = document.getElementById('status');
 
-            const title = document.createElement('div');
-            title.className = 'section-title';
-            title.textContent = folder;
-            section.appendChild(title);
+let currentCat = 'setu';
+tabs.forEach(t=>{
+  t.addEventListener('click', ()=> {
+    if(t.dataset.cat === currentCat) return;
+    tabs.forEach(x=> x.classList.toggle('active', x===t));
+    currentCat = t.dataset.cat;
+    // silently load new category
+    loadCategory(currentCat, false);
+  });
+});
 
-            const container = document.createElement('div');
-            container.className = 'slider-container';
+// GitHub helper
+const gh = {
+  async fetchJSON(url){
+    const headers = { 'Accept': 'application/vnd.github+json' };
+    if(GITHUB_TOKEN) headers['Authorization'] = `Bearer ${GITHUB_TOKEN}`;
+    const res = await fetch(url, { headers });
+    if(!res.ok) throw new Error(`GitHub API ${res.status}`);
+    return res.json();
+  },
+  listDir(path){
+    const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(path)}?ref=${BRANCH}`;
+    return this.fetchJSON(url);
+  },
+  rawUrl(path){ return `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${path}` },
+  pageUrl(path){ return `https://${OWNER}.github.io/${path}` }
+};
 
-            files.forEach(file => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                const pageUrl = `${rootUrl}${folder}/${file}`;
-                card.onclick = () => jumpTo(pageUrl);
+// 遍历目录（深度优先）
+async function findAllHtml(rootPath){
+  const out = [];
+  const stack = [rootPath];
+  while(stack.length){
+    const p = stack.pop();
+    let items = [];
+    try { items = await gh.listDir(p); } catch(e){ console.warn('listDir error', e); continue; }
+    for(const it of items){
+      if(it.type==='file' && /\.(html?)$/i.test(it.name)) out.push(it.path);
+      else if(it.type==='dir') stack.push(it.path);
+    }
+  }
+  return out;
+}
 
-                const cardTitle = document.createElement('div');
-                cardTitle.className = 'card-title';
-                cardTitle.textContent = file.replace('.html', '');
-                card.appendChild(cardTitle);
+// 解析 HTML 并取第一张图片 src（解析基于 static html）
+async function firstImgFromHtml(path){
+  const url = gh.rawUrl(path);
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('raw fetch failed '+res.status);
+  const html = await res.text();
+  const doc = new DOMParser().parseFromString(html,'text/html');
+  const img = doc.querySelector('img, picture img, figure img');
+  if(!img) return null;
+  try{
+    // 相对地址转绝对（以页面 GitHub Pages 地址为 base）
+    return new URL(img.getAttribute('src'), gh.pageUrl(path)).href;
+  }catch{
+    return null;
+  }
+}
 
-                // Load image asynchronously
-                getFirstImageUrl(pageUrl).then(imgSrc => {
-                    if (imgSrc) {
-                        card.style.backgroundImage = `url(${imgSrc})`;
-                    } else {
-                        // Fallback if no image
-                        card.style.backgroundColor = '#a8c0ff';
-                        card.style.justifyContent = 'center';
-                        card.style.alignItems = 'center';
-                        cardTitle.style.backgroundColor = 'transparent';
-                        cardTitle.style.color = '#2563eb';
-                    }
-                });
+// 并发限制（队列）
+async function mapLimit(arr, limit, fn){
+  const res = new Array(arr.length);
+  let i=0, running=0;
+  return new Promise((resolve)=>{
+    function next(){
+      if(i>=arr.length && running===0) return resolve(res);
+      while(running<limit && i<arr.length){
+        const idx = i++;
+        running++;
+        Promise.resolve(fn(arr[idx], idx))
+          .then(r => res[idx] = r)
+          .catch(e => { res[idx] = undefined; console.warn(e) })
+          .finally(()=>{ running--; next(); });
+      }
+    }
+    next();
+  });
+}
 
-                container.appendChild(card);
-            });
+// 缓存
+function saveCache(k,v){ localStorage.setItem(k, JSON.stringify({t:Date.now(),v})); }
+function readCache(k){
+  const raw = localStorage.getItem(k); if(!raw) return null;
+  try{ const {t,v} = JSON.parse(raw); if(Date.now()-t > CACHE_TTL) return null; return v; }catch{return null}
+}
 
-            section.appendChild(container);
-            return section;
-        }
+// 从路径或文件名尝试提取期号（数字），以便按数字排序（降序）
+function extractLargestNumber(s){
+  const m = s.match(/(\d{1,6})/g);
+  if(!m) return null;
+  return Math.max(...m.map(x=>parseInt(x,10)));
+}
 
-        async function fetchDir(path = '') {
-            const response = await fetch(repoApi + path);
-            if (!response.ok) throw new Error(`GitHub API 请求失败：${response.status}`);
-            return await response.json();
-        }
+// 渲染：横向大卡片（完整显示图片）
+function render(items){
+  carousel.innerHTML = '';
+  if(!items || items.length===0){
+    const e = document.createElement('div'); e.className='empty'; e.textContent='暂无内容';
+    carousel.appendChild(e); return;
+  }
+  for(const it of items){
+    const a = document.createElement('a');
+    a.className='card';
+    a.href = it.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.setAttribute('role','group');
+    a.setAttribute('aria-label', it.title || it.path);
 
-        async function loadPage() {
-            const main = document.getElementById('main');
-            main.innerHTML = '';
+    const wrap = document.createElement('div'); wrap.className='cover-wrap';
+    const img = document.createElement('img'); img.className='cover';
+    img.alt = it.title || '';
+    img.src = it.cover || ''; // 若无封面，脚本将用内嵌占位
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    // 若没有封面，显示内联 svg 占位（dataURL）
+    if(!it.cover){
+      img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800">
+          <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#E6EEF8"/><stop offset="1" stop-color="#F8E9F9"/></linearGradient></defs>
+          <rect width="100%" height="100%" fill="url(#g)"/>
+          <text x="50%" y="50%" font-size="48" text-anchor="middle" fill="#7b8794" dy=".35em">无封面</text>
+        </svg>`
+      );
+      img.style.opacity = '0.92';
+    }
+    wrap.appendChild(img);
 
-            try {
-                const root = await fetchDir();
+    const meta = document.createElement('div'); meta.className='meta';
+    const t = document.createElement('div'); t.className='title'; t.textContent = it.title || it.path;
+    const s = document.createElement('div'); s.className='sub'; s.textContent = it.issue ? `期号 ${it.issue}` : it.path.split('/').slice(-2).join('/');
+    meta.appendChild(t); meta.appendChild(s);
 
-                for (const folder of root) {
-                    if (folder.type !== 'dir') continue;
+    a.appendChild(wrap); a.appendChild(meta);
+    // no click effect; the anchor will open in new tab
+    carousel.appendChild(a);
+  }
+  // ensure first card centered:
+  setTimeout(()=> { // slight delay to allow layout
+    const first = carousel.querySelector('.card');
+    if(first) first.scrollIntoView({behavior:'smooth', inline:'center'});
+  }, 80);
+}
 
-                    const subdir = await fetchDir(folder.name);
-                    const htmlFiles = subdir
-                        .filter(f => f.type === 'file' && f.name.endsWith('.html'))
-                        .map(f => f.name)
-                        .sort((a, b) => extractNumber(a) - extractNumber(b));
+// 主加载函数：读取目录 -> 获取每页首图 -> 排序 -> 渲染
+async function loadCategory(cat, bust=false){
+  statusEl.textContent = '加载中…';
+  const cacheKey = `idx_${OWNER}_${REPO}_${BRANCH}_${cat}_v2`;
+  let items = !bust ? readCache(cacheKey) : null;
+  if(items){
+    render(items);
+    statusEl.textContent = `${cat} · ${items.length} 篇（缓存）`;
+  } else {
+    // show minimal placeholder while fetching
+    carousel.innerHTML = '';
+    const ph = document.createElement('div'); ph.className='empty'; ph.textContent='正在抓取内容…';
+    carousel.appendChild(ph);
 
-                    if (htmlFiles.length > 0) {
-                        const section = createSection(folder.name, htmlFiles);
-                        main.appendChild(section);
-                    }
-                }
-            } catch (err) {
-                console.error('加载失败:', err);
-                main.innerHTML = '<p style="color:red; text-align:center;">加载失败,可能是请求频繁被github api 限制了</p>';
-            }
-        }
+    try{
+      const htmlFiles = await findAllHtml(cat);
+      // 并发抓首图
+      const mapped = await mapLimit(htmlFiles, 6, async (p)=>{
+        let cover = null;
+        try{ cover = await firstImgFromHtml(p); }catch(e){ /* ignore */ }
+        const title = decodeURIComponent(p.split('/').slice(-1)[0]).replace(/\.[^/.]+$/,'');
+        const issue = extractLargestNumber(p);
+        return { path: p, url: gh.pageUrl(p), title, cover, issue };
+      });
 
-        window.onload = loadPage;
-    </script>
+      // 以数字期号为主排序（issue 降序），无数字者按路径倒序
+      items = mapped.filter(Boolean).sort((a,b)=>{
+        const ai = a.issue ?? -Infinity, bi = b.issue ?? -Infinity;
+        if(ai !== bi) return bi - ai; // larger number first
+        // fallback: path reverse lexicographic
+        return (b.path > a.path)? 1 : -1;
+      });
+
+      saveCache(cacheKey, items);
+      render(items);
+      statusEl.textContent = `${cat} · ${items.length} 篇`;
+    }catch(e){
+      console.error(e);
+      carousel.innerHTML = '';
+      const e = document.createElement('div'); e.className='empty'; e.textContent='加载失败 · 请稍后重试（后台自动恢复）';
+      carousel.appendChild(e);
+      statusEl.textContent = '加载失败';
+    }
+  }
+}
+
+// 初次加载
+loadCategory(currentCat, false);
+
+// 允许左右键导航（左右翻页）
+carousel.addEventListener('keydown', (ev)=>{
+  if(ev.key === 'ArrowRight'){ ev.preventDefault(); carousel.scrollBy({left: Math.min(carousel.clientWidth, window.innerWidth*0.8), behavior:'smooth'}) }
+  if(ev.key === 'ArrowLeft'){ ev.preventDefault(); carousel.scrollBy({left: -Math.min(carousel.clientWidth, window.innerWidth*0.8), behavior:'smooth'}) }
+});
+
+/* ================= 横向“水滴”特效（横向划过）Canvas ================= */
+(function(){
+  const cvs = document.getElementById('drops');
+  const ctx = cvs.getContext('2d');
+  let W=0,H=0, drops=[];
+
+  function resize(){
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    W = cvs.width = innerWidth * dpr;
+    H = cvs.height = innerHeight * dpr;
+    cvs.style.width = innerWidth+'px';
+    cvs.style.height = innerHeight+'px';
+    drops = createDrops(Math.floor(innerWidth/60)); // 依宽度控制密度
+  }
+  function createDrops(n){
+    const arr=[];
+    for(let i=0;i<n;i++){
+      arr.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        w: 10 + Math.random()*36,
+        h: 2 + Math.random()*8,
+        vx: 150 + Math.random()*200,
+        alpha: 0.06 + Math.random()*0.12,
+        tilt: (Math.random()*2-1)*0.2
+      });
+    }
+    return arr;
+  }
+  let last=0;
+  function loop(ts){
+    if(!last) last=ts;
+    const dt = Math.min(32, ts-last)/1000; last=ts;
+    ctx.clearRect(0,0,W,H);
+    for(const d of drops){
+      d.x += d.vx * dt;
+      d.y += Math.sin(d.x*0.0008 + d.tilt) * 0.6;
+      // recycle
+      if(d.x - d.w > W){ d.x = -d.w - Math.random()*300; d.y = Math.random()*H; }
+      // draw as soft streak (rounded rect)
+      ctx.globalAlpha = d.alpha;
+      ctx.fillStyle = 'rgba(220,230,240,1)';
+      roundRect(ctx, d.x, d.y, d.w, d.h, d.h/2);
+      ctx.fill();
+    }
+    requestAnimationFrame(loop);
+  }
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+  }
+  addEventListener('resize', resize, {passive:true});
+  resize(); requestAnimationFrame(loop);
+})();
+
+/* ====================================================================== */
+</script>
 </body>
 </html>
