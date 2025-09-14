@@ -1,0 +1,278 @@
+<!-- 空白模版 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>涩图time</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* 容器 */
+        .container {
+            max-width: 100%;
+            padding: 15px;
+        }
+        
+        /* 标题样式 */
+        .header {
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .meta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* 图片布局 */
+        .image-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 80px;
+        }
+        
+        .image-item {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background-color: #f9f9f9;
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .image-item img:hover {
+            transform: scale(1.02);
+        }
+        
+        /* 固定按钮 */
+        .fixed-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 100px);
+            max-width: 500px;
+            z-index: 100;
+        }
+        
+        .fixed-button a {
+            display: block;
+            background: #5ca8e6;  
+            color: white;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 999px; 
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 6px 16px rgba(92, 168, 230, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .fixed-button a:hover {
+            background: #4b96d8;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(75, 150, 216, 0.5);
+        }
+        
+        /* 响应式调整 */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .title {
+                font-size: 1.6rem;
+            }
+        }
+        .explanation {
+            background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+            border-radius: 16px;
+            padding: 20px;
+            font-size: 15px;
+            color: #4a5568;
+            line-height: 1.7;
+            border: 1px solid #e9ecef;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .explanation h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #ff416c;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .app-download {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 25px;
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+            transition: all 0.3s;
+        }
+        
+        .app-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 75, 43, 0.5);
+        }
+        
+        .app-download:active {
+            transform: translateY(0);
+        }
+        
+        .app-name {
+            font-weight: 700;
+            color: #ff416c;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+     .responsive-video {
+           width: 100%;
+           height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部信息 -->
+        <div class="header">
+            <h1 class="title">涩图time No.20</h1>
+            <div class="meta"></div>
+        </div>
+        
+        <!-- 图片展示区域 -->
+        <div class="image-grid">
+
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_361420_9SpmkVbIDV8EFsjm_1757854075" alt="1"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_201856_yajjLohIgpvq4WcK_1757854076" alt="2"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_994905_--bzE4Imc9sM8kVI_1757854076" alt="3"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_809727_e43o5mAncgeb5wwY_1757854077" alt="4"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_717348_aF1nxbPcypo5joGq_1757854078" alt="5"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_466258_UL31r78xHQ8mtWti_1757854079" alt="6"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_278399__Eh_ImX_xmaMMY9C_1757854080" alt="7"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_24366_hX54IpuR44AVdWj1_1757854081" alt="8"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_652526_Qo-FKKeE3hds0egs_1757854081" alt="9"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_496226_8ldPEjN-wY4ZKix-_1757854082" alt="10"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_370912_hCGZoeFgyh_9cU9x_1757854083" alt="11"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_67731_i3ry0BOTZM963n_1_1757854084" alt="12"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_784717_3vZTOHIE5TNKqgLZ_1757854084" alt="13"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_421184_318M8oOZwMWlFNaH_1757854085" alt="14"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_542777_qEDHgaopp3my8DDb_1757854086" alt="15"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_492747_x1RRLCCXgkh6-Svc_1757854087" alt="16"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_337466_7f8nF5m6l2U8MUfJ_1757854088" alt="17"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_257965_YTEd57rF2yV7Inl8_1757854089" alt="18"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_21838_j2-34suhj05mderJ_1757854090" alt="19"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_749576_Qub4gsiBnCUTawY7_1757854090" alt="20"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_556442_EjFNF4948IzwKJsw_1757854091" alt="21"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_548751_zQoOBvfm5OFmkj53_1757854092" alt="22"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_640708_Fm5w47WzXgPUFzNz_1757854093" alt="23"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_714766_p0wSYYgqgXV6LiV5_1757854094" alt="24"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_709940_zTF8CMnj_lIe_tqL_1757854095" alt="25"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_421974_o8ah3xf7vThWss4z_1757854096" alt="26"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_349074_lzfJgaDMvwcJF0Ul_1757854097" alt="27"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_973861_gYlA-PTc74YKf_Lz_1757854097" alt="28"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_600501_SCoO6p7jV0Tp14TM_1757854098" alt="29"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_463202_r3pu98lkXC6Hzol8_1757854099" alt="30"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_419807_EWQYJ2YpafhTKS55_1757854100" alt="31"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_343838_jPU3sk5pRIwk20w4_1757854101" alt="32"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_121296_R8w_XOk47QiobOYd_1757854102" alt="33"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_22565_HPvE2Udq3Le2cYBh_1757854103" alt="34"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_31322_cHDRUHI8wNOEpx9U_1757854104" alt="35"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_907811_wALbpSJ-AFaFOp42_1757854104" alt="36"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_631045_jbOtX_Kz7KMu5HkW_1757854105" alt="37"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_454897_yb_y7752B-uPNDtl_1757854106" alt="38"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_240216_eKYLWWuyCnXPqgh6_1757854107" alt="39"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_80043_yX59KFnFYL1h11hj_1757854108" alt="40"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_4_qnZ-7KP3cdRgB2LC_1757854109" alt="41"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_45100_3wIEfL3EY7-0oeaF_1757854110" alt="42"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_980539_qNepjmGdNeW_xquV_1757854110" alt="43"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_603953_B23VIFp3I50csoGp_1757854111" alt="44"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_615095_h8r6kioWlnp05LUl_1757854112" alt="45"></div>
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_394108_FZTFUsZkXSE-hRE6_1757854113" alt="46"></div>
+
+
+
+            <div class="explanation">
+                <h2>本期无水印原图</h2>
+                <p>保存资源，支持涩图time！</p>
+                <p>收藏到自己的网盘，<span class="app-name">防止和谐</span></p>
+
+
+                <a href="https://pan.xunlei.com/s/VO_7GcWAmyneINI0kCaov6SOA1?pwd=s55i" target="blank" class="app-download">点击保存</a>
+            </div>
+
+
+            <p style="text-align: center; font-size: 24px;">上一期↓↓↓（点击跳转）</p>
+            <iframe src="https://setutime-github-io.pages.dev/button-container" style="border: none; height: 80px; width: 100%;"></iframe>
+
+
+            <a href="https://setutime-github-io.pages.dev/setu/20">
+
+
+<div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_332902_jspHMvaM464ArQix_1757852839" alt="上一期链接"></div></a>
+        </div>
+        
+        <!-- 悬浮按钮 -->
+        <div class="fixed-button">
+            <a href="https://qm.qq.com/q/Dn8g0Wlx4c" target="_blank">qq：51301105 添加好友获取更新</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const lazyImages = document.querySelectorAll('.image-item img');
+            
+            const lazyLoad = function() {
+                lazyImages.forEach(img => {
+                    if (img.getAttribute('data-src') && img.getBoundingClientRect().top < window.innerHeight + 100) {
+                        img.src = img.getAttribute('data-src');
+                        img.removeAttribute('data-src');
+                    }
+                });
+            };
+            
+            lazyLoad();
+            window.addEventListener('scroll', lazyLoad);
+            window.addEventListener('resize', lazyLoad);
+        });
+    </script>
+</body>
+</html>
