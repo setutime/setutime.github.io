@@ -1,214 +1,129 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>涩图time</title>
-    <style>
-        /* 基础样式 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            line-height: 1.6;
-            padding: 0;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        /* 容器 */
-        .container {
-            max-width: 100%;
-            padding: 15px;
-        }
-        
-        /* 标题样式 */
-        .header {
-            padding: 20px 0;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #222;
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-        
-        .meta {
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        /* 图片布局 */
-        .image-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 80px;
-        }
-        
-        .image-item {
-            width: 100%;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            background-color: #f9f9f9;
-        }
-        
-        .image-item img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-        
-        .image-item img:hover {
-            transform: scale(1.02);
-        }
-        
-        /* 固定按钮 */
-        .fixed-button {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 100px);
-            max-width: 500px;
-            z-index: 100;
-        }
-        
-        .fixed-button a {
-            display: block;
-            background: #5ca8e6;  
-            color: white;
-            text-align: center;
-            padding: 8px 12px;
-            border-radius: 999px; 
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            box-shadow: 0 6px 16px rgba(92, 168, 230, 0.4);
-            transition: all 0.3s ease;
-        }
-        
-        .fixed-button a:hover {
-            background: #4b96d8;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(75, 150, 216, 0.5);
-        }
-        
-        /* 响应式调整 */
-        @media (min-width: 768px) {
-            .container {
-                max-width: 600px;
-                margin: 0 auto;
-            }
-            
-            .title {
-                font-size: 1.6rem;
-            }
-        }
-        .explanation {
-            background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
-            border-radius: 16px;
-            padding: 20px;
-            font-size: 15px;
-            color: #4a5568;
-            line-height: 1.7;
-            border: 1px solid #e9ecef;
-            text-align: center;
-            margin: 15px 0;
-        }
-        
-        .explanation h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: #ff416c;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-        
-        .app-download {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 12px 25px;
-            background: linear-gradient(to right, #ff416c, #ff4b2b);
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
-            transition: all 0.3s;
-        }
-        
-        .app-download:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 75, 43, 0.5);
-        }
-        
-        .app-download:active {
-            transform: translateY(0);
-        }
-        
-        .app-name {
-            font-weight: 700;
-            color: #ff416c;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SetuTime 列表</title>
+
+<style>
+  body {
+    margin:0;
+    font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);
+    color:#374151;
+  }
+  header {
+    text-align:center;
+    padding:1rem;
+    font-size:1.8rem;
+    font-weight:600;
+    color:#3b82f6;
+    background:#ffffffcc;
+    backdrop-filter:blur(8px);
+    box-shadow:0 2px 6px rgba(0,0,0,0.05);
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+
+  .section {
+    max-width:800px;
+    margin:2rem auto;
+    padding:0 1rem;
+  }
+  .section-title {
+    font-size:1.3rem;
+    font-weight:600;
+    margin-bottom:1rem;
+    padding-left:0.4rem;
+    border-left:4px solid #3b82f6;
+  }
+  ul.list {
+    list-style:none;
+    padding:0;
+    margin:0;
+  }
+  ul.list li {
+    background:#ffffff;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    padding:0.75rem 1rem;
+    margin-bottom:0.5rem;
+    font-size:1rem;
+    color:#3b82f6;
+    font-weight:500;
+    cursor:pointer;
+    transition:background 0.2s ease,border-color 0.2s ease;
+  }
+  ul.list li:hover {
+    background:#eff6ff;
+    border-color:#3b82f6;
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- 头部信息 -->
-        <div class="header">
-            <h1 class="title">涩图time No.12</h1>
-            <div class="meta"></div>
-        </div>
-        
-        <!-- 图片展示区域 -->
-        <div class="image-grid">
-<div class="image-item"><img src="https://wp-cdn.4ce.cn/v2/b7MsiOj.jpeg" alt="序号"></div>
-            <div class="explanation">
-                <h2>本期无水印原图</h2>
-                <p>保存到自己的网盘<span class="app-name">防止和谐</span></p>
-                <a href="https://pan.xunlei.com/s/VOWjKJQNLlLwXm1wqH1eoXSGA1?pwd=eshs" target="blank" class="app-download">点击下载</a>
-            </div>
-            <p style="text-align: center; font-size: 24px;">上一期↓↓↓</p>
-            <iframe src="https://setutime.github.io/zr-button-container.html" style="border: none; height: 80px; width: 100%;"></iframe>
-            <div class="image-item"><img src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_678003_9wPPfyxSvIubSLVP_1754032147" alt="上一期"></div>
-        </div>
-        
-        <!-- 悬浮按钮 -->
-        <div class="fixed-button">
-            <a href="https://qm.qq.com/q/3mnmFYTUbe" target="_blank">qq：45503380 添加好友获取更新</a>
-        </div>
-    </div>
+<header>奈奈的 SetuTime</header>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const lazyImages = document.querySelectorAll('.image-item img');
-            
-            const lazyLoad = function() {
-                lazyImages.forEach(img => {
-                    if (img.getAttribute('data-src') && img.getBoundingClientRect().top < window.innerHeight + 100) {
-                        img.src = img.getAttribute('data-src');
-                        img.removeAttribute('data-src');
-                    }
-                });
-            };
-            
-            lazyLoad();
-            window.addEventListener('scroll', lazyLoad);
-            window.addEventListener('resize', lazyLoad);
-        });
-    </script>
+<div class="section">
+  <div class="section-title">SetuTime</div>
+  <ul class="list" id="setu-list"></ul>
+</div>
+
+<div class="section">
+  <div class="section-title">真人篇 Setu</div>
+  <ul class="list" id="zrsetu-list"></ul>
+</div>
+
+<script>
+const rootUrl='https://setutime.github.io/';
+const repoApi='https://api.github.com/repos/setutime/setutime.github.io/contents/';
+
+function extractNumber(filename){
+  const m=filename.match(/(\d+)/);
+  return m?parseInt(m[1]):Number.MAX_SAFE_INTEGER;
+}
+
+async function fetchDir(path=''){
+  const res=await fetch(repoApi+path+`?t=${Date.now()}`); //加时间戳防缓存
+  if(!res.ok){
+    const text=await res.text();
+    throw new Error(`GitHub API 请求失败：${res.status} ${text}`);
+  }
+  return await res.json();
+}
+
+async function loadList(folderName,ulId){
+  const ul=document.getElementById(ulId);
+  ul.innerHTML='<li>加载中...</li>';
+  try{
+    const files=await fetchDir(folderName);
+    const htmlFiles=files
+      .filter(f=>f.type==='file'&&f.name.endsWith('.html'))
+      .map(f=>f.name)
+      .sort((a,b)=>extractNumber(a)-extractNumber(b));
+
+    ul.innerHTML='';
+    htmlFiles.forEach((file,i)=>{
+      const li=document.createElement('li');
+      li.textContent=`第${i+1}期`;
+      li.onclick=()=>window.open(`${rootUrl}${folderName}/${file}`,'_blank');
+      ul.appendChild(li);
+    });
+
+    if(htmlFiles.length===0){
+      ul.innerHTML='<li style="color:gray;text-align:center;">暂无内容</li>';
+    }
+
+  }catch(err){
+    console.error('加载失败',err);
+    ul.innerHTML='<li style="color:red;text-align:center;">加载失败，请稍后重试</li>';
+  }
+}
+
+window.onload=()=>{
+  loadList('setu','setu-list');
+  loadList('zrsetu','zrsetu-list');
+};
+</script>
 </body>
 </html>
