@@ -1,46 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>涩图time</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SetuTime 列表</title>
+
 <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-        iframe {
-            display: block;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+  body {
+    margin:0;
+    font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);
+    color:#374151;
+  }
+  header {
+    text-align:center;
+    padding:1rem;
+    font-size:1.8rem;
+    font-weight:600;
+    color:#3b82f6;
+    background:#ffffffcc;
+    backdrop-filter:blur(8px);
+    box-shadow:0 2px 6px rgba(0,0,0,0.05);
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+
+  .section {
+    max-width:800px;
+    margin:2rem auto;
+    padding:0 1rem;
+  }
+  .section-title {
+    font-size:1.3rem;
+    font-weight:600;
+    margin-bottom:1rem;
+    padding-left:0.4rem;
+    border-left:4px solid #3b82f6;
+  }
+  ul.list {
+    list-style:none;
+    padding:0;
+    margin:0;
+  }
+  ul.list li {
+    background:#ffffff;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    padding:0.75rem 1rem;
+    margin-bottom:0.5rem;
+    font-size:1rem;
+    color:#3b82f6;
+    font-weight:500;
+    cursor:pointer;
+    transition:background 0.2s ease,border-color 0.2s ease;
+  }
+  ul.list li:hover {
+    background:#eff6ff;
+    border-color:#3b82f6;
+  }
+</style>
 </head>
 <body>
-​
-	 <iframe id="fullscreen-iframe" src="https://setutime.github.io/setu/31.html"></iframe>
-​
+<header>奈奈的 SetuTime</header>
+
+<div class="section">
+  <div class="section-title">SetuTime</div>
+  <ul class="list" id="setu-list"></ul>
+</div>
+
+<div class="section">
+  <div class="section-title">真人篇 Setu</div>
+  <ul class="list" id="zrsetu-list"></ul>
+</div>
+
 <script>
-        // 确保 iframe 填满整个视口
-        function resizeIframe() {
-            const iframe = document.getElementById('fullscreen-iframe');
-            iframe.style.width = window.innerWidth + 'px';
-            iframe.style.height = window.innerHeight + 'px';
-        }
+const rootUrl='https://setutime.github.io/';
+const repoApi='https://api.github.com/repos/setutime/setutime.github.io/contents/';
 
-        // 初始加载时调整大小
-        window.addEventListener('load', resizeIframe);
-        
-        // 窗口大小改变时调整大小
-        window.addEventListener('resize', resizeIframe);
-        
-        // 确保滚动条不会影响布局
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
-    </script>
+function extractNumber(filename){
+  const m=filename.match(/(\d+)/);
+  return m?parseInt(m[1]):Number.MAX_SAFE_INTEGER;
+}
+
+async function fetchDir(path=''){
+  const res=await fetch(repoApi+path+`?t=${Date.now()}`); //加时间戳防缓存
+  if(!res.ok){
+    const text=await res.text();
+    throw new Error(`GitHub API 请求失败：${res.status} ${text}`);
+  }
+  return await res.json();
+}
+
+async function loadList(folderName,ulId){
+  const ul=document.getElementById(ulId);
+  ul.innerHTML='<li>加载中...</li>';
+  try{
+    const files=await fetchDir(folderName);
+    const htmlFiles=files
+      .filter(f=>f.type==='file'&&f.name.endsWith('.html'))
+      .map(f=>f.name)
+      .sort((a,b)=>extractNumber(a)-extractNumber(b));
+
+    ul.innerHTML='';
+    htmlFiles.forEach((file,i)=>{
+      const li=document.createElement('li');
+      li.textContent=`第${i+1}期`;
+      li.onclick=()=>window.open(`${rootUrl}${folderName}/${file}`,'_blank');
+      ul.appendChild(li);
+    });
+
+    if(htmlFiles.length===0){
+      ul.innerHTML='<li style="color:gray;text-align:center;">暂无内容</li>';
+    }
+
+  }catch(err){
+    console.error('加载失败',err);
+    ul.innerHTML='<li style="color:red;text-align:center;">加载失败，请稍后重试</li>';
+  }
+}
+
+window.onload=()=>{
+  loadList('setu','setu-list');
+  loadList('zrsetu','zrsetu-list');
+};
+</script>
 </body>
-
 </html>
-
