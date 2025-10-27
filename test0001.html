@@ -32,21 +32,47 @@ body{
   100%{background-position:-200% 0}
 }
 /* 图片本身淡入 */
-.img-wrap img{
-  width:100%;
-  height:auto;
-  opacity:0;
-  transform:scale(1.02);
-  transition:opacity .5s ease,transform .5s ease;
-  display:block;
+.img-wrap {
+  position: relative;
+  width: 100%;
+  background: #f3f4f6;
+  overflow: hidden;
 }
-.img-wrap.loaded{
-  animation:none;
-  background:#fff;
+
+/* 添加一个 shimmer 背景层，而不是动画在容器上 */
+.img-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f3f4f6 0%, #e9eef6 50%, #f3f4f6 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+  z-index: 1;
 }
-.img-wrap.loaded img{
-  opacity:1;
-  transform:scale(1);
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 图片层：保持原比例完整显示 */
+.img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 2;
+  position: relative;
+}
+
+/* 加载完成后，淡出骨架层 */
+.img-wrap.loaded::before {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.img-wrap.loaded img {
+  opacity: 1;
 }
 
 /* ===== 迅雷下载模块===== */
