@@ -32,7 +32,7 @@ function generateHTML() {
     let result = "";
 
     urls.forEach((url, index) => {
-        result += `<div class="image-item"><img src="${url}" alt="${index + 1}"></div>\n`;
+        result += `<div class="image-item">\n  <div class="img-wrap">\n    <img data-src="${url}" alt="${index + 1}">\n  </div>\n</div>\n`;
     });
 
     document.getElementById("output").value = result.trim();
