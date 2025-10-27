@@ -17,7 +17,7 @@ body{
 .image-grid{display:flex;flex-direction:column;gap:18px}
 .image-item{border-radius:10px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.06);background:#f0f2f5;position:relative}
 
-/* 🌫️骨架加载渐变*/
+/* 骨架加载渐变*/
 .img-wrap{
   position:relative;
   width:100%;
@@ -49,56 +49,54 @@ body{
   transform:scale(1);
 }
 
-/* ===== 迅雷下载模块强化版 ===== */
-/* ===== 迅雷下载模块强化版 ===== */
-/* ===== 迅雷下载模块（淡灰+浅蓝优雅版） ===== */
-.explanation{
-  background:linear-gradient(135deg,#f7f9fc,#edf2f7);
-  border:1px solid #dde4ec;
-  border-radius:16px;
-  padding:22px;
-  text-align:center;
-  color:#4a5568;
-  margin:25px 0;
-  box-shadow:0 4px 12px rgba(90,120,160,0.08);
+/* ===== 迅雷下载模块===== */
+
+.explanation {
+  background: linear-gradient(135deg, #f8fafc, #edf5f8);
+  border: 1px solid #d4e3ec;
+  border-radius: 16px;
+  padding: 22px;
+  text-align: center;
+  color: #4a5568;
+  margin: 25px 0;
+  box-shadow: 0 4px 14px rgba(92, 168, 230, 0.12);
 }
-.explanation h2{
-  font-size:20px;
-  color:#3b5c8f;
-  margin-bottom:10px;
-  font-weight:600;
+.explanation h2 {
+  font-size: 20px;
+  color: #1a5f8a; /* Retained deepened blue */
+  margin-bottom: 10px;
+  font-weight: 600;
 }
-.explanation p{
-  font-size:15px;
-  color:#5b6470;
+.explanation p {
+  font-size: 15px;
+  color: #506070;
 }
-.explanation p span{
-  color:transparent;
-  background:linear-gradient(90deg,#4b9cff,#7ec8ff);
-  -webkit-background-clip:text;
-  background-clip:text;
-  font-weight:700;
-  text-shadow:0 0 6px rgba(75,156,255,0.25);
+.explanation p span {
+  color: #2d3748; /* Deep gray color*/
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(45, 55, 72, 0.3); /* Adjusted shadow to match deep gray */
 }
-.app-download{
-  display:inline-block;
-  margin-top:15px;
-  padding:11px 26px;
-  border-radius:999px;
-  background:linear-gradient(90deg,#5ca8e6,#4b96d8);
-  color:#fff;
-  text-decoration:none;
-  font-weight:600;
-  box-shadow:0 4px 14px rgba(92,168,230,0.3);
-  transition:all .3s ease;
+.preserve {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 11px 28px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #5ca8e6, #3d91cf);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(92, 168, 230, 0.35);
+  transition: all .3s ease;
 }
-.app-download:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 20px rgba(92,168,230,0.45);
-  background:linear-gradient(90deg,#6cb6ee,#5ca8e6);
+.preserve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(92, 168, 230, 0.45);
+  background: linear-gradient(90deg, #6cb6ee, #4b9edc);
 }
 
-
+.fixed-button{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  width:calc(100% - 80px);max-width:500px;z-index:100;
 }
 .fixed-button a{
   display:block;text-align:center;background:#5ca8e6;color:#fff;
@@ -119,6 +117,7 @@ body{
     <p style="text-align:left;font-size:16px"># Vinnegal - Zelda</p>
 
     <!-- 图片懒加载模板 -->
+
 <div class="image-item">
   <div class="img-wrap">
     <img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_334637_Yi-8ytJHJBe8h777_1761536459" alt="1">
@@ -469,12 +468,10 @@ body{
     <img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_361166_tFWGcgodb7w3gy2c_1761536530" alt="70">
   </div>
 </div>
-    <!-- ...其余图片结构相同... -->
-
     <div class="explanation">
       <h2>本期无水印原图</h2>
       <p>收藏到自己的网盘<span>防止和谐</span></p>
-      <a href="https://pan.xunlei.com/s/VOcVLMFrbWkV0haQzbCoU1oGA1?pwd=5fs4" target="_blank" class="app-download">点击保存</a>
+      <a href="https://pan.xunlei.com/s/VOcVLMFrbWkV0haQzbCoU1oGA1?pwd=5fs4" target="_blank" class="preserve">点击保存</a>
     </div>
 
     <p style="text-align:center;font-size:22px">上一期↓↓↓（点击跳转）</p>
