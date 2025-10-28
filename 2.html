@@ -18,7 +18,7 @@
 <br>
 <button onclick="generateHTML()">生成代码</button>
 <button onclick="copyResult()">复制结果</button>
-<textarea id="output" placeholder="生成的HTML代码会显示在这里"></textarea>
+<textarea id="output" placeholder="生成的HTML代码会显示在这里（每项一行，无空格）"></textarea>
 
 <script>
 function generateHTML() {
@@ -29,13 +29,13 @@ function generateHTML() {
     }
 
     const urls = input.split("\n").map(u => u.trim()).filter(u => u !== "");
-    let result = "";
+    const result = urls
+        .map((url, index) => 
+            `<div class="image-item"><div class="img-wrap"><img data-src="${url}" alt="${index + 1}"></div></div>`
+        )
+        .join("\n");  // 每项之间用换行分隔，便于阅读和复制
 
-    urls.forEach((url, index) => {
-        result += `<div class="image-item">\n  <div class="img-wrap">\n    <img data-src="${url}" alt="${index + 1}">\n  </div>\n</div>\n`;
-    });
-
-    document.getElementById("output").value = result.trim();
+    document.getElementById("output").value = result;
 }
 
 function copyResult() {
