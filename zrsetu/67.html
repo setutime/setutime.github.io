@@ -63,7 +63,15 @@ body{
   opacity: 0;
   transition: opacity 0.5s ease;
   z-index: 2;
+  object-fit: contain;
   position: relative;
+}
+
+/* 自适应居中单列 */
+.image-grid {
+  width: 100%;
+  max-width: min(90vw, 700px); /* 小屏占90%，大屏不超过700px */
+  margin: 0 auto; /* 居中 */
 }
 
 /* 加载完成后，淡出骨架层 */
