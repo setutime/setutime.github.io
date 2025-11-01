@@ -69,11 +69,9 @@ body{
 
 /* 自适应居中单列 */
 .image-grid {
-  width: 100%;
-  max-width: min(90vw, 700px); /* 小屏占90%，大屏不超过700px */
-  margin: 0 auto; /* 居中 */
+  max-width: 700px;   /* 限制最大宽度，PC 上不会太宽 */
+  margin: 0 auto;     /* 居中 */
 }
-
 /* 加载完成后，淡出骨架层 */
 .img-wrap.loaded::before {
   opacity: 0;
