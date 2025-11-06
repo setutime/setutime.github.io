@@ -82,8 +82,9 @@
   <div class="section-title">真人篇 SetuTime</div>
   <ul class="list" id="zrsetu-list"></ul>
 </div>
-
+<script src="https://gitee.com/setutime/setutime.gitee.io/raw/master/token.js"></script>
 <script>
+
 const rootUrl = 'https://setutime.github.io/';
 const repoApi = 'https://api.github.com/repos/setutime/setutime.github.io/contents/';
 
@@ -132,7 +133,11 @@ async function getCaptionFromHtml(folder, filename) {
 }
 
 async function fetchDir(path = '') {
-  const res = await fetch(repoApi + path + `?t=${Date.now()}`);
+  const headers = { 'Accept': 'application/vnd.github.v3+json' };
+  if (GITHUB_TOKEN && GITHUB_TOKEN.startsWith('ghp_')) {
+    headers['Authorization'] = `token ${GITHUB_TOKEN}`;
+  }
+  const res = await fetch(repoApi + path + `?t=${Date.now()}`, { headers });
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`GitHub API 请求失败：${res.status} ${text}`);
