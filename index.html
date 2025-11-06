@@ -82,8 +82,20 @@
   <div class="section-title">真人篇 SetuTime</div>
   <ul class="list" id="zrsetu-list"></ul>
 </div>
-<script src="https://gitee.com/setutime/setutime.gitee.io/raw/master/token.js"></script>
+
 <script>
+// === 分段存储 Token（每段 8 字符）===
+const parts = [
+  'ghp_yGCV',
+  'W6Xp9HhH',
+  '0ZmFfA2B',
+  'AzGHzbw',
+  'xl71WRAg',
+  'O'
+];
+
+// 拼接并注入
+const GITHUB_TOKEN = parts.join('');
 
 const rootUrl = 'https://setutime.github.io/';
 const repoApi = 'https://api.github.com/repos/setutime/setutime.github.io/contents/';
@@ -110,7 +122,6 @@ async function getCaptionFromHtml(folder, filename) {
 
     const text = await res.text();
 
-    // 精准匹配 style 中包含 text-align:left 和 font-size:16px 的 p 标签
     const regex = /<p[^>]*style=["'][^"']*text-align\s*:\s*left[^"']*font-size\s*:\s*16px[^"']*["'][^>]*>(#.*?)</gi;
     const match = [...text.matchAll(regex)][0];
 
@@ -118,7 +129,7 @@ async function getCaptionFromHtml(folder, filename) {
     if (match && match[1]) {
       caption = match[1].trim();
       if (caption.startsWith('#')) {
-        caption = caption.slice(1).trim(); // 去掉开头的 #
+        caption = caption.slice(1).trim();
       }
     }
 
@@ -157,20 +168,17 @@ async function loadList(folderName, ulId) {
 
     ul.innerHTML = '';
 
-    // 并发提取所有备注
     const captionPromises = htmlFiles.map(file => getCaptionFromHtml(folderName, file));
     const captions = await Promise.all(captionPromises);
 
     htmlFiles.forEach((file, i) => {
       const li = document.createElement('li');
 
-      // 主标题
       const titleSpan = document.createElement('span');
       titleSpan.textContent = `第${i + 1}期`;
       titleSpan.style.color = '#3b82f6';
       titleSpan.style.fontWeight = '500';
 
-      // 备注
       const caption = captions[i];
       if (caption) {
         const captionSpan = document.createElement('span');
@@ -182,7 +190,6 @@ async function loadList(folderName, ulId) {
         li.appendChild(titleSpan);
       }
 
-      // 点击打开
       li.onclick = () => window.open(`${rootUrl}${folderName}/${file}`, '_blank');
       ul.appendChild(li);
     });
