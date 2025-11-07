@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片批量重命名工具（无损版）</title>
+    <title>图片批量重命名工具（已修复·无损）</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
@@ -367,8 +367,8 @@
 <body>
     <div class="app-container">
         <header>
-            <h1>图片批量重命名工具（无损版）</h1>
-            <p class="subtitle">留空即不命名 · 零压缩下载 · 完全本地处理</p>
+            <h1>图片批量重命名工具</h1>
+            <p class="subtitle">留空即无 · 零压缩 · 本地运行</p>
         </header>
         
         <div class="card">
@@ -441,7 +441,7 @@
         </div>
         
         <footer>
-            <p>© 2025 图片批量重命名工具（无损版） | 所有处理均在浏览器本地完成，无数据上传</p>
+            <p>© 2025 图片批量重命名工具 | 所有处理均在浏览器本地完成，无数据上传</p>
         </footer>
     </div>
 
@@ -468,19 +468,24 @@
         let uploadedImages = [];
         let renamedImages = [];
         
-        // 选择文件
-        selectBtn.onclick = () => fileInput.click();
-        uploadArea.onclick = () => fileInput.click();
+        // 事件绑定（全部使用 addEventListener）
+        selectBtn.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('click', () => fileInput.click());
         
-        // 拖放
         ['dragover', 'dragenter'].forEach(evt => {
             uploadArea.addEventListener(evt, e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
         });
         ['dragleave', 'drop'].forEach(evt => {
             uploadArea.addEventListener(evt, e => { e.preventDefault(); uploadArea.classList.remove('dragover'); });
         });
-        uploadArea.ondrop = e => handleFiles(e.dataTransfer.files);
-        fileInput.onchange = e => handleFiles(e.target.files);
+        uploadArea.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+        fileInput.addEventListener('change', e => handleFiles(e.target.files));
+        
+        renameBtn.addEventListener('click', renameImages);
+        generateUrlBtn.addEventListener('click', generateUrls);
+        [downloadBtn, finalDownloadBtn].forEach(btn => btn.addEventListener('click', downloadZip));
+        copyUrlBtn.addEventListener('click', copyUrls);
+        resetBtn.addEventListener('click', resetAll);
         
         // 处理文件
         function handleFiles(files) {
@@ -514,8 +519,8 @@
                 div.innerHTML = `
                     <img src="${img.url}" class="image-preview" alt="">
                     <div class="image-info">
-                        <div class="image-name">${img.file?.name || img.newName}</div>
-                        <div class="image-size">${formatFileSize(img.file?.size || 0)}</div>
+                        <div class="image-name">${img.newName || img.file.name}</div>
+                        <div class="image-size">${formatFileSize(img.file.size)}</div>
                     </div>
                 `;
                 imageList.appendChild(div);
@@ -523,7 +528,7 @@
         }
         
         // 重命名
-        renameBtn.onclick = () => {
+        function renameImages() {
             if (!uploadedImages.length) return;
             const category = categoryInput.value.trim();
             const issue = issueInput.value.trim();
@@ -541,22 +546,15 @@
             renderPreview(renamedImages);
             downloadArea.classList.add('active');
             showStatus('重命名完成！', 'success');
-        };
+        }
         
         // 生成URL
-        generateUrlBtn.onclick = () => {
+        function generateUrls() {
             let urlPrefix = urlPrefixInput.value.trim();
             if (!urlPrefix) return showStatus('请输入URL前缀！', 'error');
             if (!urlPrefix.endsWith('/')) urlPrefix += '/';
             
-            const images = renamedImages.length ? renamedImages : uploadedImages.map((img, i) => {
-                const ext = getFileExtension(img.file.name);
-                const parts = [];
-                if (categoryInput.value.trim()) parts.push(categoryInput.value.trim());
-                if (issueInput.value.trim()) parts.push(issueInput.value.trim());
-                parts.push(i + 1);
-                return { newName: parts.join('-') + '.' + ext };
-            });
+            const images = renamedImages.length ? renamedImages : getTempNamedImages();
             
             const html = images.map((img, i) => 
                 `<img src="${urlPrefix}${img.newName}" alt="图片${i+1}" loading="lazy">`
@@ -565,34 +563,41 @@
             urlOutput.value = html;
             urlOutputArea.classList.add('active');
             showStatus(`已生成 ${images.length} 个URL`, 'success');
-        };
+        }
+        
+        function getTempNamedImages() {
+            const category = categoryInput.value.trim();
+            const issue = issueInput.value.trim();
+            return uploadedImages.map((img, i) => {
+                const ext = getFileExtension(img.file.name);
+                const parts = [];
+                if (category) parts.push(category);
+                if (issue) parts.push(issue);
+                parts.push(i + 1);
+                return { newName: parts.join('-') + '.' + ext };
+            });
+        }
         
         // 复制
-        copyUrlBtn.onclick = () => {
+        function copyUrls() {
             if (!urlOutput.value) return showStatus('请先生成URL', 'error');
             urlOutput.select();
             try {
                 document.execCommand('copy');
                 showStatus('已复制到剪贴板！', 'success');
             } catch { showStatus('复制失败，请手动复制', 'error'); }
-        };
+        }
         
         // 下载ZIP（零压缩）
-        [downloadBtn, finalDownloadBtn].forEach(btn => btn.onclick = downloadZip);
         function downloadZip() {
-            let images = renamedImages;
-            if (!images.length) {
-                const category = categoryInput.value.trim();
-                const issue = issueInput.value.trim();
-                images = uploadedImages.map((img, i) => {
-                    const ext = getFileExtension(img.file.name);
-                    const parts = [];
-                    if (category) parts.push(category);
-                    if (issue) parts.push(issue);
-                    parts.push(i + 1);
-                    return { newName: parts.join('-') + '.' + ext, blob: dataURLToBlob(img.url) };
-                });
-            }
+            let images = renamedImages.length ? renamedImages : uploadedImages.map((img, i) => {
+                const ext = getFileExtension(img.file.name);
+                const parts = [];
+                if (categoryInput.value.trim()) parts.push(categoryInput.value.trim());
+                if (issueInput.value.trim()) parts.push(issueInput.value.trim());
+                parts.push(i + 1);
+                return { newName: parts.join('-') + '.' + ext, blob: dataURLToBlob(img.url) };
+            });
             
             const zip = new JSZip();
             const folder = zip.folder("renamed-images");
@@ -609,7 +614,7 @@
         }
         
         // 重置
-        resetBtn.onclick = () => {
+        function resetAll() {
             fileInput.value = '';
             uploadedImages = [];
             renamedImages = [];
@@ -620,14 +625,14 @@
             urlPrefixInput.value = '';
             urlOutput.value = '';
             disableButtons();
-        };
+        }
         
         // 工具函数
         function enableButtons() {
-            renameBtn.disabled = generateUrlBtn.disabled = downloadBtn.disabled = false;
+            [renameBtn, generateUrlBtn, downloadBtn].forEach(b => b.disabled = false);
         }
         function disableButtons() {
-            renameBtn.disabled = generateUrlBtn.disabled = downloadBtn.disabled = true;
+            [renameBtn, generateUrlBtn, downloadBtn].forEach(b => b.disabled = true);
         }
         function hideAll() {
             status.style.display = 'none';
@@ -646,15 +651,16 @@
             return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
         }
         function getFileExtension(name) {
-            return name.slice(name.lastIndexOf('.') + 1).toLowerCase();
+            const i = name.lastIndexOf('.');
+            return i > 0 ? name.slice(i + 1).toLowerCase() : 'jpg';
         }
         function dataURLToBlob(dataURL) {
             const [header, data] = dataURL.split(',');
             const mime = header.match(/:(.*?);/)[1];
             const binary = atob(data);
-            const array = [];
-            for (let i = 0; i < binary.length; i++) array.push(binary.charCodeAt(i));
-            return new Blob([new Uint8Array(array)], { type: mime });
+            const array = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) array[i] = binary.charCodeAt(i);
+            return new Blob([array], { type: mime });
         }
     </script>
 </body>
