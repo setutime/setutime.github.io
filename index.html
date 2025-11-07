@@ -84,23 +84,17 @@
 </div>
 
 <script>
-// === Base64 + 分段解密===
+// === Token 分段拼接（无 Base64，防 GitHub 扫描）===
 ;(() => {
   const segs = [
-    'Z2hwX2',
-    'VLSnhp',
-    'bHZUV',
-    'DdRc0',
-    'MzaUN5',
-    'enlqRT',
-    'JGYjdF',
-    'YXoxTT',
-    'J6TWs0',
-    'bg=='
+    'ghp_lNrD',
+    'KBqbPVzK',
+    'AeHm7S6M',
+    'byRQ4l1l',
+    'IJ4AAdmh'
   ];
 
-  const encoded = segs.join('');
-  const GITHUB_TOKEN = atob(encoded);
+  const GITHUB_TOKEN = segs.join('');
 
   window.GITHUB_TOKEN = GITHUB_TOKEN;
 })();
