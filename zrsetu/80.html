@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>涩图time</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:#fafafa;color:#333;line-height:1.6;
+}
+.container{max-width:100%;padding:15px}
+.header{text-align:center;padding:20px 0;margin-bottom:20px;border-bottom:1px solid #eee}
+.title{font-size:1.5rem;font-weight:600;color:#1e1e1e}
+
+.image-grid{display:flex;flex-direction:column;gap:18px}
+.image-item{border-radius:10px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.06);background:#f0f2f5;position:relative}
+
+/* 骨架加载渐变*/
+.img-wrap{
+  position:relative;
+  width:100%;
+  min-height:180px;
+  background:linear-gradient(100deg,#f1f3f6 0%,#e2e7ec 50%,#f1f3f6 100%);
+  background-size:200% 100%;
+  animation:skeleton 1.5s infinite ease-in-out;
+  overflow:hidden;
+}
+@keyframes skeleton{
+  0%{background-position:200% 0}
+  100%{background-position:-200% 0}
+}
+/* 图片本身淡入 */
+.img-wrap {
+  position: relative;
+  width: 100%;
+  background: #f3f4f6;
+  overflow: hidden;
+}
+
+/* 添加一个 shimmer 背景层 */
+.img-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f3f4f6 0%, #e9eef6 50%, #f3f4f6 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 图片层：保持原比例完整显示 */
+.img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 2;
+  object-fit: contain;
+  position: relative;
+}
+
+/* 自适应居中单列 */
+.image-grid {
+  width: 100%;
+  max-width: min(90vw, 700px); /* 小屏占90%，大屏不超过700px */
+  margin: 0 auto; /* 居中 */
+}
+
+/* 加载完成后，淡出骨架层 */
+.img-wrap.loaded::before {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.img-wrap.loaded img {
+  opacity: 1;
+}
+
+/* ===== 迅雷下载模块===== */
+
+.explanation {
+  background: linear-gradient(135deg, #f8fafc, #edf5f8);
+  border: 1px solid #d4e3ec;
+  border-radius: 16px;
+  padding: 22px;
+  text-align: center;
+  color: #4a5568;
+  margin: 25px 0;
+  box-shadow: 0 4px 14px rgba(92, 168, 230, 0.12);
+}
+.explanation h2 {
+  font-size: 20px;
+  color: #1a5f8a; /* Retained deepened blue */
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.explanation p {
+  font-size: 15px;
+  color: #506070;
+}
+.explanation p span {
+  color: #2d3748; /* Deep gray color*/
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(45, 55, 72, 0.3); /* Adjusted shadow to match deep gray */
+}
+.preserve {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 11px 28px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #5ca8e6, #3d91cf);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(92, 168, 230, 0.35);
+  transition: all .3s ease;
+}
+.preserve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(92, 168, 230, 0.45);
+  background: linear-gradient(90deg, #6cb6ee, #4b9edc);
+}
+
+.fixed-button{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  width:calc(100% - 80px);max-width:500px;z-index:100;
+}
+.fixed-button a{
+  display:block;text-align:center;background:#5ca8e6;color:#fff;
+  padding:8px;border-radius:999px;text-decoration:none;
+  font-weight:600;box-shadow:0 5px 14px rgba(92,168,230,.4);
+  transition:.3s;
+}
+.fixed-button a:hover{background:#4b96d8;transform:translateY(-2px)}
+
+.responsive-video {
+           width: 100%;
+           height: 240;
+           border-radius: 8px;
+           object-fit: cover;
+        }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+                                     <!-- ‼️ 1️⃣⬇️-->
+    <h1 class="title">涩图time No.79</h1>
+  </div>
+
+  <div class="image-grid">
+    <p style="text-align:left;font-size:16px"># 蠢沫沫x桃良阿宅 - 莉可莉丝</p>
+
+
+
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_973398_x7moOQIzrRhd-wZW_1762701036" alt="1"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_295786_Fd1cookIF84Yz5Gy_1762701038" alt="2"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_321430_0-5xvLF9E4KW6z72_1762701039" alt="3"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_228709_jtcYwasYwnx32FdT_1762701040" alt="4"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_206460_wgtKKqvWtnr0KeCh_1762701041" alt="5"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_60478_6-RNVr3BHslJMrTo_1762701042" alt="6"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_981440_Ks8oe72YMTuJy53B_1762701042" alt="7"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_859960_Bjx6V-HHkyHFzUhh_1762701043" alt="8"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_586486_xanD-HHuJIL2deVr_1762701044" alt="9"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_302326_vvLYL-oVSL8hnPYw_1762701045" alt="10"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_99626_ZVFiInfyFlUmWoEL_1762701046" alt="11"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_856162_Ln97jONuMq5hCqIJ_1762701046" alt="12"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_568260_5E42HDT3F33HLRC7_1762701047" alt="13"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_322720_vTlUhY3kc4v67wQv_1762701048" alt="14"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_985140_-s-RTVeVFXDu1X_U_1762701048" alt="15"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_611070_oAyr3Ww5ot43yxpE_1762701049" alt="16"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_297049_m21mozj5Yg1LNPIp_1762701050" alt="17"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_88396_G6acl7nT91hkV2oP_1762701051" alt="18"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_866267_9uR1GvakFPD3B7Ki_1762701051" alt="19"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_602230_lQliy80ij2LHvQSz_1762701052" alt="20"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_304213_JlDygN7DKdGHwOxF_1762701053" alt="21"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_13896_1o9QkOCrnB2WbDHD_1762701054" alt="22"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_661075_GRPOx0J6pdRYxqaJ_1762701054" alt="23"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_219649_E_7WYHJENihtJi_Q_1762701055" alt="24"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_812378_hMyRQR33HSM7t0CW_1762701055" alt="25"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_448591_DvBNkUs6gVhK9RdF_1762701056" alt="26"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_102639_yMsHjAQLmqXHtRL-_1762701057" alt="27"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_687717_ueq4TV7tg06aCZ13_1762701057" alt="28"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_337585_vikdwVpSclarhSxi_1762701058" alt="29"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_934693_qQkAbxNy0dKYetI1_1762701058" alt="30"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_599498_5_O7eSd3cfQ0qnny_1762701059" alt="31"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_310562_9qccZV3x-KTCwlty_1762701060" alt="32"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_69679_CDz_7dLp8hlmq5hW_1762701061" alt="33"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_753363_qFT4-CO2ZjiNVGFR_1762701061" alt="34"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_649356_b3lpYtAXswo-fZar_1762701062" alt="35"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_238707_FgIXeS5PQ8e8cHnJ_1762701063" alt="36"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_774923_CJeiZV1liXYJmEzL_1762701063" alt="37"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_380694_WGXk6UT6vUOIbNnu_1762701064" alt="38"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_245692_XgmDGjzSgrAjq8L7_1762701065" alt="39"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_115422_UDC94Y3H90hWAGwL_1762701066" alt="40"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_866493_Oj7R-qzfop1Fk-LG_1762701066" alt="41"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_581142_RU1Zu0MRwlWBF0oy_1762701067" alt="42"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_372809_l-aCyovNRLGxziig_1762701068" alt="43"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_69029_t_07I4X3W0TusD-g_1762701069" alt="44"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_761704_uSwu0RFOiuoKfPdG_1762701069" alt="45"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_426305_LHR1AxmmExNCepbZ_1762701070" alt="46"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_166573_m79RJzea-qK13lfj_1762701071" alt="47"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_880440_cvo7_8x4gD5qMLPs_1762701071" alt="48"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_626134_Kl8cyXPO6IlHhzvO_1762701072" alt="49"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_300178_6eraK15bvGsmgiG4_1762701073" alt="50"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_823502_hHVxj_z6HYL6thhM_1762701073" alt="51"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_396305_NL9fmf3wuJSAC9U0_1762701074" alt="52"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_998665_Ju0eCbAPEf5U17Tx_1762701074" alt="53"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_644538_6Xx5TbPbInTnx4mQ_1762701075" alt="54"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_327431_gvgZqAJ61heZgKs4_1762701076" alt="55"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_24087_PigAxaQ3mX-8Vb87_1762701077" alt="56"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_646367_BQk7Od6HntwFJaw9_1762701077" alt="57"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_172054_pfm9APrCN6KM2aAe_1762701078" alt="58"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_825389_P9_3Iwf-6XfxFJqZ_1762701078" alt="59"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_435947_nwJwNCIOIku9R5E2_1762701079" alt="60"></div></div>
+
+
+
+    <div class="explanation">
+      <h2>本期无水印原图</h2>
+      <p>收藏到自己的网盘<span>防止和谐</span></p>
+                     
+                 <!-- ‼️ 2️⃣⬇️-->
+ <a href="https://pan.xunlei.com/s/VOddA38waaMj-b9MQ4aC39r-A1?pwd=6gg9" target="_blank" class="preserve">点击保存</a>
+    </div>
+
+    <p style="text-align:center;font-size:22px">上一期↓↓↓（点击跳转）</p>
+    <iframe src="https://setutime-github-io.pages.dev/zr-button-container.html" style="border:none;height:80px;width:100%"></iframe>
+
+<!-- ‼️ 3️⃣⬇️-->
+    <a href="https://setutime-github-io.pages.dev/zrsetu/78">
+      
+        <div class="image-item">
+        <div class="img-wrap">
+
+                                     <!-- ‼️ 4️⃣⬇️-->
+          <img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_320703_jGmLC6-aei3vW3Ie_1762352888" alt="上一期">
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="fixed-button">
+    <a href="https://qm.qq.com/q/3mnmFYTUbe" target="_blank">qq：45503380 添加好友获取更新</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  const imgs=document.querySelectorAll('.img-wrap img');
+  const ioOptions={root:null,rootMargin:'200px',threshold:0.01};
+
+  if('IntersectionObserver'in window){
+    const io=new IntersectionObserver((entries,observer)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const img=entry.target;
+          const src=img.dataset.src;
+          if(src){
+            img.src=src;
+            img.onload=()=>img.closest('.img-wrap').classList.add('loaded');
+            img.onerror=()=>img.closest('.img-wrap').style.background='#f5f5f5';
+            img.removeAttribute('data-src');
+          }
+          observer.unobserve(img);
+        }
+      });
+    },ioOptions);
+    imgs.forEach(img=>io.observe(img));
+  }else{
+    const lazyLoad=()=>{
+      imgs.forEach(img=>{
+        if(img.dataset.src){
+          const rect=img.getBoundingClientRect();
+          if(rect.top<window.innerHeight+200){
+            img.src=img.dataset.src;
+            img.onload=()=>img.closest('.img-wrap').classList.add('loaded');
+            img.removeAttribute('data-src');
+          }
+        }
+      });
+    };
+    lazyLoad();
+    window.addEventListener('scroll',lazyLoad,{passive:true});
+    window.addEventListener('resize',lazyLoad);
+  }
+})();
+</script>
+</body>
+</html>
