@@ -190,7 +190,7 @@ position:relative
   </div>
 
   <div class="image-grid">
-    <p style="text-align:left;font-size:16px"># neko酱 - 可爱乖巧学妹</p>
+    <p style="text-align:left;font-size:16px"># 鱼子酱Fish - &杏子 最新双人演绎</p>
 
 
 <div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_542613_AEYLay8u_07oNUlu_1764483626" alt="1"></div></div>
@@ -325,12 +325,13 @@ position:relative
 
 
 
+
     <div class="explanation">
       <h2>本期无水印原图</h2>
       <p>收藏到自己的网盘<span>防止和谐</span></p>
                      
                   <!--‼️ 2️⃣⬇️-->
- <a href="https://pan.xunlei.com/s/VOfIvdN0hPGRIzFvwBxw_vdTA1?pwd=4y4p" target="_blank" class="preserve">点击保存</a>
+ <a href="https://pan.xunlei.com/s/VOfJbrRxil6WOhFYBPIBjTjnA1?pwd=zjfb" target="_blank" class="preserve">点击保存</a>
     </div>
 
 
@@ -344,7 +345,7 @@ position:relative
         <div class="img-wrap">
 
                                      <!-- ‼️ 4️⃣⬇️-->
-          <img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_392576_zDwKde6u-fuT29vJ_1764484345" alt="上一期">
+          <img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_739012_C6SfCT6qMrvxWT4o_1764503709" alt="上一期">
         </div>
       </div>
     </a>
@@ -357,42 +358,42 @@ position:relative
 
 <script>
 (function(){
-  const imgs=document。querySelectorAll('.img-wrap img');
+  const imgs=document.querySelectorAll('.img-wrap img');
   const ioOptions={root:null,rootMargin:'200px',threshold:0.01};
 
   if('IntersectionObserver'in window){
     const io=new IntersectionObserver((entries,observer)=>{
-      entries。forEach(entry=>{
-        if(entry。isIntersecting){
-          const img=entry。target;
-          const src=img。dataset。src;
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const img=entry.target;
+          const src=img.dataset.src;
           if(src){
             img.src=src;
             img.onload=()=>img.closest('.img-wrap').classList.add('loaded');
-            img。onerror=()=>img.closest('.img-wrap')。style。background='#f5f5f5';
-            img。removeAttribute('data-src');
+            img.onerror=()=>img.closest('.img-wrap').style.background='#f5f5f5';
+            img.removeAttribute('data-src');
           }
           observer.unobserve(img);
         }
       });
-    }，ioOptions);
-    imgs。forEach(img=>io.observe(img));
+    },ioOptions);
+    imgs.forEach(img=>io.observe(img));
   }else{
     const lazyLoad=()=>{
       imgs.forEach(img=>{
         if(img.dataset.src){
-          const rect=img。getBoundingClientRect();
-          if(rect。top<window。innerHeight+200){
-            img。src=img。dataset。src;
-            img。onload=()=>img.closest('.img-wrap')。classList.add('loaded');
-            img。removeAttribute('data-src');
+          const rect=img.getBoundingClientRect();
+          if(rect.top<window.innerHeight+200){
+            img.src=img.dataset.src;
+            img.onload=()=>img.closest('.img-wrap').classList.add('loaded');
+            img.removeAttribute('data-src');
           }
         }
       });
     };
     lazyLoad();
-    window。addEventListener('scroll'，lazyLoad,{passive:true});
-    window。addEventListener('resize'，lazyLoad);
+    window.addEventListener('scroll',lazyLoad,{passive:true});
+    window.addEventListener('resize',lazyLoad);
   }
 })();
 </script>
