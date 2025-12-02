@@ -1,4 +1,3 @@
-
 name: Auto Update data.json
 
 on:
@@ -6,7 +5,6 @@ on:
     paths:
       - 'setu/**'
       - 'zrsetu/**'
-      - 'captions.json'
   workflow_dispatch:
 
 permissions:
@@ -17,40 +15,60 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Generate data.json
+      - name: 生成 data.json（精准提取标题）
         run: |
           cat > generate.js << 'EOF'
           const fs = require('fs');
-          const captions = fs.existsSync('captions.json') 
-            ? JSON.parse(fs.readFileSync('captions.json','utf8')) 
-            : {setu:{}, zrsetu:{}};
+          const path = require('path');
 
-          function get(folder) {
+          function extractCaption(filePath) {
+            try {
+              const content = fs.readFileSync(filePath, 'utf8');
+
+              // 超级宽松正则：只要 style 里同时包含 text-align:left 和 font-size:16px 就匹配
+              const regex = /<p[^>]*style\s*=\s*["'][^"']*?\btext-align\s*:\s*left[^"']*?font-size\s*:\s*16px[^>]*>([\s\S]*?)<\/p>/gi;
+
+              const match = regex.exec(content);
+              if (match && match[1]) {
+                // 去掉里面的子标签（万一有人加了 <span> 之类的）
+                return match[1].replace(/<[^>]+>/g, '').trim();
+              }
+            } catch (e) {
+              console.log(`读取失败 ${filePath}: ${e.message}`);
+            }
+            return '';
+          }
+
+          function getItems(folder) {
             if (!fs.existsSync(folder)) return [];
             return fs.readdirSync(folder)
               .filter(f => f.endsWith('.html'))
-              .map(f => ({file: f, caption: captions[folder]?.[f] || ""}))
+              .map(f => ({
+                file: f,
+                caption: extractCaption(path.join(folder, f))
+              }))
               .sort((a,b) => (parseInt(b.file)||0) - (parseInt(a.file)||0));
           }
 
           const data = {
             updated: new Date().toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}).replace(/\//g,'-'),
-            setu: get('setu'),
-            zrsetu: get('zrsetu')
+            setu: getItems('setu'),
+            zrsetu: getItems('zrsetu')
           };
 
           fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+          console.log(`成功！setu ${data.setu.length}期，zrsetu ${data.zrsetu.length}期`);
           EOF
+
           node generate.js
 
-      - name: Commit & Push
+      - name: 提交更新
         run: |
           git config user.name "AutoBot"
           git config user.email "bot@github.com"
           git add data.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update data.json" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update data.json（标题已自动填充）" && git push)
