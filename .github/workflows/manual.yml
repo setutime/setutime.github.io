@@ -71,4 +71,4 @@ jobs:
           git config user.name "AutoBot"
           git config user.email "bot@github.com"
           git add data.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update data.json（标题已自动填充）" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update data.json" && git push)
