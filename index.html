@@ -5,44 +5,45 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>SetuTime 合集 - 奈奈</title>
 <style>
-  body{margin:0;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);color:#374151;min-height:100vh;font-size:15px} 
-  header{text-align:center;padding:1.2rem;font-size:1.7rem;font-weight:700;color:#3b82f6;background:#ffffffee;backdrop-filter:blur(10px);box-shadow:0 4px 12px rgba(0,0,0,0.08);position:sticky;top:0;z-index:100}
-  .container{max-width:860px;margin:1.5rem auto;padding:0 1rem}
-  .section-title{font-size:1.28rem;font-weight:600;margin:1.6rem 0 0.8rem;padding-left:0.6rem;border-left:5px solid #3b82f6;color:#1e40af}
+  body{margin:0;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);color:#374151;min-height:100vh}
+  header{text-align:center;padding:1.5rem;font-size:1.9rem;font-weight:700;color:#3b82f6;background:#ffffffee;backdrop-filter:blur(10px);box-shadow:0 4px 12px rgba(0,0,0,0.08);position:sticky;top:0;z-index:100}
+  .container{max-width:860px;margin:2rem auto;padding:0 1rem}
+  .section-title{font-size:1.35rem;font-weight:600;margin:1.8rem 0 1rem;padding-left:0.6rem;border-left:5px solid #3b82f6;color:#1e40af}
   ul.list{list-style:none;padding:0;margin:0}
-  ul.list li{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:0.85rem 1rem;margin-bottom:0.7rem;box-shadow:0 2px 6px rgba(0,0,0,0.04);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:0.7rem;font-size:0.98rem}
+  ul.list li{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1rem 1.2rem;margin-bottom:0.8rem;box-shadow:0 2px 6px rgba(0,0,0,0.04);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:0.8rem;font-size:1.05rem}
   ul.list li:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(59,130,246,0.15);border-color:#93bbfc;background:#f8faff}
-  ul.list li .num{color:#3b82f6;font-weight:600;font-size:1rem}   
-  ul.list li .caption{color:#4b5563;font-size:0.88rem;opacity:0.9}
-  .pagination{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:0.5rem;margin:2.2rem 0 1rem}
-  .pagination button{min-width:38px;height:38px;background:#ffffff;color:#5d8eff;border:none;border-radius:10px;font-size:0.9rem;font-weight:500;cursor:pointer;transition:all .3s ease;box-shadow:0 2px 6px rgba(93,142,255,0.15)}
-  .pagination button:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(93,142,255,0.28);background:#f8fbff}
-  .pagination button.active{background:linear-gradient(135deg,#a8c0ff,#e0e7ff);color:#2563eb;font-weight:600;box-shadow:0 0 0 3px rgba(168,192,255,0.4)}
-  .page-info{color:#64748b;font-size:0.88rem;margin-top:1rem;text-align:center;font-weight:500}
-  .update-time{font-size:0.8rem;color:#94a3b8;text-align:center;margin:2rem 0 1rem}
+  ul.list li .num{color:#3b82f6;font-weight:600;font-size:1.1rem}
+  ul.list li .caption{color:#4b5563;font-size:0.92rem;opacity:0.9}
+  
 
-  .qq-button{
-    margin: 18px auto 28px;
-    text-align: center;
+  .pagination{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:0.6rem;margin:2.8rem 0 1.2rem}
+  .pagination button{
+    min-width:42px;height:42px;
+    background:#ffffff;
+    color:#5d8eff;
+    border:none;
+    border-radius:10px;
+    font-size:0.95rem;font-weight:500;
+    cursor:pointer;
+    transition:all .3s ease;
+    box-shadow: 0 2px 6px rgba(93,142,255,0.15);
   }
-  .qq-button a{
-    display: inline-block;
-    width: calc(100% - 60px);
-    max-width: 420px;                    
-    background: linear-gradient(135deg, #60a5fa, #3b82f6);
-    color: #fff;
-    padding: 11px 0;                      
-    border-radius: 999px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.98rem;                   
-    box-shadow: 0 4px 12px rgba(92,168,230,.4);
-    transition: .3s;
+  .pagination button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 6px 16px rgba(93,142,255,0.28);
+    background:#f8fbff;
   }
-  .qq-button a:hover{
-    background: linear-gradient(135deg, #4b96d8, #2563eb);
-    transform: translateY(-2px);
+  .pagination button.active{
+    background:linear-gradient(135deg,#a8c0ff,#e0e7ff);
+    color:#2563eb;
+    font-weight:600;
+    box-shadow:0 0 0 3px rgba(168,192,255,0.4);
   }
+  .pagination button:disabled{
+    opacity:0.4;cursor:not-allowed;transform:none;
+  }
+  .page-info{color:#64748b;font-size:0.92rem;margin-top:1rem;text-align:center;font-weight:500}
+  .update-time{font-size:0.85rem;color:#94a3b8;text-align:center;margin:2rem 0 1rem}
 </style>
 </head>
 <body>
@@ -50,16 +51,10 @@
 
 <div class="container">
   <div class="section-title">二次元 SetuTime</div>
-  <div class="qq-button">
-    <a href="https://qm.qq.com/q/3mnmFYTUbe" target="_blank">qq：45503380 添加好友获取更新</a>
-  </div>
   <ul class="list" id="setu-list">加载中...</ul>
   <div id="setu-pagination" class="pagination"></div>
 
   <div class="section-title">真人篇 SetuTime</div>
-  <div class="qq-button">
-    <a href="https://qm.qq.com/q/3mnmFYTUbe" target="_blank">qq：45503380 添加好友获取更新</a>
-  </div>
   <ul class="list" id="zrsetu-list">加载中...</ul>
   <div id="zrsetu-pagination" class="pagination"></div>
 
@@ -139,9 +134,13 @@ function renderPage(items, containerId, paginationId, page = 1) {
 
 window.onload = async () => {
   const data = await loadData();
-  if (data.updated) document.getElementById('update-time').textContent = `最后更新：${data.updated}`;
+
+  if (data.updated) {
+    document.getElementById('update-time').textContent = `最后更新：${data.updated}`;
+  }
 
   const sortDesc = arr => arr.sort((a,b) => (parseInt(b.file)||0) - (parseInt(a.file)||0));
+
   const setuItems = sortDesc(data.setu || []);
   const zrsetuItems = sortDesc(data.zrsetu || []);
 
