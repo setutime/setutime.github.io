@@ -1,0 +1,55 @@
+name: Auto Update data.json
+
+on:
+  push:
+    paths:
+      - 'setu/**'
+      - 'zrsetu/**'
+      - 'captions.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate data.json
+        run: |
+          cat > generate.js << 'EOF'
+          const fs = require('fs');
+          const captions = fs.existsSync('captions.json') 
+            ? JSON.parse(fs.readFileSync('captions.json','utf8')) 
+            : {setu:{}, zrsetu:{}};
+
+          function get(folder) {
+            if (!fs.existsSync(folder)) return [];
+            return fs.readdirSync(folder)
+              .filter(f => f.endsWith('.html'))
+              .map(f => ({file: f, caption: captions[folder]?.[f] || ""}))
+              .sort((a,b) => (parseInt(b.file)||0) - (parseInt(a.file)||0));
+          }
+
+          const data = {
+            updated: new Date().toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}).replace(/\//g,'-'),
+            setu: get('setu'),
+            zrsetu: get('zrsetu')
+          };
+
+          fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+          EOF
+          node generate.js
+
+      - name: Commit & Push
+        run: |
+          git config user.name "AutoBot"
+          git config user.email "bot@github.com"
+          git add data.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update data.json" && git push)
