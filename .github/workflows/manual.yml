@@ -1,4 +1,4 @@
-name: Auto Update data.json（带自动读取标题）
+name: Auto Update data.json（自动读取标题）
 
 on:
   push:
@@ -22,21 +22,21 @@ jobs:
 
       - name: Generate data.json（自动提取标题）
         run: |
-          cat > generate.js << 'EOF
+          cat > generate.js << 'EOF'
           const fs = require('fs');
           const path = require('path');
 
-          // 提取标题函数：找 <p style="text-align:left;font-size:16px"> 那行
           function extractCaption(filePath) {
             try {
               const content = fs.readFileSync(filePath, 'utf8');
-              const match = content.match(/<p[^>]*style=["']text-align:left[^"']*font-size:\s*16px[^>]*>(.*?)<\/p>/i);
-              if (match && match[1].trim()) {
-                // 去掉多余的 HTML 标签，只留纯文本
-                return match[1].replace(/<[^>]+>/g, '').trim();
+              const match = content.match(/<p[^>]*style=["'][^"']*text-align:\s*left[^"']*font-size:\s*16px[^>]*>(.*?)<\/p>/i);
+              if (match && match[1]) {
+                return match[1].replace(/<[^>]*>/g, '').trim();
               }
-            } catch (e) {}
-            return "";  // 没找到就留空
+            } catch (e) {
+              console.log('读取失败:', filePath, e.message);
+            }
+            return '';
           }
 
           function getItems(folder) {
@@ -56,15 +56,15 @@ jobs:
             zrsetu: getItems('zrsetu')
           };
 
-          fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
-          console.log('data.json 已生成，共 ${data.setu.length + data.zrsetu.length} 期');
-          EOF
+          fs.writeFileSync('data.json', JSON.stringify(data, null, 2) + '\n');
+          console.log(`成功生成 data.json，setu ${data.setu.length} 期，zrsetu ${data.zrsetu.length} 期`);
+          'EOF'
 
           node generate.js
 
-      - name: Commit & Push
+      - name: Commit & Push if changed
         run: |
           git config user.name "AutoBot"
           git config user.email "bot@github.com"
           git add data.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update data.json（含标题）" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update data.json（自动标题）" && git push)
