@@ -3,198 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SetuTime 合集</title>
-
+<title>SetuTime 合集 - 奈奈</title>
 <style>
-  body {
-    margin:0;
-    font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
-    background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);
-    color:#374151;
-  }
-  header {
-    text-align:center;
-    padding:1rem;
-    font-size:1.8rem;
-    font-weight:600;
-    color:#3b82f6;
-    background:#ffffffcc;
-    backdrop-filter:blur(8px);
-    box-shadow:0 2px 6px rgba(0,0,0,0.05);
-    position:sticky;
-    top:0;
-    z-index:10;
-  }
+  body{margin:0;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);color:#374151;min-height:100vh}
+  header{text-align:center;padding:1.5rem;font-size:1.9rem;font-weight:700;color:#3b82f6;background:#ffffffee;backdrop-filter:blur(10px);box-shadow:0 4px 12px rgba(0,0,0,0.08);position:sticky;top:0;z-index:100}
+  .container{max-width:860px;margin:2rem auto;padding:0 1rem}
+  .section-title{font-size:1.35rem;font-weight:600;margin:1.8rem 0 1rem;padding-left:0.6rem;border-left:5px solid #3b82f6;color:#1e40af}
+  ul.list{list-style:none;padding:0;margin:0}
+  ul.list li{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1rem 1.2rem;margin-bottom:0.8rem;box-shadow:0 2px 6px rgba(0,0,0,0.04);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:0.8rem;font-size:1.05rem}
+  ul.list li:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(59,130,246,0.15);border-color:#93bbfc;background:#f8faff}
+  ul.list li .num{color:#3b82f6;font-weight:600;font-size:1.1rem}
+  ul.list li .caption{color:#4b5563;font-size:0.92rem;opacity:0.9}
+  .pagination{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:0.6rem;margin:2.8rem 0 1.2rem}
+  .pagination button{min-width:42px;height:42px;background:#ffffff;color:#5d8eff;border:none;border-radius:10px;font-size:0.95rem;font-weight:500;cursor:pointer;transition:all .3s ease;box-shadow:0 2px 6px rgba(93,142,255,0.15)}
+  .pagination button:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(93,142,255,0.28);background:#f8fbff}
+  .pagination button.active{background:linear-gradient(135deg,#a8c0ff,#e0e7ff);color:#2563eb;font-weight:600;box-shadow:0 0 0 3px rgba(168,192,255,0.4)}
+  .pagination button:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+  .page-info{color:#64748b;font-size:0.92rem;margin-top:1rem;text-align:center;font-weight:500}
+  .update-time{font-size:0.85rem;color:#94a3b8;text-align:center;margin:2rem 0 1rem}
 
-  .section {
-    max-width:800px;
-    margin:2rem auto;
-    padding:0 1rem;
+  /* 非悬浮版：放在标题下，形状完全按 setu.txt，颜色保持渐变蓝 */
+  .qq-button{
+    margin: 20px auto 30px;
+    text-align: center;
   }
-  .section-title {
-    font-size:1.3rem;
-    font-weight:600;
-    margin-bottom:1rem;
-    padding-left:0.4rem;
-    border-left:4px solid #3b82f6;
+  .qq-button a{
+    display: inline-block;
+    width: calc(100% - 80px);
+    max-width: 500px;
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    color: #fff;
+    padding: 14px 0;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    box-shadow: 0 5px 14px rgba(92,168,230,.4);
+    transition: .3s;
   }
-  ul.list {
-    list-style:none;
-    padding:0;
-    margin:0;
-  }
-  ul.list li {
-    background:#ffffff;
-    border:1px solid #d1d5db;
-    border-radius:8px;
-    padding:0.75rem 1rem;
-    margin-bottom:0.5rem;
-    font-size:1rem;
-    color:#3b82f6;
-    font-weight:500;
-    cursor:pointer;
-    transition:background 0.2s ease,border-color 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  ul.list li:hover {
-    background:#eff6ff;
-    border-color:#3b82f6;
-  }
-  ul.list li .caption {
-    color: #1f2937;
-    font-size: 0.85rem;
-    font-weight: 400;
-    opacity: 0.85;
+  .qq-button a:hover{
+    background: linear-gradient(135deg, #4b96d8, #2563eb);
+    transform: translateY(-2px);
   }
 </style>
 </head>
 <body>
 <header>奈奈的 SetuTime</header>
 
-<div class="section">
-  <div class="section-title">SetuTime</div>
-  <ul class="list" id="setu-list"></ul>
-</div>
+<div class="container">
+  <div class="section-title">二次元 SetuTime</div>
+  <div class="qq-button">
+    <a href="https://ti.qq.com/open_qq/index2.html?url=mqqapi%3A%2F%2Fuserprofile%2Ffriend_profile_card%3Fsrc_type%3Dweb%26version%3D1.0%26source%3D2%26uin%3D51301105" target="_blank">qq：51301105 添加好友获取更新</a>
+  </div>
+  <ul class="list" id="setu-list">加载中...</ul>
+  <div id="setu-pagination" class="pagination"></div>
 
-<div class="section">
   <div class="section-title">真人篇 SetuTime</div>
-  <ul class="list" id="zrsetu-list"></ul>
+  <div class="qq-button">
+    <a href="https://ti.qq.com/open_qq/index2.html?url=mqqapi%3A%2F%2Fuserprofile%2Ffriend_profile_card%3Fsrc_type%3Dweb%26version%3D1.0%26source%3D2%26uin%3D45503380" target="_blank">qq：45503380 添加好友获取更新</a>
+  </div>
+  <ul class="list" id="zrsetu-list">加载中...</ul>
+  <div id="zrsetu-pagination" class="pagination"></div>
+
+  <div class="page-info" id="page-info"></div>
+  <div class="update-time" id="update-time"></div>
 </div>
 
 <script>
 const rootUrl = 'https://setutime.github.io/';
-const repoApi = 'https://api.github.com/repos/setutime/setutime.github.io/contents/';
+const ITEMS_PER_PAGE = 10;
 
-// 缓存：避免重复请求
-const captionCache = new Map();
-
-function extractNumber(filename) {
-  const m = filename.match(/(\d+)/);
-  return m ? parseInt(m[1]) : Number.MAX_SAFE_INTEGER;
-}
-
-// 从 HTML 内容提取 <p style="text-align:left;font-size:16px"># XXX</p>
-async function getCaptionFromHtml(folder, filename) {
-  const cacheKey = `${folder}/${filename}`;
-  if (captionCache.has(cacheKey)) {
-    return captionCache.get(cacheKey);
-  }
-
+async function loadData() {
   try {
-    const url = `${rootUrl}${folder}/${filename}?t=${Date.now()}`;
-    const res = await fetch(url);
-    if (!res.ok) return '';
-
-    const text = await res.text();
-
-    // 精准匹配 style 中包含 text-align:left 和 font-size:16px 的 p 标签
-    const regex = /<p[^>]*style=["'][^"']*text-align\s*:\s*left[^"']*font-size\s*:\s*16px[^"']*["'][^>]*>(#.*?)</gi;
-    const match = [...text.matchAll(regex)][0];
-
-    let caption = '';
-    if (match && match[1]) {
-      caption = match[1].trim();
-      if (caption.startsWith('#')) {
-        caption = caption.slice(1).trim(); // 去掉开头的 #
-      }
-    }
-
-    captionCache.set(cacheKey, caption);
-    return caption;
-
+    const res = await fetch(`${rootUrl}data.json?t=${Date.now()}`);
+    if (!res.ok) throw new Error('加载失败');
+    return await res.json();
   } catch (e) {
-    console.warn('提取备注失败:', cacheKey, e);
-    captionCache.set(cacheKey, '');
-    return '';
+    document.body.innerHTML = '<div style="text-align:center;margin-top:8rem;color:#e74c3c;font-size:1.3rem;">加载失败，请刷新重试</div>';
+    throw e;
   }
 }
 
-async function fetchDir(path = '') {
-  const res = await fetch(repoApi + path + `?t=${Date.now()}`);
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`GitHub API 请求失败：${res.status} ${text}`);
-  }
-  return await res.json();
-}
+function renderPage(items, containerId, paginationId, page = 1) {
+  const container = document.getElementById(containerId);
+  const pagination = document.getElementById(paginationId);
+  const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
+  const start = (page - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const pageItems = items.slice(start, end);
 
-async function loadList(folderName, ulId) {
-  const ul = document.getElementById(ulId);
-  ul.innerHTML = '<li>加载中...</li>';
-  try {
-    const files = await fetchDir(folderName);
-    const htmlFiles = files
-      .filter(f => f.type === 'file' && f.name.endsWith('.html'))
-      .map(f => f.name)
-      .sort((a, b) => extractNumber(a) - extractNumber(b));
+  container.innerHTML = '';
+  pageItems.forEach(item => {
+    const li = document.createElement('li');
+    const num = item.file.match(/\d+/)?.[0] || '?';
+    const numSpan = document.createElement('span');
+    numSpan.className = 'num';
+    numSpan.textContent = `第${num}期`;
+    li.appendChild(numSpan);
 
-    ul.innerHTML = '';
-
-    // 并发提取所有备注
-    const captionPromises = htmlFiles.map(file => getCaptionFromHtml(folderName, file));
-    const captions = await Promise.all(captionPromises);
-
-    htmlFiles.forEach((file, i) => {
-      const li = document.createElement('li');
-
-      // 主标题
-      const titleSpan = document.createElement('span');
-      titleSpan.textContent = `第${i + 1}期`;
-      titleSpan.style.color = '#3b82f6';
-      titleSpan.style.fontWeight = '500';
-
-      // 备注
-      const caption = captions[i];
-      if (caption) {
-        const captionSpan = document.createElement('span');
-        captionSpan.className = 'caption';
-        captionSpan.textContent = `# ${caption}`;
-        li.appendChild(titleSpan);
-        li.appendChild(captionSpan);
-      } else {
-        li.appendChild(titleSpan);
-      }
-
-      // 点击打开
-      li.onclick = () => window.open(`${rootUrl}${folderName}/${file}`, '_blank');
-      ul.appendChild(li);
-    });
-
-    if (htmlFiles.length === 0) {
-      ul.innerHTML = '<li style="color:gray;text-align:center;">暂无内容</li>';
+    if (item.caption) {
+      const cap = document.createElement('span');
+      cap.className = 'caption';
+      cap.textContent = item.caption;
+      li.appendChild(cap);
     }
-  } catch (err) {
-    console.error('加载失败', err);
-    ul.innerHTML = '<li style="color:red;text-align:center;">加载失败，请稍后重试</li>';
+
+    li.onclick = () => window.open(`${rootUrl}${containerId === 'setu-list' ? 'setu' : 'zrsetu'}/${item.file}`, '_blank');
+    container.appendChild(li);
+  });
+
+  pagination.innerHTML = '';
+  const prev = document.createElement('button');
+  prev.textContent = '← 上一页';
+  prev.disabled = page === 1;
+  prev.onclick = () => page > 1 && renderPage(items, containerId, paginationId, page - 1);
+  pagination.appendChild(prev);
+
+  const maxBtns = 7;
+  let startPage = Math.max(1, page - 3);
+  let endPage = Math.min(totalPages, startPage + maxBtns - 1);
+  if (endPage - startPage + 1 < maxBtns) startPage = Math.max(1, endPage - maxBtns + 1);
+
+  for (let i = startPage; i <= endPage; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = i;
+    if (i === page) btn.classList.add('active');
+    btn.onclick = () => renderPage(items, containerId, paginationId, i);
+    pagination.appendChild(btn);
   }
+
+  const next = document.createElement('button');
+  next.textContent = '下一页 →';
+  next.disabled = page === totalPages;
+  next.onclick = () => page < totalPages && renderPage(items, containerId, paginationId, page + 1);
+  pagination.appendChild(next);
 }
 
-// 页面加载
-window.onload = () => {
-  loadList('setu', 'setu-list');
-  loadList('zrsetu', 'zrsetu-list');
+window.onload = async () => {
+  const data = await loadData();
+
+  if (data.updated) {
+    document.getElementById('update-time').textContent = `最后更新：${data.updated}`;
+  }
+
+  const sortDesc = arr => arr.sort((a,b) => (parseInt(b.file)||0) - (parseInt(a.file)||0));
+
+  const setuItems = sortDesc(data.setu || []);
+  const zrsetuItems = sortDesc(data.zrsetu || []);
+
+  renderPage(setuItems, 'setu-list', 'setu-pagination', 1);
+  renderPage(zrsetuItems, 'zrsetu-list', 'zrsetu-pagination', 1);
+
+  document.getElementById('page-info').innerHTML = 
+    `二次元 <b>${setuItems.length}</b> 期　　真人篇 <b>${zrsetuItems.length}</b> 期`;
 };
 </script>
 </body>
