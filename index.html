@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>SetuTime 合集 - 奈奈</title>
 <style>
-  body{margin:0;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);color:#374151;min-height:100vh;font-size:15px} /* 整体字体缩小 */
+  body{margin:0;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);color:#374151;min-height:100vh;font-size:15px}
   header{text-align:center;padding:1.2rem;font-size:1.7rem;font-weight:700;color:#3b82f6;background:#ffffffee;backdrop-filter:blur(10px);box-shadow:0 4px 12px rgba(0,0,0,0.08);position:sticky;top:0;z-index:100}
   .container{max-width:860px;margin:1.5rem auto;padding:0 1rem}
   .section-title{font-size:1.28rem;font-weight:600;margin:1.6rem 0 0.8rem;padding-left:0.6rem;border-left:5px solid #3b82f6;color:#1e40af}
   ul.list{list-style:none;padding:0;margin:0}
   ul.list li{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:0.85rem 1rem;margin-bottom:0.7rem;box-shadow:0 2px 6px rgba(0,0,0,0.04);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:0.7rem;font-size:0.98rem}
   ul.list li:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(59,130,246,0.15);border-color:#93bbfc;background:#f8faff}
-  ul.list li .num{color:#3b82f6;font-weight:600;font-size:1rem}   
-  ul.list li .caption{color:#4b5563;font-size:0.88rem;opacity:0.9}
+  ul.list li .num{color:#3b82f6;font-weight:600;font-size:1rem;white-space:nowrap;flex-shrink:0}
+  ul.list li .caption{color:#4b5563;font-size:0.88rem;opacity:0.9;line-height:1.4}
   .pagination{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:0.5rem;margin:2.2rem 0 1rem}
   .pagination button{min-width:38px;height:38px;background:#ffffff;color:#5d8eff;border:none;border-radius:10px;font-size:0.9rem;font-weight:500;cursor:pointer;transition:all .3s ease;box-shadow:0 2px 6px rgba(93,142,255,0.15)}
   .pagination button:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(93,142,255,0.28);background:#f8fbff}
@@ -21,7 +21,6 @@
   .page-info{color:#64748b;font-size:0.88rem;margin-top:1rem;text-align:center;font-weight:500}
   .update-time{font-size:0.8rem;color:#94a3b8;text-align:center;margin:2rem 0 1rem}
 
-  
   .qq-button{
     margin: 18px auto 28px;
     text-align: center;
@@ -69,7 +68,7 @@
 </div>
 
 <script>
-const rootUrl = '/';
+const rootUrl = './';
 const ITEMS_PER_PAGE = 10;
 
 async function loadData() {
