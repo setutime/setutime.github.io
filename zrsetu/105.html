@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>涩图time</title>
-<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 <style>
 
 *{
@@ -175,38 +174,12 @@ position:relative
   transition:.3s;
 }
 .fixed-button a:hover{background:#4b96d8;transform:translateY(-2px)}
-.plyr-video-box {
-  margin: 25px auto;
-  max-width: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 12px 35px rgba(0,0,0,0.25);
-  background: #000;
-}
-
-/* 安卓强杀系统原生控制条 */
-#plyr-player::-webkit-media-controls-enclosure,
-#plyr-player::-webkit-media-controls-panel,
-#plyr-player::-webkit-media-controls { 
-  display: none !important; 
-}
-
-
-.plyr--full-ui input[type="range"] { color: #5ca8e6; }
-.plyr__control--overlaid { background: rgba(92,168,230,0.9); }
-.plyr__control--overlaid:hover { background: #5ca8e6; }
-.plyr__menu__container { background: rgba(30,30,40,0.95); } 
-    /* 设置面板背景 */
-	backdrop-filter: blur(10px);
-
-
-
-.plyr__progress__buffer {
-  background: rgba(92,168,230,0.4); 
-  }
-  /* 所有按钮悬停保持蓝色 */
-  .plyr__control:hover { background: rgba(92,168,230,0.9) !important; }
-  .plyr__progress__buffer { background: rgba(92,168,230,0.3); }
+.responsive-video {
+           width: 100%;
+           height: auto;
+           border-radius: 8px;
+           object-fit: contain;
+        }
 </style>
 </head>
 <body>
@@ -383,16 +356,10 @@ position:relative
 <div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_621247_U_F7sg49pTqgCB7k_1764749328" alt="161"></div></div>
 <div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_946210_yxVNULV5xOYul-_c_1764749332" alt="162"></div></div>
 
+<video class="responsive-video" controls poster="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_158747_T7MoLw94S0KkM5m-_1764749058">
+  <source src="https://pub-eb56c075642a4c229a1ca8eb4b4ecb31.r2.dev/zrsetu/105/video-105-1.mp4" type="video/mp4">
+</video>
 
-<div class="plyr-video-box">
-  <video 
-    id="plyr-player" 
-    playsinline 
-    controls 
-    preload="metadata"
-    poster="https://wdcdn.qpic.cn/MTMxMDI2NjE0MzQ5ODU1MTE_158747_T7MoLw94S0KkM5m-_1764749058">
-    <source src="https://pub-eb56c075642a4c229a1ca8eb4b4ecb31.r2.dev/zrsetu/105/video-105-1.mp4" type="video/mp4" />
-    </video></div>
 
     <div class="explanation">
       <h2>本期无水印原图</h2>
@@ -464,18 +431,6 @@ position:relative
     window.addEventListener('resize',lazyLoad);
   }
 })();
-</script>
-<!-- 视频js -->
-<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-<script>
-const player = new Plyr('#plyr-player', {
-  controls: ['play-large','restart','rewind','play','fast-forward','progress','current-time','mute','volume','settings','fullscreen'],
-  loop: { active: true },
-  autoplay: false,
-  playsInline: true,
-  volume: 0.8,
-  speed: { selected: 1, options: [0.75,1,1.25,1.5,2] }
-});
 </script>
 </body>
 </html>
