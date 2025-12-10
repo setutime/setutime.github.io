@@ -18,6 +18,7 @@
 <br>
 <button onclick="generateHTML()">生成代码</button>
 <button onclick="copyResult()">复制结果</button>
+<button onclick="clearAll()">清空全部</button>   <!-- 新增的清空按钮 -->
 <textarea id="output" placeholder="生成的HTML代码会显示在这里（每项一行，无空格）"></textarea>
 
 <script>
@@ -33,7 +34,7 @@ function generateHTML() {
         .map((url, index) => 
             `<div class="image-item"><div class="img-wrap"><img data-src="${url}" alt="${index + 1}"></div></div>`
         )
-        .join("\n");  // 每项之间用换行分隔，便于阅读和复制
+        .join("\n");
 
     document.getElementById("output").value = result;
 }
@@ -43,6 +44,13 @@ function copyResult() {
     output.select();
     document.execCommand("copy");
     alert("代码已复制到剪贴板！");
+}
+
+/* 新增的清空函数 */
+function clearAll() {
+    document.getElementById("inputUrls").value = "";
+    document.getElementById("output").value = "";
+    alert("输入框和输出框已清空！");
 }
 </script>
 </body>
