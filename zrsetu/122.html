@@ -175,15 +175,29 @@ position:relative
 }
 .fixed-button a:hover{background:#4b96d8;transform:translateY(-2px)}
 .responsive-video {
-           width: 100%;
-           height: auto;
-           border-radius: 8px;
-           object-fit: contain;
-           border-radius: 8px !important;
-		       overflow: hidden !important;
-		       transform: translateZ(0);
-		       -webkit-transform: translateZ(0);
-        }
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: contain;
+    overflow: hidden;  /* 必须保留 */
+    position: relative;
+    z-index: 0;
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(circle, white, black);
+    -webkit-mask-size: 100% 100%; 
+}
+
+.responsive-video::-webkit-media-controls-enclosure {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+.responsive-video::-webkit-media-controls-panel {
+    border-radius: 0 0 8px 8px !important; 
+}
 </style>
 </head>
 <body>
@@ -331,7 +345,7 @@ position:relative
       <p>收藏到自己的网盘<span>防止和谐</span></p>
                      
                   <!--‼️ 2️⃣⬇️-->
- <a href="https://pan.xunlei.com/s/VOgGM96_xvLsZOKCTA8-MUwFA1?pwd=rx3e" target="_blank" class="preserve">点击保存</a>
+ <a href="https://pan.xunlei.com/s/VOgFUvyEWtUspez6yuuJfq0nA1?pwd=t3ny" target="_blank" class="preserve">点击保存</a>
     </div>
 
 
