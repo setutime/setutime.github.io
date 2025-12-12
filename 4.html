@@ -195,7 +195,7 @@ position:relative
 <div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjEwNzAzNzc4NzY_526535_zxeDTRrStqLptdLk_1765520323" alt="1"></div></div>
 
 
-<video class="responsive-video"  controls preload="metadata" style="background:#000 url(video.mp4) center/cover no-repeat;">
+<video class="responsive-video" controls preload="metadata" playsinline>
   <source src="https://pub-eb56c075642a4c229a1ca8eb4b4ecb31.r2.dev/zrsetu/122/video-122-1.mp4" type="video/mp4">
 </video>
 
@@ -273,6 +273,11 @@ Array.from(imgs).slice(10).forEach(img => {
     };
     // ... 同上 onerror 和 removeAttribute
   }
+});
+//视频js
+document.querySelectorAll('.responsive-video source[src]').forEach(video => {
+const src = video.src || video.getAttribute('src');
+video.parentElement.style.backgroundImage = `url(${src})`;
 });
 </script>
 </body>
