@@ -180,6 +180,31 @@ position:relative
            border-radius: 8px;
            object-fit: contain;
         }
+		responsive-video {
+		      width: 100%;
+		      height: auto;
+		      max-width: 100%;
+		      border-radius: 12px;
+		      object-fit: contain;
+		      background: #000 center/cover no-repeat;
+		      display: block;
+		      position: relative;
+		    }
+		    .responsive-video::before {
+		      content: "Play";
+		      position: absolute;
+		      inset: 0; margin: auto;
+		      width: 72px; height: 72px;
+		      background: rgba(0,0,0,0.6);
+		      color: white;
+		      font-size: 36px;
+		      line-height: 72px;
+		      text-align: center;
+		      border-radius: 50%;
+		      pointer-events: none;
+		      transition: 0.4s;
+		    }
+		    .responsive-video.playing::before { opacity: 0; transform: scale(1.4); }
 </style>
 </head>
 <body>
@@ -194,8 +219,15 @@ position:relative
 
 <div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjEwNzAzNzc4NzY_526535_zxeDTRrStqLptdLk_1765520323" alt="1"></div></div>
 
+<video class="responsive-video"  controls preload="metadata" style="background:#000 url(video.mp4) center/cover no-repeat;">
+  <source src="https://pub-eb56c075642a4c229a1ca8eb4b4ecb31.r2.dev/zrsetu/122/video-122-1.mp4" type="video/mp4">
+</video>
 
-<video class="responsive-video" controls preload="metadata" playsinline>
+<video class="responsive-video"   controls  preload="none">
+  <source src="https://pub-eb56c075642a4c229a1ca8eb4b4ecb31.r2.dev/zrsetu/122/video-122-1.mp4" type="video/mp4">
+</video>
+
+<video class="responsive-video" controls preload="metadata" playsinline webkit-playsinline muted>
   <source src="https://pub-eb56c075642a4c229a1ca8eb4b4ecb31.r2.dev/zrsetu/122/video-122-1.mp4" type="video/mp4">
 </video>
 
@@ -274,10 +306,14 @@ Array.from(imgs).slice(10).forEach(img => {
     // ... 同上 onerror 和 removeAttribute
   }
 });
-//视频js
-document.querySelectorAll('.responsive-video source[src]').forEach(video => {
-const src = video.src || video.getAttribute('src');
-video.parentElement.style.backgroundImage = `url(${src})`;
+
+document.querySelectorAll('.responsive-video').forEach(v => {
+  const src = v.currentSrc || v.querySelector('source')?.src;
+  if (src) {
+    v.style.background = `#000 url("${src}") center/cover no-repeat`;
+    v.addEventListener('play', () => v.classList.add('playing'));
+    v.addEventListener('pause', () => v.classList.remove('playing'));
+  }
 });
 </script>
 </body>
