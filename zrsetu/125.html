@@ -6,79 +6,180 @@
 <title>涩图time</title>
 <style>
 
-* { margin:0; padding:0; box-sizing:border-box }
-
-body {
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
-  background:#fafafa; color:#333; line-height:1.6;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box
 }
 
-.container { max-width:100%; padding:15px }
-
-.header { text-align:center; padding:20px 0; margin-bottom:20px; border-bottom:1px solid #eee }
-.title { font-size:1.5rem; font-weight:600; color:#1e1e1e }
-
-.image-grid {
-  display:flex; flex-direction:column; gap:18px;
-  width:100%; max-width:min(90vw,700px); margin:0 auto;
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:#fafafa;
+color:#333;
+line-height:1.6;
 }
 
-.image-item {
-  border-radius:6px; overflow:hidden;
-  box-shadow:0 3px 10px rgba(0,0,0,.06);
-  position:relative
+.container{
+max-width:100%;
+padding:15px
 }
 
-/* 骨架屏 */
+.header{
+text-align:center;
+padding:20px 0;
+margin-bottom:20px;
+border-bottom:1px solid #eee
+}
+
+.title{
+font-size:1.5rem;
+font-weight:600;
+color:#1e1e1e
+}
+
+.image-grid{
+display:flex;
+flex-direction:column;
+gap:18px
+}
+
+.image-item{
+border-radius:6px;
+overflow:hidden;
+box-shadow:0 3px 10px rgba(0,0,0,.06);
+background:#f0f2f5;
+position:relative
+}
+
+/* 骨架加载渐变*/
+.img-wrap{
+  position:relative;
+  width:100%;
+  min-height:180px;
+  background:linear-gradient(100deg,#f1f3f6 0%,#e2e7ec 50%,#f1f3f6 100%);
+  background-size:200% 100%;
+  animation:skeleton 1.5s infinite ease-in-out;
+  overflow:hidden;
+}
+@keyframes skeleton{
+  0%{background-position:200% 0}
+  100%{background-position:-200% 0}
+}
+/* 图片本身淡入 */
 .img-wrap {
-  position:relative; width:100%; overflow:hidden; min-height:280px;
+  position: relative;
+  width: 100%;
+  background: #f3f4f6;
+  overflow: hidden;
 }
+
+/* 添加一个 shimmer 背景层，而不是动画在容器上 */
 .img-wrap::before {
-  content:""; position:absolute; inset:0;
-  background:linear-gradient(90deg,#f3f4f6 0%,#e9eef6 50%,#f3f4f6 100%);
-  background-size:200% 100%; animation:shimmer 1.5s infinite ease-in-out; z-index:1;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f3f4f6 0%, #e9eef6 50%, #f3f4f6 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+  z-index: 1;
 }
+
 @keyframes shimmer {
-  0% { background-position:200% 0 }
-  100% { background-position:-200% 0 }
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
+
+/* 图片层：保持原比例完整显示 */
 .img-wrap img {
-  width:100%; height:auto; display:block; opacity:0; transition:opacity .5s; z-index:2; object-fit:contain;
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 2;
+  object-fit: contain;
+  position: relative;
 }
-.img-wrap.loaded::before { opacity:0; transition:opacity .5s }
-.img-wrap.loaded img { opacity:1 }
 
-/* 说明卡片 */
+/* 自适应居中单列 */
+.image-grid {
+  width: 100%;
+  max-width: min(90vw, 700px); /* 小屏占90%，大屏不超过700px */
+  margin: 0 auto; /* 居中 */
+}
+
+/* 加载完成后，淡出骨架层 */
+.img-wrap.loaded::before {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.img-wrap.loaded img {
+  opacity: 1;
+}
+
+
+/* ===== 迅雷下载模块===== */
+
 .explanation {
-  background:linear-gradient(135deg,#f2f4f6,#eceef0); border:1px solid #dde2e9;
-  border-radius:16px; padding:22px; text-align:center; color:#4a5568; margin:25px 0;
-  box-shadow:0 6px 20px rgba(0,0,0,.12);
+  background: linear-gradient(135deg, #f2f4f6, #eceef0);  
+  border: 1px solid #dde2e9;
+  border-radius: 16px;
+  padding: 22px;
+  text-align: center;
+  color: #4a5568;
+  margin: 25px 0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);  
 }
-.explanation h2 { font-size:20px; color:#2d2d2d; margin-bottom:10px; font-weight:600 }
-.explanation p { font-size:15px; color:#506070 }
-.explanation p span { color:#2d3748; font-weight:700 }
+.explanation h2 {
+  font-size: 20px;
+  color: #2d2d2d;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.explanation p {
+  font-size: 15px;
+  color: #506070;
+}
+.explanation p span {
+  color: #2d3748;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(45, 55, 72, 0.3);
+}
 .preserve {
-  display:inline-block; margin-top:15px; padding:11px 28px; border-radius:999px;
-  background:linear-gradient(135deg,#383f50,#626982); color:#fff; text-decoration:none;
-  font-weight:600; box-shadow:0 6px 16px rgba(56,63,80,.38); transition:all .3s;
+  display: inline-block;
+  margin-top: 15px;
+  padding: 11px 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #383f50, #626982);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(56, 63, 80, 0.38);
+  transition: all .3s ease;
 }
-.preserve:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(56,63,80,.48) }
+.preserve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(56, 63, 80, 0.48);
+  background: linear-gradient(135deg, #424a5e, #6d748c);
+}
 
-/* 固定按钮 & 视频 */
-.fixed-button {
-  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
-  width:calc(100% - 80px); max-width:500px; z-index:100;
+.fixed-button{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  width:calc(100% - 80px);max-width:500px;z-index:100;
 }
-.fixed-button a {
-  display:block; text-align:center; background:#5ca8e6; color:#fff;
-  padding:12px; border-radius:999px; text-decoration:none; font-weight:600;
-  box-shadow:0 5px 14px rgba(92,168,230,.4); transition:.3s;
+.fixed-button a{
+  display:block;text-align:center;background:#5ca8e6;color:#fff;
+  padding:10px;border-radius:999px;text-decoration:none;
+  font-weight:600;box-shadow:0 5px 14px rgba(92,168,230,.4);
+  transition:.3s;
 }
-.fixed-button a:hover { background:#4b96d8 }
-
-video, .responsive-video {
-  width:100%; height:auto; border-radius:8px; object-fit:contain; display:block
-}
+.fixed-button a:hover{background:#4b96d8;transform:translateY(-2px)}
+.responsive-video {
+           width: 100%;
+           height: auto;
+           border-radius: 8px;
+           object-fit: contain;
+        }
 </style>
 </head>
 <body>
