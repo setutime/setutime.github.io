@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SetuTime 合集 - 奈奈</title>
+<style>
+  body{margin:0;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);color:#374151;min-height:100vh;font-size:15px;overflow-x:hidden}
+  header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    text-align:center;
+    padding:1rem 1.5rem;
+    font-size:1.7rem;
+    font-weight:700;
+    color:#3b82f6;
+    animation: capsuleExpand 1.2s ease-out forwards;
+    opacity:0;
+  }
+  .capsule{
+    background:#ffffffcc;
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border-radius:999px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.12);
+    border:1px solid rgba(255,255,255,0.6);
+    max-width:90%;
+    margin:12px auto;
+    padding:0.8rem 0;
+  }
+  @media (min-width:768px){
+    .capsule{max-width:720px;margin:16px auto;padding:1rem 0}
+    header{font-size:1.9rem}
+  }
+  @keyframes capsuleExpand{
+    0%{
+      opacity:0;
+      transform:scale(0.1);
+      clip-path:circle(0% at 50% 50%);
+    }
+    70%{
+      opacity:1;
+      transform:scale(1.05);
+      clip-path:circle(70% at 50% 50%);
+    }
+    100%{
+      opacity:1;
+      transform:scale(1);
+      clip-path:circle(70% at 50% 50%);
+    }
+  }
+  .container{max-width:860px;margin:1.5rem auto;padding:0 1rem}
+  .section-title{font-size:1.28rem;font-weight:600;margin:1.6rem 0 0.8rem;padding-left:0.6rem;border-left:5px solid #3b82f6;color:#1e40af}
+  ul.list{list-style:none;padding:0;margin:0}
+  ul.list li{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:0.85rem 1rem;margin-bottom:0.7rem;box-shadow:0 2px 6px rgba(0,0,0,0.04);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:0.7rem;font-size:0.98rem}
+  ul.list li:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(59,130,246,0.15);border-color:#93bbfc;background:#f8faff}
+  ul.list li .num{color:#3b82f6;font-weight:600;font-size:1rem;white-space:nowrap;flex-shrink:0}
+  ul.list li .caption{color:#4b5563;font-size:0.88rem;opacity:0.9;line-height:1.4}
+  .pagination{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:0.5rem;margin:2.2rem 0 1rem}
+  .pagination button{min-width:38px;height:38px;background:#ffffff;color:#5d8eff;border:none;border-radius:10px;font-size:0.9rem;font-weight:500;cursor:pointer;transition:all .3s ease;box-shadow:0 2px 6px rgba(93,142,255,0.15)}
+  .pagination button:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(93,142,255,0.28);background:#f8fbff}
+  .pagination button.active{background:linear-gradient(135deg,#a8c0ff,#e0e7ff);color:#2563eb;font-weight:600;box-shadow:0 0 0 3px rgba(168,192,255,0.4)}
+  .page-info{color:#64748b;font-size:0.88rem;margin-top:1rem;text-align:center;font-weight:500}
+  .update-time{font-size:0.8rem;color:#94a3b8;text-align:center;margin:2rem 0 1rem}
+
+  .qq-button{
+    margin: 18px auto 28px;
+    text-align: center;
+  }
+  .qq-button a{
+    display: inline-block;
+    width: calc(100% - 60px);
+    max-width: 420px;                     
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    color: #fff;
+    padding: 11px 0;                      
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.98rem;                  
+    box-shadow: 0 4px 12px rgba(92,168,230,.4);
+    transition: .3s;
+  }
+  .qq-button a:hover{
+    background: linear-gradient(135deg, #4b96d8, #2563eb);
+    transform: translateY(-2px);
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="capsule">奈奈的 SetuTime</div>
+</header>
+
+<div class="container">
+  <div class="section-title">二次元 SetuTime</div>
+  <div class="qq-button">
+    <a href="https://ti.qq.com/open_qq/index2.html?url=mqqapi%3A%2F%2Fuserprofile%2Ffriend_profile_card%3Fsrc_type%3Dweb%26version%3D1.0%26source%3D2%26uin%3D51301105" target="_blank">qq：51301105 添加好友获取更新</a>
+  </div>
+  <ul class="list" id="setu-list">加载中...</ul>
+  <div id="setu-pagination" class="pagination"></div>
+
+  <div class="section-title">Cos写真 SetuTime</div>
+  <div class="qq-button">
+    <a href="https://ti.qq.com/open_qq/index2.html?url=mqqapi%3A%2F%2Fuserprofile%2Ffriend_profile_card%3Fsrc_type%3Dweb%26version%3D1.0%26source%3D2%26uin%3D45503380" target="_blank">qq：45503380 添加好友获取更新</a>
+  </div>
+  <ul class="list" id="zrsetu-list">加载中...</ul>
+  <div id="zrsetu-pagination" class="pagination"></div>
+
+  <div class="page-info" id="page-info"></div>
+  <div class="update-time" id="update-time"></div>
+</div>
+
+<script>
+const rootUrl = './';
+const ITEMS_PER_PAGE = 10;
+
+async function loadData() {
+  try {
+    const res = await fetch(`${rootUrl}data.json?t=${Date.now()}`);
+    if (!res.ok) throw new Error('加载失败');
+    return await res.json();
+  } catch (e) {
+    document.body.innerHTML = '<div style="text-align:center;margin-top:8rem;color:#e74c3c;font-size:1.3rem;">加载失败，请刷新重试</div>';
+    throw e;
+  }
+}
+
+function renderPage(items, containerId, paginationId, page = 1) {
+  const container = document.getElementById(containerId);
+  const pagination = document.getElementById(paginationId);
+  const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
+  const start = (page - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const pageItems = items.slice(start, end);
+
+  container.innerHTML = '';
+  pageItems.forEach(item => {
+    const li = document.createElement('li');
+    const num = item.file.match(/\d+/)?.[0] || '?';
+    const numSpan = document.createElement('span');
+    numSpan.className = 'num';
+    numSpan.textContent = `第${num}期`;
+    li.appendChild(numSpan);
+
+    if (item.caption) {
+      const cap = document.createElement('span');
+      cap.className = 'caption';
+      cap.textContent = item.caption;
+      li.appendChild(cap);
+    }
+
+    li.onclick = () => window.open(`${rootUrl}${containerId === 'setu-list' ? 'setu' : 'zrsetu'}/${item.file}`, '_blank');
+    container.appendChild(li);
+  });
+
+  pagination.innerHTML = '';
+  const prev = document.createElement('button');
+  prev.textContent = '← 上一页';
+  prev.disabled = page === 1;
+  prev.onclick = () => page > 1 && renderPage(items, containerId, paginationId, page - 1);
+  pagination.appendChild(prev);
+
+  const maxBtns = 7;
+  let startPage = Math.max(1, page - 3);
+  let endPage = Math.min(totalPages, startPage + maxBtns - 1);
+  if (endPage - startPage + 1 < maxBtns) startPage = Math.max(1, endPage - maxBtns + 1);
+
+  for (let i = startPage; i <= endPage; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = i;
+    if (i === page) btn.classList.add('active');
+    btn.onclick = () => renderPage(items, containerId, paginationId, i);
+    pagination.appendChild(btn);
+  }
+
+  const next = document.createElement('button');
+  next.textContent = '下一页 →';
+  next.disabled = page === totalPages;
+  next.onclick = () => page < totalPages && renderPage(items, containerId, paginationId, page + 1);
+  pagination.appendChild(next);
+}
+
+window.onload = async () => {
+  const data = await loadData();
+  if (data.updated) document.getElementById('update-time').textContent = `最后更新：${data.updated}`;
+
+  const sortDesc = arr => arr.sort((a,b) => (parseInt(b.file)||0) - (parseInt(a.file)||0));
+  const setuItems = sortDesc(data.setu || []);
+  const zrsetuItems = sortDesc(data.zrsetu || []);
+
+  renderPage(setuItems, 'setu-list', 'setu-pagination', 1);
+  renderPage(zrsetuItems, 'zrsetu-list', 'zrsetu-pagination', 1);
+
+  document.getElementById('page-info').innerHTML = 
+    `二次元 <b>${setuItems.length}</b> 期　　Cos写真 <b>${zrsetuItems.length}</b> 期`;
+};
+</script>
+</body>
+</html>
