@@ -6,33 +6,50 @@
 <title>SetuTime 合集 - 奈奈</title>
 <style>
   body{margin:0;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);color:#374151;min-height:100vh;font-size:15px;overflow-x:hidden}
+  
   header{
     position:sticky;
     top:0;
     z-index:100;
     text-align:center;
-    padding:1rem 1.5rem;
-    font-size:1.7rem;
-    font-weight:700;
-    color:#3b82f6;
+    padding:1rem 1.5rem 0;
+    pointer-events:none; /* 避免影响下方点击 */
     animation: capsuleExpand 1.2s ease-out forwards;
     opacity:0;
   }
+  
   .capsule{
-    background:#ffffffcc;
-    backdrop-filter:blur(16px);
-    -webkit-backdrop-filter:blur(16px);
+    background:#ffffffe6; /* 加深毛玻璃透明度 */
+    backdrop-filter:blur(18px); /* 模糊稍强，更梦幻 */
+    -webkit-backdrop-filter:blur(18px);
     border-radius:999px;
-    box-shadow:0 8px 32px rgba(0,0,0,0.12);
-    border:1px solid rgba(255,255,255,0.6);
+    box-shadow:0 8px 32px rgba(0,0,0,0.14);
+    border:1px solid rgba(255,255,255,0.7);
     max-width:90%;
     margin:12px auto;
     padding:0.8rem 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events:auto;
+    overflow:hidden;
+    max-height:80px; /* 为收缩动画提供上限 */
   }
+  
   @media (min-width:768px){
     .capsule{max-width:720px;margin:16px auto;padding:1rem 0}
-    header{font-size:1.9rem}
+    header{font-size:1.9rem;padding-top:1.2rem}
   }
+  
+  /* 隐藏状态 */
+  header.hidden .capsule{
+    max-height:0;
+    padding-top:0;
+    padding-bottom:0;
+    margin-top:0;
+    margin-bottom:0;
+    box-shadow:0 0 0 rgba(0,0,0,0);
+    border-color:transparent;
+  }
+  
   @keyframes capsuleExpand{
     0%{
       opacity:0;
@@ -50,6 +67,7 @@
       clip-path:circle(70% at 50% 50%);
     }
   }
+  
   .container{max-width:860px;margin:1.5rem auto;padding:0 1rem}
   .section-title{font-size:1.28rem;font-weight:600;margin:1.6rem 0 0.8rem;padding-left:0.6rem;border-left:5px solid #3b82f6;color:#1e40af}
   ul.list{list-style:none;padding:0;margin:0}
@@ -89,7 +107,7 @@
 </style>
 </head>
 <body>
-<header>
+<header id="header">
   <div class="capsule">奈奈的 SetuTime</div>
 </header>
 
@@ -116,6 +134,31 @@
 const rootUrl = './';
 const ITEMS_PER_PAGE = 10;
 
+// 滚动隐藏/显示胶囊
+let lastScrollY = window.scrollY;
+let ticking = false;
+
+function updateHeader() {
+  const header = document.getElementById('header');
+  if (window.scrollY > lastScrollY && window.scrollY > 100) {
+    // 下滑 → 隐藏
+    header.classList.add('hidden');
+  } else {
+    // 上滑或在顶部 → 显示
+    header.classList.remove('hidden');
+  }
+  lastScrollY = window.scrollY;
+  ticking = false;
+}
+
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(updateHeader);
+    ticking = true;
+  }
+});
+
+// 数据加载部分保持不变
 async function loadData() {
   try {
     const res = await fetch(`${rootUrl}data.json?t=${Date.now()}`);
