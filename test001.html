@@ -15,18 +15,42 @@
     overflow-x:hidden;
   }
 
-  /* 内容容器初始状态：轻微下移 + 透明 */
+  /* 页面整体（header + container）快速柔和出现 */
   header, .container {
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* 温和弹性曲线 */
+    transform: translateY(15px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
   }
 
-  /* 加载完成后添加的类：轻弹出现 */
   .loaded header, .loaded .container {
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* 每个列表项的弹力动效 */
+  ul.list li {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.2, 0.8, 0.4, 1);
+  }
+
+  .loaded ul.list li {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* 逐项延迟，实现依次出现 */
+  .loaded ul.list li:nth-child(1) { transition-delay: 0.05s; }
+  .loaded ul.list li:nth-child(2) { transition-delay: 0.10s; }
+  .loaded ul.list li:nth-child(3) { transition-delay: 0.15s; }
+  .loaded ul.list li:nth-child(4) { transition-delay: 0.20s; }
+  .loaded ul.list li:nth-child(5) { transition-delay: 0.25s; }
+  .loaded ul.list li:nth-child(6) { transition-delay: 0.30s; }
+  .loaded ul.list li:nth-child(7) { transition-delay: 0.35s; }
+  .loaded ul.list li:nth-child(8) { transition-delay: 0.40s; }
+  .loaded ul.list li:nth-child(9) { transition-delay: 0.45s; }
+  .loaded ul.list li:nth-child(10) { transition-delay: 0.50s; }
+  /* 超过10项的继续递增（每页最多10项，足够） */
 
   header{
     position:sticky;
@@ -46,9 +70,9 @@
     border-radius:999px;
     box-shadow:0 8px 32px rgba(0,0,0,0.12);
     border:1px solid rgba(255,255,255,0.6);
-    max-width: 90vw;                  /* 关键：限制最大宽度 */
-    width: fit-content;               /* 内容自适应宽度 */
-    min-width: 260px;                 /* 防止太窄 */
+    max-width: 90vw;
+    width: fit-content;
+    min-width: 260px;
     margin:12px auto;
     padding:0.8rem 1.5rem;
     font-size:1.7rem;
@@ -64,7 +88,6 @@
     opacity: 0;
   }
 
-  /* 移动端字体与间距微调 */
   @media (max-width: 480px) {
     .capsule{
       font-size:1.5rem;
@@ -251,7 +274,7 @@ window.onload = async () => {
   document.getElementById('page-info').innerHTML =
     `二次元 <b>${setuItems.length}</b> 期　　Cos写真 <b>${zrsetuItems.length}</b> 期`;
 
-  // 内容渲染完成 → 触发温和轻弹动画
+  // 触发整体快速出现 + 每个列表项依次轻弹
   document.body.classList.add('loaded');
 };
 </script>
