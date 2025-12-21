@@ -13,15 +13,19 @@
     min-height:100vh;
     font-size:15px;
     overflow-x:hidden;
-
-    /* 初始透明，等待加载完成淡入 */
-    opacity: 0;
-    transition: opacity 1s ease-out;
   }
 
-  /* 加载完成后添加的类，实现淡入 */
-  body.loaded {
+  /* 内容容器初始状态：轻微下移 + 透明 */
+  header, .container {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* 温和弹性曲线 */
+  }
+
+  /* 加载完成后添加的类：轻弹出现 */
+  .loaded header, .loaded .container {
     opacity: 1;
+    transform: translateY(0);
   }
 
   header{
@@ -29,36 +33,38 @@
     top:0;
     z-index:100;
     text-align:center;
-    padding:1rem 1rem;
+    padding:1rem 0.5rem;
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
   }
 
   .capsule{
+    display: inline-block;
     background:#ffffffcc;
     backdrop-filter:blur(16px);
     -webkit-backdrop-filter:blur(16px);
     border-radius:999px;
     box-shadow:0 8px 32px rgba(0,0,0,0.12);
     border:1px solid rgba(255,255,255,0.6);
-    max-width:90vw;
-    width:420px;
+    max-width: 90vw;                  /* 关键：限制最大宽度 */
+    width: fit-content;               /* 内容自适应宽度 */
+    min-width: 260px;                 /* 防止太窄 */
     margin:12px auto;
     padding:0.8rem 1.5rem;
     font-size:1.7rem;
     font-weight:700;
     color:#3b82f6;
     pointer-events: auto;
+    box-sizing: border-box;
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* 隐藏状态：向上平移 + 缩放 + 透明 */
   header.hidden .capsule {
     transform: translateY(-20px) scale(0.85);
     opacity: 0;
   }
 
-  /* 移动端优化 */
+  /* 移动端字体与间距微调 */
   @media (max-width: 480px) {
     .capsule{
       font-size:1.5rem;
@@ -145,15 +151,12 @@ const header = document.getElementById('header');
 let lastScrollY = 0;
 let ticking = false;
 
-// 滚动方向判断：只要向下滚动一点点就隐藏
 function updateHeader() {
   const currentScrollY = window.scrollY;
 
   if (currentScrollY > lastScrollY && currentScrollY > 10) {
-    // 向下滚动 → 隐藏
     header.classList.add('hidden');
   } else if (currentScrollY < lastScrollY || currentScrollY <= 10) {
-    // 向上滚动或靠近顶部 → 显示
     header.classList.remove('hidden');
   }
 
@@ -168,7 +171,6 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// 数据加载与渲染
 async function loadData() {
   try {
     const res = await fetch(`${rootUrl}data.json?t=${Date.now()}`);
@@ -235,7 +237,6 @@ function renderPage(items, containerId, paginationId, page = 1) {
   pagination.appendChild(next);
 }
 
-// 页面加载完成：数据渲染完毕后触发整体淡入
 window.onload = async () => {
   const data = await loadData();
   if (data.updated) document.getElementById('update-time').textContent = `最后更新：${data.updated}`;
@@ -250,7 +251,7 @@ window.onload = async () => {
   document.getElementById('page-info').innerHTML =
     `二次元 <b>${setuItems.length}</b> 期　　Cos写真 <b>${zrsetuItems.length}</b> 期`;
 
-  // 所有内容渲染完成 → 触发淡入动画
+  // 内容渲染完成 → 触发温和轻弹动画
   document.body.classList.add('loaded');
 };
 </script>
