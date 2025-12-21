@@ -5,69 +5,76 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>SetuTime 合集 - 奈奈</title>
 <style>
-  body{margin:0;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);color:#374151;min-height:100vh;font-size:15px;overflow-x:hidden}
-  
+  body{
+    margin:0;
+    font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    background:linear-gradient(to bottom right,#f9fafb,#e5e7eb);
+    color:#374151;
+    min-height:100vh;
+    font-size:15px;
+    overflow-x:hidden;
+
+    /* 初始透明，等待加载完成淡入 */
+    opacity: 0;
+    transition: opacity 1s ease-out;
+  }
+
+  /* 加载完成后添加的类，实现淡入 */
+  body.loaded {
+    opacity: 1;
+  }
+
   header{
     position:sticky;
     top:0;
     z-index:100;
     text-align:center;
-    padding:1rem 1.5rem 0;
-    pointer-events:none; /* 避免影响下方点击 */
-    animation: capsuleExpand 1.2s ease-out forwards;
-    opacity:0;
+    padding:1rem 1rem;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
   }
-  
+
   .capsule{
-    background:#ffffffe6; /* 加深毛玻璃透明度 */
-    backdrop-filter:blur(18px); /* 模糊稍强，更梦幻 */
-    -webkit-backdrop-filter:blur(18px);
+    background:#ffffffcc;
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
     border-radius:999px;
-    box-shadow:0 8px 32px rgba(0,0,0,0.14);
-    border:1px solid rgba(255,255,255,0.7);
-    max-width:90%;
+    box-shadow:0 8px 32px rgba(0,0,0,0.12);
+    border:1px solid rgba(255,255,255,0.6);
+    max-width:90vw;
+    width:420px;
     margin:12px auto;
-    padding:0.8rem 0;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events:auto;
-    overflow:hidden;
-    max-height:80px; /* 为收缩动画提供上限 */
+    padding:0.8rem 1.5rem;
+    font-size:1.7rem;
+    font-weight:700;
+    color:#3b82f6;
+    pointer-events: auto;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
+
+  /* 隐藏状态：向上平移 + 缩放 + 透明 */
+  header.hidden .capsule {
+    transform: translateY(-20px) scale(0.85);
+    opacity: 0;
+  }
+
+  /* 移动端优化 */
+  @media (max-width: 480px) {
+    .capsule{
+      font-size:1.5rem;
+      padding:0.7rem 1.2rem;
+      margin:10px auto;
+    }
+  }
+
   @media (min-width:768px){
-    .capsule{max-width:720px;margin:16px auto;padding:1rem 0}
-    header{font-size:1.9rem;padding-top:1.2rem}
-  }
-  
-  /* 隐藏状态 */
-  header.hidden .capsule{
-    max-height:0;
-    padding-top:0;
-    padding-bottom:0;
-    margin-top:0;
-    margin-bottom:0;
-    box-shadow:0 0 0 rgba(0,0,0,0);
-    border-color:transparent;
-  }
-  
-  @keyframes capsuleExpand{
-    0%{
-      opacity:0;
-      transform:scale(0.1);
-      clip-path:circle(0% at 50% 50%);
-    }
-    70%{
-      opacity:1;
-      transform:scale(1.05);
-      clip-path:circle(70% at 50% 50%);
-    }
-    100%{
-      opacity:1;
-      transform:scale(1);
-      clip-path:circle(70% at 50% 50%);
+    .capsule{
+      padding:1rem 1.8rem;
+      margin:16px auto;
+      font-size:1.9rem;
     }
   }
-  
+
   .container{max-width:860px;margin:1.5rem auto;padding:0 1rem}
   .section-title{font-size:1.28rem;font-weight:600;margin:1.6rem 0 0.8rem;padding-left:0.6rem;border-left:5px solid #3b82f6;color:#1e40af}
   ul.list{list-style:none;padding:0;margin:0}
@@ -89,14 +96,14 @@
   .qq-button a{
     display: inline-block;
     width: calc(100% - 60px);
-    max-width: 420px;                     
+    max-width: 420px;
     background: linear-gradient(135deg, #60a5fa, #3b82f6);
     color: #fff;
-    padding: 11px 0;                      
+    padding: 11px 0;
     border-radius: 999px;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.98rem;                  
+    font-size: 0.98rem;
     box-shadow: 0 4px 12px rgba(92,168,230,.4);
     transition: .3s;
   }
@@ -131,23 +138,26 @@
 </div>
 
 <script>
-const rootUrl = './';
+const rootUrl = 'https://setutime.github.io/';
 const ITEMS_PER_PAGE = 10;
 
-// 滚动隐藏/显示胶囊
-let lastScrollY = window.scrollY;
+const header = document.getElementById('header');
+let lastScrollY = 0;
 let ticking = false;
 
+// 滚动方向判断：只要向下滚动一点点就隐藏
 function updateHeader() {
-  const header = document.getElementById('header');
-  if (window.scrollY > lastScrollY && window.scrollY > 100) {
-    // 下滑 → 隐藏
+  const currentScrollY = window.scrollY;
+
+  if (currentScrollY > lastScrollY && currentScrollY > 10) {
+    // 向下滚动 → 隐藏
     header.classList.add('hidden');
-  } else {
-    // 上滑或在顶部 → 显示
+  } else if (currentScrollY < lastScrollY || currentScrollY <= 10) {
+    // 向上滚动或靠近顶部 → 显示
     header.classList.remove('hidden');
   }
-  lastScrollY = window.scrollY;
+
+  lastScrollY = currentScrollY;
   ticking = false;
 }
 
@@ -158,7 +168,7 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// 数据加载部分保持不变
+// 数据加载与渲染
 async function loadData() {
   try {
     const res = await fetch(`${rootUrl}data.json?t=${Date.now()}`);
@@ -225,6 +235,7 @@ function renderPage(items, containerId, paginationId, page = 1) {
   pagination.appendChild(next);
 }
 
+// 页面加载完成：数据渲染完毕后触发整体淡入
 window.onload = async () => {
   const data = await loadData();
   if (data.updated) document.getElementById('update-time').textContent = `最后更新：${data.updated}`;
@@ -236,8 +247,11 @@ window.onload = async () => {
   renderPage(setuItems, 'setu-list', 'setu-pagination', 1);
   renderPage(zrsetuItems, 'zrsetu-list', 'zrsetu-pagination', 1);
 
-  document.getElementById('page-info').innerHTML = 
+  document.getElementById('page-info').innerHTML =
     `二次元 <b>${setuItems.length}</b> 期　　Cos写真 <b>${zrsetuItems.length}</b> 期`;
+
+  // 所有内容渲染完成 → 触发淡入动画
+  document.body.classList.add('loaded');
 };
 </script>
 </body>
