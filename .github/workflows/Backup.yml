@@ -3,7 +3,7 @@ name: Mirror to Backup Account
 on:
   push:
   delete:
-  workflow_dispatch:
+  workflow_dispatch:  # 支持手动触发
 
 jobs:
   mirror:
@@ -18,4 +18,4 @@ jobs:
         uses: pixta-dev/repository-mirroring-action@v1
         with:
           target_repo_url: git@github.com:nnksetu/nnksetu.github.io.git
-          ssh_private_key: ${{ secrets.Backup }}   # ← 这里改成你的实际 secret 名
+          ssh_private_key: ${{ secrets.BACKUP }}  # ← 这里必须和你 secret 名称完全一致（全大写 BACKUP）
