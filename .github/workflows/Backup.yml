@@ -1,0 +1,21 @@
+name: Mirror to Backup Account
+
+on:
+  push:
+  delete:
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Mirror to backup
+        uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: git@github.com:nnksetu/nnksetu.github.io.git
+          ssh_private_key: ${{ secrets.BACKUP }}   # ← 这里改成你的实际 secret 名
