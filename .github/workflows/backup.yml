@@ -1,0 +1,21 @@
+name: Mirror to Backup Account
+
+on:
+  push:           # 每次 push 到任何分支都触发
+  delete:         # 删除分支或标签时也同步
+  workflow_dispatch:  # 支持手动触发
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 获取完整历史
+
+      - name: Mirror to backup
+        uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: git@github.com:nnksetu/nnksetu.github.io.git   # ← 这里改成你的 b 账号仓库 SSH URL
+          ssh_private_key: ${{ secrets.BACKUP_SSH_PRIVATE_KEY }}
