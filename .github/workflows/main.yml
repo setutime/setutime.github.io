@@ -1,0 +1,24 @@
+name: Sync to Account B
+
+on:
+  push:
+    branches:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  git-mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 获取所有历史分支
+
+      - name: Mirror to B
+        run: |
+          # 这里的 B_TOKEN 对应你在 A 账号设置的 Secret 名字
+          # 链接已经根据你的截图设为: https://github.com/nnksetu/nnksetu.git
+          REMOTE_REPO="https://x-access-token:${{ secrets.B_TOKEN }}@github.com/nnksetu/nnksetu.git"
+          
+          git push --mirror "$REMOTE_REPO"
