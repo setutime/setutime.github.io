@@ -1,31 +1,37 @@
-name: Clean Sync to Account B
+name: Pure Content Backup
 
 on:
   push:
     branches:
-      - main  # 或者您的主分支名（比如 master）
+      - main  # 确认 A 账号是 main 分支
   workflow_dispatch:
 
 jobs:
-  deploy:
+  backup-content:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
         with:
-          # 只拉取最后一层提交，不拉取历史记录
-          fetch-depth: 1
           persist-credentials: false
 
-      - name: Push to B (Clean)
+      - name: Re-initialize and Push
         run: |
-          # 1. 初始化 Git 配置
-          git config --global user.name "Backup Bot"
-          git config --global user.email "bot@example.com"
+          # 1. 彻底清除本地 Git 历史记录，只留纯文件
+          rm -rf .git
           
-          # 2. 构造 B 仓库地址
+          # 2. 重新初始化为一个全新的仓库
+          git init
+          git config user.name "Backup Bot"
+          git config user.email "bot@example.com"
+          
+          # 3. 添加所有文件（包含你的 index.html 等）
+          git add .
+          git commit -m "Pure content backup $(date +'%Y-%m-%d %H:%M:%S')"
+          
+          # 4. 强制推送到 B 账号
+          # 链接确认：https://github.com/nnksetu/nnksetu.git
           REMOTE_REPO="https://x-access-token:${{ secrets.B_TOKEN }}@github.com/nnksetu/nnksetu.git"
           
-          # 3. 强制覆盖 B 账号的 main 分支
-          # 这会删除 B 账号原有的历史，只保留 A 账号当前的最新内容
-          git push --force "$REMOTE_REPO" main:main
+          # 强制推送到 B 的 main 分支
+          git push --force "$REMOTE_REPO" master:main || git push --force "$REMOTE_REPO" main:main
