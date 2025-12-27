@@ -3,7 +3,7 @@ name: Pure Content Backup
 on:
   push:
     branches:
-      - main  # 确认 A 账号是 main 分支
+      - '*'
   workflow_dispatch:
 
 jobs:
@@ -17,21 +17,21 @@ jobs:
 
       - name: Re-initialize and Push
         run: |
-          # 1. 彻底清除本地 Git 历史记录，只留纯文件
+          # 1. 彻底切断旧的历史记录，避免敏感信息拦截
           rm -rf .git
           
-          # 2. 重新初始化为一个全新的仓库
+          # 2. 重新初始化本地仓库
           git init
           git config user.name "Backup Bot"
           git config user.email "bot@example.com"
           
-          # 3. 添加所有文件（包含你的 index.html 等）
+          # 3. 提交当前干净的内容 
           git add .
           git commit -m "Pure content backup $(date +'%Y-%m-%d %H:%M:%S')"
           
-          # 4. 强制推送到 B 账号
-          # 链接确认：https://github.com/nnksetu/nnksetu.git
+          # 4. 强制推送至 B 账号
+          # 确保你使用的是已开启 workflow 权限的 B_TOKEN
           REMOTE_REPO="https://x-access-token:${{ secrets.B_TOKEN }}@github.com/nnksetu/nnksetu.git"
           
-          # 强制推送到 B 的 main 分支
-          git push --force "$REMOTE_REPO" master:main || git push --force "$REMOTE_REPO" main:main
+          # 这里的 HEAD:main 意思是将本地当前内容强制推送到 B 账号的 main 分支
+          git push --force "$REMOTE_REPO" HEAD:main
