@@ -10,15 +10,21 @@ jobs:
   git-mirror:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Source
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # 获取所有历史分支
+          fetch-depth: 0
+          # 关键：这行能防止 A 账号的机器人身份干扰后续的推送操作
+          persist-credentials: false 
 
       - name: Mirror to B
         run: |
-          # 这里的 B_TOKEN 对应你在 A 账号设置的 Secret 名字
-          # 链接已经根据你的截图设为: https://github.com/nnksetu/nnksetu.git
+          # 1. 设置变量（直接引用你已经创建好的 B_TOKEN）
+          # B 账号地址确认：https://github.com/nnksetu/nnksetu.git
           REMOTE_REPO="https://x-access-token:${{ secrets.B_TOKEN }}@github.com/nnksetu/nnksetu.git"
           
+          # 2. 清除可能存在的本地 Git 认证缓存（双重保险）
+          git config --local --unset-all http.https://github.com/.extraheader || true
+          
+          # 3. 执行镜像推送
           git push --mirror "$REMOTE_REPO"
