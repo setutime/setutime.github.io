@@ -1,30 +1,31 @@
-name: Sync to Account B
+name: Clean Sync to Account B
 
 on:
   push:
     branches:
-      - '*'
+      - main  # 或者您的主分支名（比如 master）
   workflow_dispatch:
 
 jobs:
-  git-mirror:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-          # 关键：这行能防止 A 账号的机器人身份干扰后续的推送操作
-          persist-credentials: false 
+          # 只拉取最后一层提交，不拉取历史记录
+          fetch-depth: 1
+          persist-credentials: false
 
-      - name: Mirror to B
+      - name: Push to B (Clean)
         run: |
-          # 1. 设置变量（直接引用你已经创建好的 B_TOKEN）
-          # B 账号地址确认：https://github.com/nnksetu/nnksetu.git
+          # 1. 初始化 Git 配置
+          git config --global user.name "Backup Bot"
+          git config --global user.email "bot@example.com"
+          
+          # 2. 构造 B 仓库地址
           REMOTE_REPO="https://x-access-token:${{ secrets.B_TOKEN }}@github.com/nnksetu/nnksetu.git"
           
-          # 2. 清除可能存在的本地 Git 认证缓存（双重保险）
-          git config --local --unset-all http.https://github.com/.extraheader || true
-          
-          # 3. 执行镜像推送
-          git push --mirror "$REMOTE_REPO"
+          # 3. 强制覆盖 B 账号的 main 分支
+          # 这会删除 B 账号原有的历史，只保留 A 账号当前的最新内容
+          git push --force "$REMOTE_REPO" main:main
