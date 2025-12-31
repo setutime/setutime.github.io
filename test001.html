@@ -24,7 +24,7 @@
         .file-input { display: none; }
         .btn { background: #333; color: white; border: none; padding: 10px 24px; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background 0.3s ease; }
         .btn:hover { background: #222; }
-        .progress-container { margin-top: 30px; }
+        .progress-container { margin-top: 30px; display: none; }
         .progress-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
         .file-name { flex: 1; font-size: 0.95rem; color: #444; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .progress-bar { width: 200px; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; margin: 0 20px; }
@@ -81,7 +81,7 @@
                     <input type="file" id="fileInput" class="file-input" accept="image/*" multiple>
                 </div>
 
-                <div class="progress-container" id="progressContainer" style="display:none;">
+                <div class="progress-container" id="progressContainer">
                     <h3 style="margin-bottom:15px; font-weight:500; color:#444;">上传进度（正在上传在上方，等待在下方）</h3>
                     <div id="progressList"></div>
                 </div>
@@ -131,14 +131,16 @@
         const imageGrid = document.getElementById('imageGrid');
         const imageCount = document.getElementById('imageCount');
 
-        let waitingQueue = [];
-        let activeTasks = new Map();
-        let currentBatch = [];
+        let filesToUpload = []; // 所有待上传文件（包括等待和正在上传）
+        let activeCount = 0;
+        let currentBatchResults = [];
 
         document.addEventListener('DOMContentLoaded', loadImages);
 
         uploadArea.addEventListener('click', () => fileInput.click());
+
         fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
         uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
         uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
         uploadArea.addEventListener('drop', e => {
@@ -147,110 +149,112 @@
             handleFiles(e.dataTransfer.files);
         });
 
-        function handleFiles(files) {
-            files = Array.from(files).filter(f => f.type.startsWith('image/'));
-            if (files.length === 0) return;
+        function handleFiles(selectedFiles) {
+            const newFiles = Array.from(selectedFiles).filter(f => f.type.startsWith('image/') && f.size <= 30 * 1024 * 1024);
 
-            const valid = files.filter(f => f.size <= 30 * 1024 * 1024);
-            if (files.length > valid.length) alert(`有 ${files.length - valid.length} 个文件超过30MB，已忽略`);
+            if (newFiles.length === 0) return;
 
-            const existingNames = new Set([...waitingQueue.map(f => f.name), ...activeTasks.keys()]);
-            const newFiles = valid.filter(f => !existingNames.has(f.name));
-            if (newFiles.length === 0) {
-                alert('所选文件已在上传队列中');
+            // 去重（按文件名）
+            const existingNames = new Set(filesToUpload.map(f => f.name));
+            const uniqueNewFiles = newFiles.filter(f => !existingNames.has(f.name));
+
+            if (uniqueNewFiles.length === 0) {
+                alert('所选图片已在上传队列中');
                 return;
             }
 
-            waitingQueue.push(...newFiles);
+            filesToUpload = filesToUpload.concat(uniqueNewFiles);
+            currentBatchResults = [];
             progressContainer.style.display = 'block';
             resultSection.style.display = 'none';
-            currentBatch = [];
-            renderProgress();
-            startNextUploads();
+            renderProgressList();
+            startUploads();
         }
 
-        function renderProgress() {
+        function renderProgressList() {
             progressList.innerHTML = '';
 
-            activeTasks.forEach(task => progressList.appendChild(task.div));
-
-            waitingQueue.forEach(file => {
+            filesToUpload.forEach(file => {
+                const isActive = activeCount > filesToUpload.indexOf(file); // 粗略判断是否正在上传（前 activeCount 个）
                 const div = document.createElement('div');
                 div.className = 'progress-item';
+                div.id = 'progress-' + file.name.replace(/[^a-zA-Z0-9]/g, '');
                 div.innerHTML = `
                     <div class="file-name" title="${file.name}">${file.name}</div>
                     <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
-                    <div class="status waiting">等待中...</div>
+                    <div class="status ${isActive ? 'uploading' : 'waiting'}">${isActive ? '上传中...' : '等待中...'}</div>
                 `;
                 progressList.appendChild(div);
             });
         }
 
-        function startNextUploads() {
-            while (activeTasks.size < MAX_CONCURRENT && waitingQueue.length > 0) {
-                const file = waitingQueue.shift();
-                uploadSingle(file);
+        function startUploads() {
+            while (activeCount < MAX_CONCURRENT && filesToUpload.length > activeCount) {
+                const file = filesToUpload[activeCount];
+                activeCount++;
+                uploadFile(file);
             }
         }
 
-        async function uploadSingle(file) {
-            const div = document.createElement('div');
-            div.className = 'progress-item';
-            div.innerHTML = `
-                <div class="file-name" title="${file.name}">${file.name}</div>
-                <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
-                <div class="status uploading">上传中...</div>
-            `;
-            progressList.insertBefore(div, progressList.firstChild);
-
-            const progressBar = div.querySelector('.progress-fill');
-            const statusEl = div.querySelector('.status');
-
-            activeTasks.set(file.name, { div, progressBar, statusEl });
+        async function uploadFile(file) {
+            const itemId = 'progress-' + file.name.replace(/[^a-zA-Z0-9]/g, '');
+            const itemDiv = document.getElementById(itemId);
+            const progressFill = itemDiv.querySelector('.progress-fill');
+            const statusText = itemDiv.querySelector('.status');
 
             const formData = new FormData();
             formData.append('file', file);
 
             try {
                 const interval = setInterval(() => {
-                    const w = parseFloat(progressBar.style.width) || 0;
-                    if (w < 90) progressBar.style.width = (w + Math.random() * 15 + 10) + '%';
+                    const w = parseFloat(progressFill.style.width) || 0;
+                    if (w < 90) progressFill.style.width = (w + Math.random() * 15 + 10) + '%';
                 }, 200);
 
                 const response = await fetch('https://ipfs-relay.crossbell.io/upload', { method: 'POST', body: formData });
                 clearInterval(interval);
-                progressBar.style.width = '100%';
+                progressFill.style.width = '100%';
 
                 if (!response.ok) throw new Error();
                 const data = await response.json();
                 if (data.status !== 'ok') throw new Error();
 
-                statusEl.textContent = '成功';
-                statusEl.className = 'status success';
+                statusText.textContent = '成功';
+                statusText.className = 'status success';
 
-                saveImageToStorage({ cid: data.cid, web2url: data.web2url, fileName: file.name, fileSize: file.size, uploadTime: new Date().toISOString() });
-                currentBatch.push({ fileName: file.name, web2url: data.web2url });
+                saveImageToStorage({
+                    cid: data.cid,
+                    web2url: data.web2url,
+                    fileName: file.name,
+                    fileSize: file.size,
+                    uploadTime: new Date().toISOString()
+                });
+
+                currentBatchResults.push({ fileName: file.name, web2url: data.web2url });
 
             } catch {
-                statusEl.textContent = '失败';
-                statusEl.className = 'status error';
+                statusText.textContent = '失败';
+                statusText.className = 'status error';
             } finally {
-                activeTasks.delete(file.name);
-                renderProgress();
-                startNextUploads();
-                if (activeTasks.size === 0 && waitingQueue.length === 0) showBatchResults();
+                activeCount--;
+                if (activeCount < MAX_CONCURRENT && filesToUpload.length > activeCount + currentBatchResults.length - (MAX_CONCURRENT - activeCount)) {
+                    startUploads();
+                }
+                if (activeCount === 0) {
+                    showResults();
+                }
             }
         }
 
-        function showBatchResults() {
-            currentBatch.sort((a, b) => {
+        function showResults() {
+            currentBatchResults.sort((a, b) => {
                 const na = parseInt(a.fileName.match(/\d+/)?.[0] || '0');
                 const nb = parseInt(b.fileName.match(/\d+/)?.[0] || '0');
                 return na - nb;
             });
 
             urlList.innerHTML = '';
-            currentBatch.forEach((item, i) => {
+            currentBatchResults.forEach((item, i) => {
                 const div = document.createElement('div');
                 div.className = 'url-item';
                 div.innerHTML = `
@@ -262,18 +266,21 @@
             });
 
             resultSection.style.display = 'block';
+            filesToUpload = []; // 清空队列
         }
 
         copyAllBtn.onclick = () => {
-            const sorted = currentBatch.slice().sort((a, b) => parseInt(a.fileName.match(/\d+/)?.[0] || '0') - parseInt(b.fileName.match(/\d+/)?.[0] || '0'));
-            copyToClipboard(sorted.map(i => i.web2url).join('\n'));
+            const sorted = currentBatchResults.slice().sort((a, b) => parseInt(a.fileName.match(/\d+/)?.[0] || '0') - parseInt(b.fileName.match(/\d+/)?.[0] || '0'));
+            copyToClipboard(sorted.map(item => item.web2url).join('\n'));
         };
+
+        // 其余函数保持不变（copyAllHistoricalURLs, copyToClipboard, saveImageToStorage, getStoredImages, loadImages 等）
 
         function copyAllHistoricalURLs() {
             const images = getStoredImages();
             const sorted = images.slice().sort((a, b) => parseInt(a.fileName.match(/\d+/)?.[0] || '0') - parseInt(b.fileName.match(/\d+/)?.[0] || '0'));
-            copyToClipboard(sorted.map(i => i.web2url).join('\n'));
-            alert('所有历史URL已按数字顺序复制到剪贴板！');
+            copyToClipboard(sorted.map(img => img.web2url).join('\n'));
+            alert('已按数字顺序复制所有历史URL！');
         }
 
         async function copyToClipboard(text) {
@@ -333,8 +340,10 @@
             imageCount.textContent = sorted.length;
         }
 
+        // 其他函数（deleteImage, exportData, importData, clearAllData, formatFileSize, formatDate）保持不变，代码与之前一致
+
         function deleteImage(cid) {
-            if (confirm('确定删除这条记录吗？')) {
+            if (confirm('确定删除？')) {
                 const images = getStoredImages().filter(i => i.cid !== cid);
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(images));
                 loadImages();
@@ -343,7 +352,7 @@
 
         function exportData() {
             const images = getStoredImages();
-            if (images.length === 0) return alert('没有数据可导出');
+            if (images.length === 0) return alert('无数据');
             const blob = new Blob([JSON.stringify(images, null, 2)], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -360,16 +369,16 @@
             reader.onload = ev => {
                 try {
                     const data = JSON.parse(ev.target.result);
-                    if (!Array.isArray(data)) throw new Error();
+                    if (!Array.isArray(data)) throw '';
                     const valid = data.filter(i => i.cid && i.web2url);
                     const existing = getStoredImages();
                     const existingCids = new Set(existing.map(i => i.cid));
                     const newItems = valid.filter(i => !existingCids.has(i.cid));
                     localStorage.setItem(STORAGE_KEY, JSON.stringify([...existing, ...newItems]));
                     loadImages();
-                    alert(`导入成功，新增 ${newItems.length} 条记录`);
+                    alert(`导入成功，新增 ${newItems.length} 条`);
                 } catch {
-                    alert('导入失败：文件格式错误');
+                    alert('导入失败');
                 }
             };
             reader.readAsText(file);
@@ -377,7 +386,7 @@
         }
 
         function clearAllData() {
-            if (confirm('确定清空所有本地记录？此操作不可恢复！')) {
+            if (confirm('确定清空所有数据？不可恢复！')) {
                 localStorage.removeItem(STORAGE_KEY);
                 loadImages();
             }
