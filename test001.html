@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="progress-container" id="progressContainer" style="display:none;">
-                    <h3 style="margin-bottom:15px; font-weight:500; color:#444;">上传进度（正在上传的在上方，等待的在下方）</h3>
+                    <h3 style="margin-bottom:15px; font-weight:500; color:#444;">上传进度（正在上传在上方，等待在下方）</h3>
                     <div id="progressList"></div>
                 </div>
 
@@ -131,13 +131,12 @@
         const imageGrid = document.getElementById('imageGrid');
         const imageCount = document.getElementById('imageCount');
 
-        let waitingQueue = [];      // 等待中的文件
-        let activeTasks = new Map(); // 正在上传的任务 {fileName: {div, progressBar, statusEl, file}}
-        let currentBatch = [];      // 本次批次成功结果
+        let waitingQueue = [];           // 等待上传的文件数组
+        let activeTasks = new Map();     // 正在上传的任务 Map<fileName, taskObject>
+        let currentBatch = [];           // 本次上传成功的记录
 
         document.addEventListener('DOMContentLoaded', () => {
             loadImages();
-            updateImageCount();
         });
 
         uploadArea.addEventListener('click', () => fileInput.click());
@@ -159,7 +158,19 @@
             const valid = files.filter(f => f.size <= 30 * 1024 * 1024);
             if (files.length > valid.length) alert(`有 ${files.length - valid.length} 个文件超过30MB，已忽略`);
 
-            waitingQueue = waitingQueue.concat(valid);
+            // 去重：如果文件名已存在于等待或正在上传中，跳过
+            const existingNames = new Set([
+                ...waitingQueue.map(f => f.name),
+                ...Array.from(activeTasks.keys())
+            ]);
+            const newFiles = valid.filter(f => !existingNames.has(f.name));
+
+            if (newFiles.length === 0) {
+                alert('所选文件已在上传队列中');
+                return;
+            }
+
+            waitingQueue = waitingQueue.concat(newFiles);
             progressContainer.style.display = 'block';
             resultSection.style.display = 'none';
             currentBatch = [];
@@ -170,12 +181,12 @@
         function renderProgress() {
             progressList.innerHTML = '';
 
-            // 先渲染正在上传的（保持在上方）
+            // 正在上传的（保持在上方）
             activeTasks.forEach(task => {
                 progressList.appendChild(task.div);
             });
 
-            // 再渲染等待中的
+            // 等待中的（在下方）
             waitingQueue.forEach(file => {
                 const div = document.createElement('div');
                 div.className = 'progress-item';
@@ -203,12 +214,13 @@
                 <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
                 <div class="status uploading">上传中...</div>
             `;
-            progressList.insertBefore(div, progressList.firstChild); // 插入到最上方
+            progressList.insertBefore(div, progressList.firstChild);
 
             const progressBar = div.querySelector('.progress-fill');
             const statusEl = div.querySelector('.status');
 
-            activeTasks.set(file.name, {div, progressBar, statusEl, file});
+            const task = { div, progressBar, statusEl, file };
+            activeTasks.set(file.name, task);
 
             const formData = new FormData();
             formData.append('file', file);
@@ -247,8 +259,8 @@
                 console.error(err);
             } finally {
                 activeTasks.delete(file.name);
-                renderProgress(); // 重新渲染，确保等待项显示
-                startNextUploads(); // 继续下一个
+                renderProgress(); // 彻底重新渲染，避免残留
+                startNextUploads();
                 if (activeTasks.size === 0 && waitingQueue.length === 0) {
                     showBatchResults();
                 }
@@ -276,6 +288,8 @@
 
             resultSection.style.display = 'block';
         }
+
+        // 其余函数（copyAllBtn、copyAllHistoricalURLs、copyToClipboard、saveImageToStorage、getStoredImages、loadImages、deleteImage、updateImageCount、exportData、importData、clearAllData、formatFileSize、formatDate）保持不变，与上版一致
 
         copyAllBtn.onclick = () => {
             const sorted = currentBatch.slice().sort((a, b) => parseInt(a.fileName.match(/\d+/)?.[0] || '0') - parseInt(b.fileName.match(/\d+/)?.[0] || '0'));
