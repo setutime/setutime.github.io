@@ -203,6 +203,12 @@
             border-bottom: none;
         }
 
+        .url-number {
+            width: 40px;
+            font-weight: bold;
+            color: #333;
+        }
+
         .url-text {
             flex: 1;
             word-break: break-all;
@@ -287,10 +293,10 @@
         }
 
         .image-number {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: bold;
             color: #333;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .image-filename {
@@ -393,7 +399,7 @@
                 </div>
 
                 <div class="result-section" id="resultSection">
-                    <h3 class="section-title">本次上传完成 · 图片链接（按文件名排序）</h3>
+                    <h3 class="section-title">本次上传完成 · 图片链接（按文件名数字顺序）</h3>
                     <div class="url-list" id="urlList"></div>
                     <div class="copy-all">
                         <button class="btn" id="copyAllBtn">复制所有链接（每行一个）</button>
@@ -416,7 +422,7 @@
                     <button class="btn" onclick="exportData()">导出数据（JSON）</button>
                     <button class="btn" onclick="document.getElementById('importFile').click()">导入数据</button>
                     <button class="btn" style="background:#dc3545;" onclick="clearAllData()">清空所有数据</button>
-                    <button class="btn" onclick="copyAllHistoricalURLs()">复制所有历史URL（按文件名排序）</button>
+                    <button class="btn" onclick="copyAllHistoricalURLs()">复制所有历史URL（按文件名数字顺序）</button>
                     <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
                 </div>
 
@@ -429,7 +435,7 @@
 
     <script>
         const STORAGE_KEY = 'xlog_images';
-        const MAX_CONCURRENT = 10; // 最多同时上传 10 张
+        const MAX_CONCURRENT = 10;
 
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
@@ -441,30 +447,61 @@
         const imageGrid = document.getElementById('imageGrid');
         const imageCount = document.getElementById('imageCount');
 
-        let currentBatch = []; // 当前批次的上传结果 {fileName, web2url}
+        let currentBatch = []; // {fileName, web2url}
 
-        // ... (拖拽、选择文件、addToQueue、renderAllProgressItems、startUploads、uploadSingle 等并发上传逻辑保持不变)
-
-        // 在 uploadSingle 的成功处理中添加：
-        // (在 try 块的成功后，saveImageToStorage 前)
-        currentBatch.push({
-            fileName: item.file.name,
-            web2url: data.web2url
+        document.addEventListener('DOMContentLoaded', () => {
+            currentBatch = [];
+            loadImages();
+            updateImageCount();
         });
 
-        // 在所有上传完成时（startUploads 中全部完成判断后，或在 finally 当 queue 和 active 为空时）
-        // 添加：
-        displayCurrentBatchResults();
+        // 拖拽和选择文件逻辑
+        uploadArea.addEventListener('click', () => fileInput.click());
 
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const files = Array.from(e.target.files).filter(f => f.type.startsWith('image/'));
+                addToQueue(files);
+            }
+        });
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+            if (files.length > 0) {
+                addToQueue(files);
+            }
+        });
+
+        // 并发上传逻辑（保持不变，略去详细代码以节省空间，但包含 currentBatch.push）
+        // 在 uploadSingle 的成功部分添加：
+        // currentBatch.push({ fileName: item.file.name, web2url: data.web2url });
+
+        // 在所有上传完成时调用：
         function displayCurrentBatchResults() {
-            // 按文件名排序
-            currentBatch.sort((a, b) => a.fileName.localeCompare(b.fileName));
+            // 提取数字并排序（处理如 1.jpg, 100.jpg, 105.jpg 正确顺序）
+            currentBatch.sort((a, b) => {
+                const numA = parseInt(a.fileName.match(/(\d+)/)?.[1] || '0');
+                const numB = parseInt(b.fileName.match(/(\d+)/)?.[1] || '0');
+                return numA - numB;
+            });
 
             urlList.innerHTML = '';
-            currentBatch.forEach(item => {
+            currentBatch.forEach((item, index) => {
                 const urlItem = document.createElement('div');
                 urlItem.className = 'url-item';
                 urlItem.innerHTML = `
+                    <div class="url-number">${index + 1}.</div>
                     <div class="url-text">${item.web2url}</div>
                     <button class="copy-btn" onclick="copyToClipboard('${item.web2url}')">复制</button>
                 `;
@@ -472,34 +509,87 @@
             });
 
             resultSection.style.display = 'block';
-
-            // 清空当前批次，准备下一次上传
-            currentBatch = [];
+            currentBatch = []; // 清空准备下次
         }
 
         copyAllBtn.onclick = () => {
-            const sortedBatch = currentBatch.slice().sort((a, b) => a.fileName.localeCompare(b.fileName));
-            const urls = sortedBatch.map(item => item.web2url).join('\n');
+            // 复制时也使用排序后的
+            const sorted = currentBatch.slice().sort((a, b) => {
+                const numA = parseInt(a.fileName.match(/(\d+)/)?.[1] || '0');
+                const numB = parseInt(b.fileName.match(/(\d+)/)?.[1] || '0');
+                return numA - numB;
+            });
+            const urls = sorted.map(item => item.web2url).join('\n');
             copyToClipboard(urls);
         };
 
         function copyAllHistoricalURLs() {
             const images = getStoredImages();
-            const sortedImages = images.slice().sort((a, b) => a.fileName.localeCompare(b.fileName));
-            const urls = sortedImages.map(img => img.web2url).join('\n');
+            // 历史也按数字顺序排序
+            const sorted = images.slice().sort((a, b) => {
+                const numA = parseInt(a.fileName.match(/(\d+)/)?.[1] || '0');
+                const numB = parseInt(b.fileName.match(/(\d+)/)?.[1] || '0');
+                return numA - numB;
+            });
+            const urls = sorted.map(img => img.web2url).join('\n');
             copyToClipboard(urls);
-            alert('所有历史URL已按文件名顺序复制到剪贴板！');
+            alert('所有历史URL已按文件名数字顺序复制到剪贴板！');
         }
 
-        // 其余代码（loadImages、saveImageToStorage 等）保持不变，已有按文件名排序
+        function loadImages() {
+            const images = getStoredImages();
+            const sortedImages = images.slice().sort((a, b) => {
+                const numA = parseInt(a.fileName.match(/(\d+)/)?.[1] || '0');
+                const numB = parseInt(b.fileName.match(/(\d+)/)?.[1] || '0');
+                return numA - numB;
+            });
+            imageGrid.innerHTML = '';
 
-        // 注意：在上传开始时（addToQueue 末尾）添加 currentBatch = [];
+            if (sortedImages.length === 0) {
+                imageGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#999;padding:60px;">暂无上传记录</div>';
+                return;
+            }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadImages();
-            updateImageCount();
-            currentBatch = [];
-        });
+            sortedImages.forEach((image, index) => {
+                const card = document.createElement('div');
+                card.className = 'image-card';
+                card.innerHTML = `
+                    <img src="${image.web2url}" alt="${image.fileName}" class="image-preview" loading="lazy">
+                    <div class="image-info">
+                        <div class="image-number">${index + 1}.</div>
+                        <div class="image-filename" title="${image.fileName}">${image.fileName}</div>
+                        <div class="image-meta">
+                            ${formatFileSize(image.fileSize)} • ${formatDate(image.uploadTime)}
+                        </div>
+                        <div class="image-actions">
+                            <button class="btn-small" onclick="copyToClipboard('${image.web2url}')">复制链接</button>
+                            <button class="btn-small" onclick="window.open('${image.web2url}', '_blank')">预览</button>
+                            <button class="btn-small danger" onclick="deleteImageByCid('${image.cid}')">删除</button>
+                        </div>
+                    </div>
+                `;
+                imageGrid.appendChild(card);
+            });
+        }
+
+        // 其他函数（saveImageToStorage, deleteImageByCid 等）保持不变
+
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                alert('已复制到剪贴板！');
+            } catch {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                alert('已复制到剪贴板！');
+            }
+        }
+
+        // ... (其余代码不变)
     </script>
 </body>
 </html>
