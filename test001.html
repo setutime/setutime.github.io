@@ -24,15 +24,15 @@
         .file-input { display: none; }
         .btn { background: #333; color: white; border: none; padding: 10px 24px; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background 0.3s ease; }
         .btn:hover { background: #222; }
-        .progress-container { margin-top: 30px; display: none; }
+        .progress-container { margin-top: 30px; }
         .progress-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
         .file-name { flex: 1; font-size: 0.95rem; color: #444; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .progress-bar { width: 200px; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; margin: 0 20px; }
         .progress-fill { height: 100%; background: #666; width: 0%; transition: width 0.3s ease; }
-        .status { width: 100px; text-align: right; font-size: 0.9rem; color: #666; }
+        .status { width: 100px; text-align: right; font-size: 0.9rem; }
+        .status.uploading { color: #007bff; }
         .status.success { color: #28a745; }
         .status.error { color: #dc3545; }
-        .status.uploading { color: #007bff; }
         .status.waiting { color: #999; }
         .result-section { margin-top: 40px; display: none; }
         .url-list { background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 20px; max-height: 500px; overflow-y: auto; font-family: monospace; font-size: 0.95rem; }
@@ -81,7 +81,7 @@
                     <input type="file" id="fileInput" class="file-input" accept="image/*" multiple>
                 </div>
 
-                <div class="progress-container" id="progressContainer">
+                <div class="progress-container" id="progressContainer" style="display:none;">
                     <h3 style="margin-bottom:15px; font-weight:500; color:#444;">上传进度（正在上传在上方，等待在下方）</h3>
                     <div id="progressList"></div>
                 </div>
@@ -131,9 +131,9 @@
         const imageGrid = document.getElementById('imageGrid');
         const imageCount = document.getElementById('imageCount');
 
-        let filesToUpload = []; // 所有待上传文件（包括等待和正在上传）
-        let activeCount = 0;
-        let currentBatchResults = [];
+        let allFiles = []; // 所有本次选择的图片（顺序固定）
+        let completedCount = 0;
+        let currentBatch = [];
 
         document.addEventListener('DOMContentLoaded', loadImages);
 
@@ -142,7 +142,7 @@
         fileInput.addEventListener('change', e => handleFiles(e.target.files));
 
         uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
-        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover');
         uploadArea.addEventListener('drop', e => {
             e.preventDefault();
             uploadArea.classList.remove('dragover');
@@ -154,73 +154,72 @@
 
             if (newFiles.length === 0) return;
 
-            // 去重（按文件名）
-            const existingNames = new Set(filesToUpload.map(f => f.name));
-            const uniqueNewFiles = newFiles.filter(f => !existingNames.has(f.name));
-
-            if (uniqueNewFiles.length === 0) {
-                alert('所选图片已在上传队列中');
+            // 去重
+            const existingNames = new Set(allFiles.map(f => f.name));
+            const uniqueNew = newFiles.filter(f => !existingNames.has(f.name));
+            if (uniqueNew.length === 0) {
+                alert('所选图片已在队列中');
                 return;
             }
 
-            filesToUpload = filesToUpload.concat(uniqueNewFiles);
-            currentBatchResults = [];
+            allFiles = allFiles.concat(uniqueNew);
+            completedCount = 0;
+            currentBatch = [];
             progressContainer.style.display = 'block';
             resultSection.style.display = 'none';
-            renderProgressList();
-            startUploads();
+            renderProgress();
+            uploadNextBatch();
         }
 
-        function renderProgressList() {
+        function renderProgress() {
             progressList.innerHTML = '';
-
-            filesToUpload.forEach(file => {
-                const isActive = activeCount > filesToUpload.indexOf(file); // 粗略判断是否正在上传（前 activeCount 个）
+            allFiles.forEach((file, index) => {
+                const isCompleted = index < completedCount;
+                const isUploading = index < completedCount + MAX_CONCURRENT && index >= completedCount;
                 const div = document.createElement('div');
                 div.className = 'progress-item';
-                div.id = 'progress-' + file.name.replace(/[^a-zA-Z0-9]/g, '');
                 div.innerHTML = `
                     <div class="file-name" title="${file.name}">${file.name}</div>
-                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
-                    <div class="status ${isActive ? 'uploading' : 'waiting'}">${isActive ? '上传中...' : '等待中...'}</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:${isCompleted ? '100%' : '0%'}"></div></div>
+                    <div class="status ${isCompleted ? 'success' : isUploading ? 'uploading' : 'waiting'}">
+                        ${isCompleted ? '成功' : isUploading ? '上传中...' : '等待中...'}
+                    </div>
                 `;
                 progressList.appendChild(div);
             });
         }
 
-        function startUploads() {
-            while (activeCount < MAX_CONCURRENT && filesToUpload.length > activeCount) {
-                const file = filesToUpload[activeCount];
-                activeCount++;
-                uploadFile(file);
+        async function uploadNextBatch() {
+            const promises = [];
+            for (let i = 0; i < MAX_CONCURRENT && completedCount + i < allFiles.length; i++) {
+                const file = allFiles[completedCount + i];
+                promises.push(uploadSingle(file));
+            }
+
+            await Promise.all(promises);
+            if (completedCount < allFiles.length) {
+                uploadNextBatch();
+            } else {
+                showBatchResults();
             }
         }
 
-        async function uploadFile(file) {
-            const itemId = 'progress-' + file.name.replace(/[^a-zA-Z0-9]/g, '');
-            const itemDiv = document.getElementById(itemId);
-            const progressFill = itemDiv.querySelector('.progress-fill');
-            const statusText = itemDiv.querySelector('.status');
-
+        async function uploadSingle(file) {
             const formData = new FormData();
             formData.append('file', file);
 
             try {
+                // 模拟进度
                 const interval = setInterval(() => {
-                    const w = parseFloat(progressFill.style.width) || 0;
-                    if (w < 90) progressFill.style.width = (w + Math.random() * 15 + 10) + '%';
-                }, 200);
+                    renderProgress();
+                }, 300);
 
                 const response = await fetch('https://ipfs-relay.crossbell.io/upload', { method: 'POST', body: formData });
                 clearInterval(interval);
-                progressFill.style.width = '100%';
 
                 if (!response.ok) throw new Error();
                 const data = await response.json();
                 if (data.status !== 'ok') throw new Error();
-
-                statusText.textContent = '成功';
-                statusText.className = 'status success';
 
                 saveImageToStorage({
                     cid: data.cid,
@@ -230,31 +229,26 @@
                     uploadTime: new Date().toISOString()
                 });
 
-                currentBatchResults.push({ fileName: file.name, web2url: data.web2url });
+                currentBatch.push({ fileName: file.name, web2url: data.web2url });
 
-            } catch {
-                statusText.textContent = '失败';
-                statusText.className = 'status error';
+            } catch (err) {
+                console.error(err);
+                // 失败也算完成，继续下一个
             } finally {
-                activeCount--;
-                if (activeCount < MAX_CONCURRENT && filesToUpload.length > activeCount + currentBatchResults.length - (MAX_CONCURRENT - activeCount)) {
-                    startUploads();
-                }
-                if (activeCount === 0) {
-                    showResults();
-                }
+                completedCount++;
+                renderProgress();
             }
         }
 
-        function showResults() {
-            currentBatchResults.sort((a, b) => {
+        function showBatchResults() {
+            currentBatch.sort((a, b) => {
                 const na = parseInt(a.fileName.match(/\d+/)?.[0] || '0');
                 const nb = parseInt(b.fileName.match(/\d+/)?.[0] || '0');
                 return na - nb;
             });
 
             urlList.innerHTML = '';
-            currentBatchResults.forEach((item, i) => {
+            currentBatch.forEach((item, i) => {
                 const div = document.createElement('div');
                 div.className = 'url-item';
                 div.innerHTML = `
@@ -266,15 +260,15 @@
             });
 
             resultSection.style.display = 'block';
-            filesToUpload = []; // 清空队列
+            allFiles = [];
         }
 
+        // 其余函数保持不变
+
         copyAllBtn.onclick = () => {
-            const sorted = currentBatchResults.slice().sort((a, b) => parseInt(a.fileName.match(/\d+/)?.[0] || '0') - parseInt(b.fileName.match(/\d+/)?.[0] || '0'));
+            const sorted = currentBatch.slice().sort((a, b) => parseInt(a.fileName.match(/\d+/)?.[0] || '0') - parseInt(b.fileName.match(/\d+/)?.[0] || '0'));
             copyToClipboard(sorted.map(item => item.web2url).join('\n'));
         };
-
-        // 其余函数保持不变（copyAllHistoricalURLs, copyToClipboard, saveImageToStorage, getStoredImages, loadImages 等）
 
         function copyAllHistoricalURLs() {
             const images = getStoredImages();
@@ -340,8 +334,6 @@
             imageCount.textContent = sorted.length;
         }
 
-        // 其他函数（deleteImage, exportData, importData, clearAllData, formatFileSize, formatDate）保持不变，代码与之前一致
-
         function deleteImage(cid) {
             if (confirm('确定删除？')) {
                 const images = getStoredImages().filter(i => i.cid !== cid);
@@ -386,7 +378,7 @@
         }
 
         function clearAllData() {
-            if (confirm('确定清空所有数据？不可恢复！')) {
+            if (confirm('确定清空所有数据？')) {
                 localStorage.removeItem(STORAGE_KEY);
                 loadImages();
             }
