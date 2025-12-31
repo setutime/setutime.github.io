@@ -286,6 +286,13 @@
             padding: 15px;
         }
 
+        .image-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
         .image-filename {
             font-size: 0.95rem;
             color: #333;
@@ -409,6 +416,7 @@
                     <button class="btn" onclick="exportData()">导出数据（JSON）</button>
                     <button class="btn" onclick="document.getElementById('importFile').click()">导入数据</button>
                     <button class="btn" style="background:#dc3545;" onclick="clearAllData()">清空所有数据</button>
+                    <button class="btn" onclick="copyAllHistoricalURLs()">复制所有历史URL</button>
                     <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
                 </div>
 
@@ -623,6 +631,14 @@
             copyToClipboard(urls);
         };
 
+        function copyAllHistoricalURLs() {
+            const images = getStoredImages();
+            const sortedImages = images.slice().sort((a, b) => a.fileName.localeCompare(b.fileName));
+            const urls = sortedImages.map(img => img.web2url).join('\n');
+            copyToClipboard(urls);
+            alert('所有历史URL已按文件名顺序复制到剪贴板！');
+        }
+
         async function copyToClipboard(text) {
             try {
                 await navigator.clipboard.writeText(text);
@@ -653,19 +669,21 @@
 
         function loadImages() {
             const images = getStoredImages();
+            const sortedImages = images.slice().sort((a, b) => a.fileName.localeCompare(b.fileName));
             imageGrid.innerHTML = '';
 
-            if (images.length === 0) {
+            if (sortedImages.length === 0) {
                 imageGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#999;padding:60px;">暂无上传记录</div>';
                 return;
             }
 
-            images.forEach((image, index) => {
+            sortedImages.forEach((image, index) => {
                 const card = document.createElement('div');
                 card.className = 'image-card';
                 card.innerHTML = `
                     <img src="${image.web2url}" alt="${image.fileName}" class="image-preview" loading="lazy">
                     <div class="image-info">
+                        <div class="image-number">${index + 1}.</div>
                         <div class="image-filename" title="${image.fileName}">${image.fileName}</div>
                         <div class="image-meta">
                             ${formatFileSize(image.fileSize)} • ${formatDate(image.uploadTime)}
@@ -673,7 +691,7 @@
                         <div class="image-actions">
                             <button class="btn-small" onclick="copyToClipboard('${image.web2url}')">复制链接</button>
                             <button class="btn-small" onclick="window.open('${image.web2url}', '_blank')">预览</button>
-                            <button class="btn-small danger" onclick="deleteImage(${index})">删除</button>
+                            <button class="btn-small danger" onclick="deleteImageByCid('${image.cid}')">删除</button>
                         </div>
                     </div>
                 `;
@@ -681,11 +699,11 @@
             });
         }
 
-        function deleteImage(index) {
+        function deleteImageByCid(cid) {
             if (confirm('确定删除这条记录吗？')) {
                 const images = getStoredImages();
-                images.splice(index, 1);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(images));
+                const filtered = images.filter(img => img.cid !== cid);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
                 loadImages();
                 updateImageCount();
             }
