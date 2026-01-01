@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>涩图time</title>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:#fafafa;
+color:#333;
+line-height:1.6;
+}
+
+.container{
+max-width:100%;
+padding:15px
+}
+
+.header{
+text-align:center;
+padding:20px 0;
+margin-bottom:20px;
+border-bottom:1px solid #eee
+}
+
+.title{
+font-size:1.5rem;
+font-weight:600;
+color:#1e1e1e
+}
+
+.image-grid{
+display:flex;
+flex-direction:column;
+gap:18px
+}
+
+.image-item{
+border-radius:6px;
+overflow:hidden;
+box-shadow:0 3px 10px rgba(0,0,0,.06);
+background:#f0f2f5;
+position:relative
+}
+
+/* 骨架加载渐变*/
+.img-wrap{
+  position:relative;
+  width:100%;
+  min-height:180px;
+  background:linear-gradient(100deg,#f1f3f6 0%,#e2e7ec 50%,#f1f3f6 100%);
+  background-size:200% 100%;
+  animation:skeleton 1.5s infinite ease-in-out;
+  overflow:hidden;
+}
+@keyframes skeleton{
+  0%{background-position:200% 0}
+  100%{background-position:-200% 0}
+}
+/* 图片本身淡入 */
+.img-wrap {
+  position: relative;
+  width: 100%;
+  background: #f3f4f6;
+  overflow: hidden;
+}
+
+/* 添加一个 shimmer 背景层，而不是动画在容器上 */
+.img-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f3f4f6 0%, #e9eef6 50%, #f3f4f6 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 图片层：保持原比例完整显示 */
+.img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 2;
+  object-fit: contain;
+  position: relative;
+}
+
+/* 自适应居中单列 */
+.image-grid {
+  width: 100%;
+  max-width: min(90vw, 700px); /* 小屏占90%，大屏不超过700px */
+  margin: 0 auto; /* 居中 */
+}
+
+/* 加载完成后，淡出骨架层 */
+.img-wrap.loaded::before {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.img-wrap.loaded img {
+  opacity: 1;
+}
+
+
+/* ===== 迅雷下载模块===== */
+
+.explanation {
+  background: linear-gradient(135deg, #f2f4f6, #eceef0);  
+  border: 1px solid #dde2e9;
+  border-radius: 16px;
+  padding: 22px;
+  text-align: center;
+  color: #4a5568;
+  margin: 25px 0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);  
+}
+.explanation h2 {
+  font-size: 20px;
+  color: #2d2d2d;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.explanation p {
+  font-size: 15px;
+  color: #506070;
+}
+.explanation p span {
+  color: #2d3748;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(45, 55, 72, 0.3);
+}
+.preserve {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 11px 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #383f50, #626982);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(56, 63, 80, 0.38);
+  transition: all .3s ease;
+}
+.preserve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(56, 63, 80, 0.48);
+  background: linear-gradient(135deg, #424a5e, #6d748c);
+}
+
+.fixed-button{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  width:calc(100% - 80px);max-width:500px;z-index:100;
+}
+.fixed-button a{
+  display:block;text-align:center;background:#5ca8e6;color:#fff;
+  padding:10px;border-radius:999px;text-decoration:none;
+  font-weight:600;box-shadow:0 5px 14px rgba(92,168,230,.4);
+  transition:.3s;
+}
+.fixed-button a:hover{background:#4b96d8;transform:translateY(-2px)}
+
+.collection-wrap {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+.collection {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 300px;  
+    height: 44px; 
+
+    margin: 0 auto 25px;
+    padding: 0;           
+
+    background: #5ca8e6;
+    color: #fff;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    line-height: 1;        
+
+    box-sizing: border-box;
+    box-shadow: 0 6px 16px rgba(92,168,230,.4);
+    transition: all .3s ease;
+}
+.collection:hover {
+    background: #4b96d8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(75,150,216,.5);
+}
+.responsive-video {
+           width: 100%;
+           height: auto;
+           border-radius: 8px;
+           object-fit: contain;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+                                     <!-- ‼️ 1️⃣⬇️-->
+    <h1 class="title">涩图time No.150</h1>
+  </div>
+
+  <div class="image-grid">
+    <p style="text-align:left;font-size:16px"># 鹿初 - 教室 </p>
+
+
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmVPMpVZHyZNWNK7HNhRMkezeknegFjvJmFBez3HZGUWp8" alt="1"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmY2qyUx3W5iLdhkv7aJbBH98iceufgeeuhs37zoziEwhL" alt="2"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYGitRWffYXRiSJFCGqRG7s8uPrhNPiQVyy7kJFhjYTee" alt="3"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmbEk9KFhTYjM19Dg1sXPdf47j4w1pmW3A8G5wHDHGJ9r3" alt="4"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmRjPe4rP1QaYZ8P4e4QKV9qEufhCQjUfDCAvLURBvAwYk" alt="5"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmPeThB7aEtgEBRuo8tatYSgksgYTShzmfa51uKHWXFNWB" alt="6"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmQiKhfGovNJk6D5LAoarm8s2wnqqwTuJudxKMLQZBALqK" alt="7"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmX7pnonxTHmJfjkw3LGrNCp9E2KYzx4evq8WECt5CLWEo" alt="8"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmSUk6cy6Wrn761tSYkLuyrGCyyJF55HraTRwBHtpQANkS" alt="9"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmPcXS15xMLii1UXK9UhcEGf5PrAvksVFS4pafFybXJZox" alt="10"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmPWMaoJD5i5oqQ7h5FGZiE6A9XDYdcbDKQHAzwabg1pNX" alt="11"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmUjx2WBkfZuNYaGiKFpoAYs3v56XcZe85o6peybayqHa1" alt="12"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmPY2Vz6pQYDLP7uRyFoKh9mFFGjyq19K57VQrHt3fhvEK" alt="13"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmNXCRRQ22gnbcKy1qdpNTgL8gy6rqq1qHYnS4BgVVWveB" alt="14"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmZzttwKF6NRv5CZmWoCq3EUjcP2FE4KsntQFasPouQzJG" alt="15"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYQNguQsc4P5TQF5qeinkeovswDLaJY3yQ5qsdyzvLsUJ" alt="16"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYZqCTVkVdEU862nvdcJ8VNg83tbBhtJTghbNzaEsB6bc" alt="17"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYZqCTVkVdEU862nvdcJ8VNg83tbBhtJTghbNzaEsB6bc" alt="18"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYZqCTVkVdEU862nvdcJ8VNg83tbBhtJTghbNzaEsB6bc" alt="19"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYKjmXbCZhsGBEPYkcH2VtW91HiubySayJL27FEasMqiq" alt="20"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmPmnGEsVYKxYRDVh4Uv1Z86mY7m67FPXvchBEqB9JUgLL" alt="21"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYxCztZirL4shT4gvjfdgm5i5MQmKkmT6tmG6kMT4kdcP" alt="22"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qmb3cofSvhW2m8F62R2gS6thed6umFVFC7oZV9yjtoJuBe" alt="23"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmQ4ZVDrWgQ6RrsXUrU1KwGgwvNskyEFi8cX5wcS29gpSV" alt="24"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmcDqtzLxsYdhwwMeNT4dXGNCKLcELBuXqjJX3VvsNtCKk" alt="25"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qma81SXS2Qs54wEXigPc6t6DbeXnBEET4RPSdoB9tAd8Es" alt="26"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmeJekBDenBWDNq6hHjYrVThS7h9NnQrczENTh3uoHdZak" alt="27"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYqgVc4U452q6jHFajSWM6Mb7i2CRhyZspYVNQQhrkyQA" alt="28"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qmd3THYiC4mPu2bzn3M4CJpiJwRSYwAiaPztFJfVvFTiQ3" alt="29"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmeCDqLxiBrto6ek3TGTJd9eRXc8hcgrg9NY7pU455xwZK" alt="30"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmeyXDvj3dEC57WWaPegTyQAXDrUT3TqP7yE2dJdJk37ZY" alt="31"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qmeju1xW8xK3BcCB6xscoYKDtp8KHKo8X234YjghETfFC1" alt="32"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmXLELWqZLvmFD1ioGuuHzZ34f4nV6CE1Jgg59E2penC9J" alt="33"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYEK9HPiw1mv7uqFCjb6oKnb1fzbdJXJVVcczroWHFiu1" alt="34"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmX9YK4ZvDFPvicuWFcRduACbDHsUGShBmrv6Ggsi772hi" alt="35"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYgsdm76pnH9ggMRXCrP8rk7yHikpMKf6jH8LyhdouQqt" alt="36"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmZQDBY2rL6mnB1iya1t1GsHdhWPuqZx1AL8Gpyg2GntAP" alt="37"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmZ8eqrjc4cgMH4P4F92wy3Dap6BMRPvkJw6yJV7C9mhhF" alt="38"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qme9eYLQfA2wPYRD9bZjEYvsBvU9hSCyuRwthnng7Cfbuv" alt="39"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qmd2Chj7ZoYGA7mQNBtocs7sQENA17YUpbi5CMYaGteGdE" alt="40"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmXE87PhKeu3vsrSCrK965cLEzsPecPc39g44Dc35T5YZb" alt="41"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmXSy6cJ6aRR1r92cQEV8njs1Y3towxwEXc8SjrXoR7DyC" alt="42"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmZ4ZT5rE61FWykexKtboKP9mCF4DaUesGgwfG1tWiduQh" alt="43"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmbfUrCvGw79D7aPZZyiFUDxAMxNrCHwLgoh8JGuVLVDCQ" alt="44"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmTxKdqfPdNZwTZuQXb1D8pwSPZN4fi8pteDMw3nP1mV3x" alt="45"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmaLiQabYD9yW9FNcrBDsec1KXgDFnUunPNobyxNoukmvc" alt="46"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmVgVuLZ2VzavucsCXo8UctUsDAYK9tveHtaaWUn3bmefh" alt="47"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmVgVuLZ2VzavucsCXo8UctUsDAYK9tveHtaaWUn3bmefh" alt="48"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmXB9qfpNAwrDEtZZbxKqmphXC1y4sMuvvvLqtTdGuGZgW" alt="49"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qmcwe9fkVvCvi3God9La6NdJzJDwvzhHTqGY95wYPNnvLi" alt="50"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qmbg8dnA8fZ9wrr2fcJDCB3My4iD31XzxGuRUmDkR3jTVg" alt="51"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qmbg8dnA8fZ9wrr2fcJDCB3My4iD31XzxGuRUmDkR3jTVg" alt="52"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmVmKeYSsJGwZpyoghnqJJ4BoHR2FDMYm2kXcj3rtJ2paf" alt="53"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmVmKeYSsJGwZpyoghnqJJ4BoHR2FDMYm2kXcj3rtJ2paf" alt="54"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmQtxUU3dKDaHbtrfdenFV5HL3Cwcumv3Lje7FZ4KwgZWS" alt="55"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmPSigG3w1DSpGvk3WdhBSPgaQVBo3q4wjTy62kw4SMsy9" alt="56"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmZaiwsFMSAS2h3p4QUM12JmcNn4atY8Pvrq1KtpGmEZBD" alt="57"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmNtPeapiYWxfCd6gPXmzRsnvn36UvNDHyVMhUBMSeqcB6" alt="58"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmWRH1XMVmAgmXcwhoRttp2zysW4GkB1EgYoKhH1g8RkGS" alt="59"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmeZm3GfmdyH6PtGDFgZ1bQ6P7Ve686Vppn9cjVxHqeP5A" alt="60"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmPHNbvCKPFguuhSmekJnDUKJhaBVike1ZUD1Rzc4U5qxu" alt="61"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmPHNbvCKPFguuhSmekJnDUKJhaBVike1ZUD1Rzc4U5qxu" alt="62"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmP7pdUQNuhSbQfvwwkmxU4WXmv5fSHE5YrpkL38egd4wr" alt="63"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmW2diutSsCiSt2ekBusoih97bGpfPkU9xJwBaVEJ638C6" alt="64"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYwez7MsqAbMSFPcibpck6847CyhA3SPs4o1NNnCFu41z" alt="65"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmYwez7MsqAbMSFPcibpck6847CyhA3SPs4o1NNnCFu41z" alt="66"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmUD1qWCEtabDr9DNXAQ9jihFjycNAg7YXtVPuivQQ3Jyn" alt="67"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmS8mPKFuwii59xeTnpESmonnHpPaVxRySdUtbvfxCGffK" alt="68"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmVUzJDgh7xzDvtFB44Gfj6C4cSjgFXxfKsXmZ8mCxkwwY" alt="69"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmdKc7HkucjShruRa4EpoHhJKVrBCZ6qKJESdGcxDyvWgF" alt="70"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmXZvNHDbFLC23zSZqfTWKJUS7YGap1n2dSxBcPPAdPxFJ" alt="71"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmXZvNHDbFLC23zSZqfTWKJUS7YGap1n2dSxBcPPAdPxFJ" alt="72"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qmcifk94NV2E9jTyK9oQTot3azJz1x4SKjYASH7hpoUkHW" alt="73"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmdzxY3Tnti5E9T1tUr8thypshPArq2HnYK969u3SyiGst" alt="74"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmagQpVmaVZqjhP9SYZHpKjAih1G5v4nLfHMZc6q93JEgq" alt="75"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmX2q2TBbrq3hVyqEHC6y9eVexzFDcqzknR119g4Hnata7" alt="76"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmZ6bPPkeg8jdAq1YnAWbA3ESwT2J5CkRDt4KtGzY3YmsB" alt="77"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmRMvqUsUydz7KjnnGsgNPVQX4QoKgBFfFy6Wmp7Dimp2m" alt="78"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmRcxJj9F9Wr6cXbJvkmuUAEGBGqdbZLC3a1rTPa99u9zZ" alt="79"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmPZNWC7GUFLDNxgCfgoyErH7mcqD2PLHdY9LwcQ7QpRY4" alt="80"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmXUpvDmf1FmmF5Eh2rP7RkysS5G9mS9iovTj8tkiqB4f1" alt="81"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmfZscUf67xFboKpiD994JVUzVNRgKo8ozdEgoCzVXPgzY" alt="82"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmTdQgG7dfkCDnPgxcfDkiTLmekJ4uEDDzbWMXYXB8VZRA" alt="83"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmZCAQpddeq6bJPxcy2wQX9ynSEdJFi6y6U4pygS9L3h1M" alt="84"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmWtXcFPjuHfgvYEp6Eu9Vaq4iTAwQKvc9pH5awhDZwvnb" alt="85"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmWtXcFPjuHfgvYEp6Eu9Vaq4iTAwQKvc9pH5awhDZwvnb" alt="86"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmWtXcFPjuHfgvYEp6Eu9Vaq4iTAwQKvc9pH5awhDZwvnb" alt="87"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmSpbLkD49k9i2gaTApSL81Viwn5Jt2VCgeUbScAuLFdiH" alt="88"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmQJw8Cz2pNRJaF46KZV6ykZL8ZY25UPnNAbKs6VRdbLDG" alt="89"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmboxiHXazuoJjHcd6Kmes99A7rfxRY9SCzBCVTAePhDcH" alt="90"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmSqaVxt7Vd1JcyC1tRrFM7JJo547ejVxsZW42sYYKiNWz" alt="91"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmSqaVxt7Vd1JcyC1tRrFM7JJo547ejVxsZW42sYYKiNWz" alt="92"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmT5pLhzk2h9QsQ9znnjd5arApcfGGxUxKSZyRvjcfWg7f" alt="93"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmafQZbgZDMsTeWbPahQohk6SzfCFNQUUioWXg9KbkuQsT" alt="94"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmafQZbgZDMsTeWbPahQohk6SzfCFNQUUioWXg9KbkuQsT" alt="95"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmfLzVNQ3df64F3yt6HgihAmTKu8gM1Wicg5naYEqGhMtQ" alt="96"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmXiDsaNHsboGrFfqjJWc2WCXxrTQuE6GrSFTG9kK3zbTM" alt="97"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmXiDsaNHsboGrFfqjJWc2WCXxrTQuE6GrSFTG9kK3zbTM" alt="98"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmXeAGo3HmpSTCwbamuV9fH4j7Bhy8YvPVW7YTqDLu6yzz" alt="99"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmNSZDT9Dwx9WwceKcSnLAQrjsJNnhB6sJFwCo7R8arP2u" alt="100"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmQ8QkXJLc5msXVDd3Qsz2EwFRcZRMC6BVx8ffTF5f8mkf" alt="101"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmQ8QkXJLc5msXVDd3Qsz2EwFRcZRMC6BVx8ffTF5f8mkf" alt="102"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qmac1xzJpL8fpY9yvBfJZAkeqq2f316zVRdSkk2dLJd7Ke" alt="103"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmZBr3iHDhaZQBJfnhyG6Q7vUGM5VJBSDBrWYLdeHLJbds" alt="104"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmZBr3iHDhaZQBJfnhyG6Q7vUGM5VJBSDBrWYLdeHLJbds" alt="105"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmZBr3iHDhaZQBJfnhyG6Q7vUGM5VJBSDBrWYLdeHLJbds" alt="106"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmZBr3iHDhaZQBJfnhyG6Q7vUGM5VJBSDBrWYLdeHLJbds" alt="107"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmTijj8p4ggrvoPp9RQXG8nnun2HbRYPgn4BG1rPMVCEPz" alt="108"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmeBN7wr2uVRGgWyZxH8RksRmuqRL8AMkbadwiHPDPoMXS" alt="109"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/Qmf9yc1qtXCBe6Bc8Eub8zgfwjfsz89FAiPh44Wok3pk4P" alt="110"></div></div>
+<div class="image-item"><div class="img-wrap"><img data-src="https://ipfs.crossbell.io/ipfs/QmWqYotxos1kJqeNCsEpivcD3uKXtks7aJ7hGFuQakgMXW" alt="111"></div></div>
+
+    <div class="explanation">
+      <h2>本期无水印原图</h2>
+      <p>收藏到自己的网盘<span>防止和谐</span></p>
+                     
+                  <!--‼️ 2️⃣⬇️-->
+ <a href="https://pan.xunlei.com/s/VOhoiV9bky5sG8SNapvGsP1aA1?pwd=wx4u" target="_blank" class="preserve">点击保存</a>
+    </div>
+
+
+    <p style="text-align:center;font-size:22px">上一期↓↓↓（点击跳转）</p>
+    
+    <div class="collection-wrap"><a href="https://setutime.com" target="_blank" class="collection">SetuTime 合集</a></div>
+
+<!-- ‼️ 3️⃣⬇️-->
+    <a href="https://setutime.com/zrsetu/149">
+      
+        <div class="image-item">
+        <div class="img-wrap">
+
+                                     <!-- ‼️ 4️⃣⬇️-->
+          <img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjEwNzAzNzc4NzY_439849_XKGOTN8l6g52ZGVa_1767078935" alt="上一期">
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="fixed-button"><a href="https://qm.qq.com/q/3mnmFYTUbe" target="_blank">qq：45503380 添加好友获取更新</a></div>
+</div>
+
+<script>
+(() => {
+  const imgs = document.querySelectorAll('.img-wrap img');
+  
+  imgs.forEach(img => {
+    const src = img.dataset.src;
+    if (!src) return;
+
+    const tempImg = new Image();
+    tempImg.src = src;
+    
+    tempImg.onload = () => {
+      img.src = src;
+      img.closest('.img-wrap').classList.add('loaded');
+    };
+  });
+})();
+</script>
+</body>
+</html>
