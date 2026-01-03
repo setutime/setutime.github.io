@@ -228,14 +228,9 @@ function renderPage(items, containerId, paginationId, page = 1) {
 if (item.caption) {
   const cap = document.createElement('span');
   cap.className = 'caption';
-
-  if (Array.isArray(item.caption)) {
-    // zrsetu 有两行：用 <br> 自动换行显示
-    cap.innerHTML = item.caption.join('<br>');
-  } else {
-    // setu 或 zrsetu 单行：正常显示
-    cap.textContent = item.caption;
-  }
+  cap.textContent = item.caption;
+  li.appendChild(cap);
+}
 
   li.appendChild(cap);
 }
