@@ -25,53 +25,39 @@ jobs:
           const fs = require('fs');
           const path = require('path');
 
-          function extractCaptions(filePath, maxCount) {
+          function extractCaption(filePath) {
             try {
               const content = fs.readFileSync(filePath, 'utf8');
 
-              // 宽松匹配 style 中包含 text-align:left 和 font-size:16px 的 <p>
+              // 超级宽松正则：只要 style 里同时包含 text-align:left 和 font-size:16px 就匹配
               const regex = /<p[^>]*style\s*=\s*["'][^"']*?\btext-align\s*:\s*left[^"']*?font-size\s*:\s*16px[^>]*>([\s\S]*?)<\/p>/gi;
 
-              const captions = [];
-              let match;
-              while ((match = regex.exec(content)) !== null && captions.length < maxCount) {
-                let text = match[1].replace(/<[^>]+>/g, '').trim();  // 只去除子标签，不动 # 或其他内容
-                if (text) {
-                  captions.push(text);
-                }
+              const match = regex.exec(content);
+              if (match && match[1]) {
+                // 去掉里面的子标签（万一有人加了 <span> 之类的）
+                return match[1].replace(/<[^>]+>/g, '').trim();
               }
-              return captions;
             } catch (e) {
               console.log(`读取失败 ${filePath}: ${e.message}`);
-              return [];
             }
+            return '';
           }
 
-          function getItems(folder, maxCaptions = 1) {
+          function getItems(folder) {
             if (!fs.existsSync(folder)) return [];
             return fs.readdirSync(folder)
               .filter(f => f.endsWith('.html'))
-              .map(f => {
-                const captions = extractCaptions(path.join(folder, f), maxCaptions);
-                let caption = '';
-                if (captions.length === 1) {
-                  caption = captions[0];
-                } else if (captions.length === 2 && maxCaptions === 2) {
-                  caption = captions;  // 数组，只在 zrsetu 使用
-                }
-                // 0 或 >max 时为空字符串
-                return {
-                  file: f,
-                  caption: caption
-                };
-              })
-              .sort((a, b) => (parseInt(b.file) || 0) - (parseInt(a.file) || 0));
+              .map(f => ({
+                file: f,
+                caption: extractCaption(path.join(folder, f))
+              }))
+              .sort((a,b) => (parseInt(b.file)||0) - (parseInt(a.file)||0));
           }
 
           const data = {
-            updated: new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }).replace(/\//g, '-'),
-            setu: getItems('setu', 1),      // 只取最多1行
-            zrsetu: getItems('zrsetu', 2)  // 取最多2行
+            updated: new Date().toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}).replace(/\//g,'-'),
+            setu: getItems('setu'),
+            zrsetu: getItems('zrsetu')
           };
 
           fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
