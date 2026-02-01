@@ -209,37 +209,44 @@ position:relative
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(75,150,216,.5);
 }
-/* 方案二：工业浅灰 */
-.prev-box-industrial {
+/* 方案一：深灰岩石方块 */
+.prev-box-slate {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    aspect-ratio: 1 / 1;
-    background-color: #e9ecef; /* 工业浅灰 */
+    aspect-ratio: 1 / 1; 
+    background: linear-gradient(145deg, #3a3f4b, #2c313c); /* 深灰渐变 */
     border-radius: 16px; /* 保持圆角一致 */
     margin: 20px 0 60px;
     text-decoration: none;
-    border: 2px solid #dee2e6;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.prev-box-industrial:hover {
-    background-color: #5ca8e6; /* 悬停切换为你网页的主色调蓝 */
-    border-color: #5ca8e6;
+.prev-box-slate:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.1);
 }
 
-.prev-box-industrial:hover .text-content {
+.prev-box-slate .main-text {
     color: #ffffff;
+    font-family: "PingFang SC", sans-serif;
+    font-weight: 800; /* 极粗 */
+    font-size: 2.4rem;
+    line-height: 1.1;
+    text-align: center;
 }
 
-.text-content {
-    color: #343a40;
-    font-family: "PingFang SC", sans-serif;
-    font-weight: 900;
-    font-size: 2.6rem;
-    text-align: center;
-    transition: color 0.3s;
+.prev-box-slate .sub-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    margin-top: 15px;
+    letter-spacing: 4px;
+    font-weight: 400;
 }
 .responsive-video {
            width: 100%;
@@ -276,8 +283,9 @@ position:relative
     <div class="collection-wrap"><a href="https://setutime.com" target="_blank" class="collection">SetuTime 合集</a></div>
 
 <!-- ‼️ 3️⃣⬇️-->
-<a href="https://setutime.com/zrsetu/189" class="prev-box-industrial">
-    <div class="text-content">跳转上一期<br>⋙</div>
+<a href="https://setutime.com/zrsetu/189" class="prev-box-slate">
+    <span class="main-text">跳转<br>上一期</span>
+    <span class="sub-text">PREVIOUS >>></span>
 </a>
 
 <br><br><br><div class="fixed-button"><a href="https://qm.qq.com/q/3mnmFYTUbe" target="_blank">qq：45503380 添加好友获取更新</a></div>
