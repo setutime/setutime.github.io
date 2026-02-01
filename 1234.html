@@ -210,7 +210,7 @@ position:relative
     box-shadow: 0 8px 20px rgba(75,150,216,.5);
 }
 
-/* 2:1 比例 - 纯黑静态版横幅（加强版装饰字） */
+/* 2:1 比例 - 纯黑极简横幅 (无装饰字版) */
 .prev-banner-link {
     display: block;
     margin: 15px 0 40px;
@@ -229,36 +229,25 @@ position:relative
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    /* 移除所有 active 动画，保持绝对静态 */
 }
 
-/* 右下角装饰字母：提高白色透明度至 0.15 */
-.prev-banner-card::before {
-    content: "PREV";
-    position: absolute;
-    right: 8px;   /* 稍微往边缘靠一点，更有设计感 */
-    bottom: -5px; /* 稍微下沉，模拟画册裁切感 */
-    font-size: 6.5rem;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.2); /* 明显加白，确保清晰可见 */
-    font-style: italic;
-    pointer-events: none;
-    z-index: 1;
-}
+/* 已彻底移除 ::before 装饰字母 */
 
 .banner-text {
     color: #ffffff;
     font-family: "PingFang SC", -apple-system, sans-serif;
     font-weight: 800; 
     font-size: 1.8rem; 
-    letter-spacing: 1px;
+    letter-spacing: 2px; /* 稍微拉大字间距，提升精致感 */
     z-index: 2;
 }
 
 .banner-sub {
-    color: rgba(255, 255, 255, 0.6); /* 副标题也同步加亮一点 */
+    color: rgba(255, 255, 255, 0.6); 
     font-size: 0.75rem;
-    letter-spacing: 3px;
-    margin-top: 5px;
+    letter-spacing: 4px; /* 增加副标题呼吸感 */
+    margin-top: 8px;
     z-index: 2;
     text-transform: uppercase;
 }
@@ -300,7 +289,7 @@ position:relative
 <a href="https://setutime.com/zrsetu/189" class="prev-banner-link">
     <div class="prev-banner-card">
         <span class="banner-text">跳转上一期 >>></span>
-        <span class="banner-sub">Previous Issue</span>
+        <span class="banner-sub">Previous Issue Gallery</span>
     </div>
 </a>
 
