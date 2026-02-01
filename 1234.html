@@ -210,41 +210,58 @@ position:relative
     box-shadow: 0 8px 20px rgba(75,150,216,.5);
 }
 
-/* 方案二：品牌蓝描边方块 */
-.mobile-prev-card-outline {
+/* 2:1 比例 - 纯黑静态版横幅（加强版装饰字） */
+.prev-banner-link {
+    display: block;
+    margin: 15px 0 40px;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent; 
+}
+
+.prev-banner-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2 / 1; 
+    background: #000000; /* 纯黑色背景 */
+    border-radius: 16px; 
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background-color: #f0f7ff; /* 极浅蓝，区别于背景白 */
-    border: 3px solid #5ca8e6; /* 品牌蓝粗边框 */
-    border-radius: 16px;
-    margin: 20px 0 60px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
 }
 
-/* 移动端按压反馈：点击时颜色反转 */
-.mobile-prev-card-outline:active {
-    background-color: #5ca8e6;
-    transform: scale(0.97);
+/* 右下角装饰字母：提高白色透明度至 0.15 */
+.prev-banner-card::before {
+    content: "PREV";
+    position: absolute;
+    right: 8px;   /* 稍微往边缘靠一点，更有设计感 */
+    bottom: -5px; /* 稍微下沉，模拟画册裁切感 */
+    font-size: 6.5rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.2); /* 明显加白，确保清晰可见 */
+    font-style: italic;
+    pointer-events: none;
+    z-index: 1;
 }
 
-.mobile-prev-card-outline:active .outline-text {
+.banner-text {
     color: #ffffff;
+    font-family: "PingFang SC", -apple-system, sans-serif;
+    font-weight: 800; 
+    font-size: 1.8rem; 
+    letter-spacing: 1px;
+    z-index: 2;
 }
 
-.outline-text {
-    color: #5ca8e6;
-    font-family: "PingFang SC", sans-serif;
-    font-weight: 800;
-    font-size: 2.6rem;
-    text-align: center;
-    line-height: 1.2;
+.banner-sub {
+    color: rgba(255, 255, 255, 0.6); /* 副标题也同步加亮一点 */
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    margin-top: 5px;
+    z-index: 2;
+    text-transform: uppercase;
 }
-
 .responsive-video {
            width: 100%;
            height: auto;
@@ -280,8 +297,11 @@ position:relative
     <div class="collection-wrap"><a href="https://setutime.com" target="_blank" class="collection">SetuTime 合集</a></div>
 
 <!-- ‼️ 3️⃣⬇️-->
-<a href="https://setutime.com/zrsetu/189" class="mobile-prev-card-outline">
-    <div class="outline-text">跳转<br>上一期</div>
+<a href="https://setutime.com/zrsetu/189" class="prev-banner-link">
+    <div class="prev-banner-card">
+        <span class="banner-text">跳转上一期 >>></span>
+        <span class="banner-sub">Previous Issue</span>
+    </div>
 </a>
 
 <br><br><br><div class="fixed-button"><a href="https://qm.qq.com/q/3mnmFYTUbe" target="_blank">qq：45503380 添加好友获取更新</a></div>
