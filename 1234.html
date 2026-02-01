@@ -209,45 +209,42 @@ position:relative
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(75,150,216,.5);
 }
-/* 方案一：深灰岩石方块 */
-.prev-box-slate {
+
+/* 方案二：品牌蓝描边方块 */
+.mobile-prev-card-outline {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    aspect-ratio: 1 / 1; 
-    background: linear-gradient(145deg, #3a3f4b, #2c313c); /* 深灰渐变 */
-    border-radius: 16px; /* 保持圆角一致 */
+    aspect-ratio: 1 / 1;
+    background-color: #f0f7ff; /* 极浅蓝，区别于背景白 */
+    border: 3px solid #5ca8e6; /* 品牌蓝粗边框 */
+    border-radius: 16px;
     margin: 20px 0 60px;
     text-decoration: none;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.prev-box-slate:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    filter: brightness(1.1);
+/* 移动端按压反馈：点击时颜色反转 */
+.mobile-prev-card-outline:active {
+    background-color: #5ca8e6;
+    transform: scale(0.97);
 }
 
-.prev-box-slate .main-text {
+.mobile-prev-card-outline:active .outline-text {
     color: #ffffff;
-    font-family: "PingFang SC", sans-serif;
-    font-weight: 800; /* 极粗 */
-    font-size: 2.4rem;
-    line-height: 1.1;
-    text-align: center;
 }
 
-.prev-box-slate .sub-text {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.9rem;
-    margin-top: 15px;
-    letter-spacing: 4px;
-    font-weight: 400;
+.outline-text {
+    color: #5ca8e6;
+    font-family: "PingFang SC", sans-serif;
+    font-weight: 800;
+    font-size: 2.6rem;
+    text-align: center;
+    line-height: 1.2;
 }
+
 .responsive-video {
            width: 100%;
            height: auto;
@@ -283,9 +280,8 @@ position:relative
     <div class="collection-wrap"><a href="https://setutime.com" target="_blank" class="collection">SetuTime 合集</a></div>
 
 <!-- ‼️ 3️⃣⬇️-->
-<a href="https://setutime.com/zrsetu/189" class="prev-box-slate">
-    <span class="main-text">跳转<br>上一期</span>
-    <span class="sub-text">PREVIOUS >>></span>
+<a href="https://setutime.com/zrsetu/189" class="mobile-prev-card-outline">
+    <div class="outline-text">跳转<br>上一期</div>
 </a>
 
 <br><br><br><div class="fixed-button"><a href="https://qm.qq.com/q/3mnmFYTUbe" target="_blank">qq：45503380 添加好友获取更新</a></div>
