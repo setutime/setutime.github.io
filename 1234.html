@@ -13,10 +13,9 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-family: "PingFang SC", -apple-system, sans-serif;
   background: #fafafa;
   color: #333;
-  line-height: 1.6;
 }
 
 .container {
@@ -24,287 +23,152 @@ body {
   padding: 15px;
 }
 
-.header {
-  text-align: center;
-  padding: 20px 0;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #eee;
-}
+.header { text-align: center; padding: 24px 0; border-bottom: 1px solid #eee; margin-bottom: 24px; }
+.title { font-size: 1.4rem; font-weight: 700; color: #1a1a1a; }
 
-.title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1e1e1e;
-}
+.image-grid { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 700px; margin: 0 auto; }
+.image-item { border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); background: #f0f2f5; }
+.img-wrap { position: relative; width: 100%; min-height: 180px; overflow: hidden; }
+.img-wrap img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.6s ease; }
+.img-wrap.loaded img { opacity: 1; }
 
-.image-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  width: 100%;
-  max-width: min(90vw, 700px);
-  margin: 0 auto;
-}
+.explanation { background: #f2f4f6; border-radius: 16px; padding: 24px; text-align: center; margin: 30px 0; border: 1px solid #e2e8f0; }
+.preserve { display: inline-block; padding: 12px 32px; border-radius: 999px; background: #2d3748; color: #fff; text-decoration: none; font-weight: 600; margin-top: 15px; }
 
-/* 图片容器 */
-.image-item {
-  border-radius: 6px;
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, .06);
-  background: #f0f2f5;
-  position: relative;
-}
-
-.img-wrap {
-  position: relative;
-  width: 100%;
-  min-height: 180px;
-  background: #f3f4f6;
-  overflow: hidden;
-}
-
-.img-wrap::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, #f3f4f6 0%, #e9eef6 50%, #f3f4f6 100%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite ease-in-out;
-  z-index: 1;
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-.img-wrap img {
-  width: 100%;
-  height: auto;
-  display: block;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  z-index: 2;
-  object-fit: contain;
-  position: relative;
-}
-
-.img-wrap.loaded::before {
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-.img-wrap.loaded img {
-  opacity: 1;
-}
-
-/* ===== 保存按钮样式 ===== */
-.explanation {
-  background: linear-gradient(135deg, #f2f4f6, #eceef0);
-  border: 1px solid #dde2e9;
-  border-radius: 16px;
-  padding: 22px;
-  text-align: center;
-  color: #4a5568;
-  margin: 25px 0;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-}
-
-.preserve {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 11px 28px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #383f50, #626982);
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  box-shadow: 0 6px 16px rgba(56, 63, 80, 0.38);
-  transition: all .3s ease;
-}
-
-/* ===== 下一期按钮：深灰毛玻璃质感 (Glassmorphism) ===== */
+/* ===== 优化后的工业风下一页：解决背景遮挡问题 ===== */
 .prev-next-link {
   display: block;
-  margin: 20px 0 100px;
+  margin: 30px 0 120px;
   text-decoration: none;
-  -webkit-user-select: none;
 }
 
 .prev-next-card {
   position: relative;
   width: 100%;
-  aspect-ratio: 2.2 / 1;
-  border-radius: 20px;
+  aspect-ratio: 2.4 / 1;
+  background: #111;
+  border-radius: 14px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: center; /* 改为左对齐或居中，视感更好 */
   justify-content: center;
   overflow: hidden;
-  
-  /* 玻璃核心样式 */
-  background: rgba(40, 40, 45, 0.7); /* 半透明深灰 */
-  backdrop-filter: blur(12px) saturate(150%); /* 模糊+饱和度提升 */
-  -webkit-backdrop-filter: blur(12px) saturate(150%); /* 兼容Safari */
-  
-  /* 模拟玻璃边缘反光 */
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-  
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border: 1px solid #222;
 }
 
-/* 玻璃内部的高光点缀 */
-.prev-next-card::before {
-  content: "";
+/* 优化背景数字：极限偏移 + 极低透明度 */
+.next-no-bg {
   position: absolute;
-  top: 0; left: 0; right: 0; height: 50%;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, transparent 100%);
-  z-index: 1;
+  /* 往右下角极限推，只展示数字的一部分作为装饰 */
+  right: -5%; 
+  bottom: -15%;
+  font-size: 7.5rem;
+  font-weight: 900;
+  /* 极淡颜色，确保不干扰文字 */
+  color: rgba(255, 255, 255, 0.03); 
+  font-style: italic;
+  line-height: 0.8;
+  pointer-events: none;
+  z-index: 1; /* 确保在底层 */
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.next-text {
-  color: #ffffff;
-  font-family: "PingFang SC", sans-serif;
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: 1.5px;
-  z-index: 2;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  transition: all 0.4s ease;
-}
-
-.next-sub {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.7rem;
-  letter-spacing: 3px;
-  margin-top: 6px;
-  z-index: 2;
-  text-transform: uppercase;
-}
-
-/* 交互反馈：玻璃材质受压变厚/颜色变深 */
-.prev-next-link:active .prev-next-card {
-  transform: scale(0.96);
-  background: rgba(20, 20, 25, 0.85); /* 点击时颜色变深 */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* 边框高亮 */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
-
-.prev-next-link:active .next-text {
-  transform: scale(0.95);
-  opacity: 0.8;
-}
-
-/* ===== 其他 UI ===== */
-.collection-wrap {
+.next-text-wrap {
+  position: relative;
+  z-index: 5; /* 确保文字层级绝对领先 */
   text-align: center;
+  /* 增加轻微文字阴影，保证在任何背景下都清晰 */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5); 
 }
 
-.collection {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 300px;
-  height: 44px;
-  margin-bottom: 25px;
-  background: #5ca8e6;
-  color: #fff;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 600;
-  box-shadow: 0 6px 16px rgba(92, 168, 230, .4);
-}
-
-.fixed-button {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 80px);
-  max-width: 500px;
-  z-index: 100;
-}
-
-.fixed-button a {
+.next-label {
   display: block;
-  text-align: center;
-  background: #5ca8e6;
-  color: #fff;
-  padding: 12px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.6rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
 }
+
+.next-title {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.next-line {
+  width: 24px;
+  height: 2px;
+  background: #5ca8e6; /* 换成点缀色，增加醒目度 */
+  margin: 10px auto 0;
+}
+
+/* 简单的点击缩放反馈 */
+.prev-next-card:active {
+  transform: scale(0.97);
+  background: #000;
+  transition: 0.15s;
+}
+
+/* --- 其他 UI --- */
+.collection-wrap { text-align: center; }
+.collection { display: inline-flex; align-items: center; justify-content: center; width: 300px; height: 46px; margin-bottom: 25px; background: #5ca8e6; color: #fff; border-radius: 999px; text-decoration: none; font-weight: 600; }
+.fixed-button { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 80px); max-width: 500px; z-index: 100; }
+.fixed-button a { display: block; text-align: center; background: #5ca8e6; color: #fff; padding: 14px; border-radius: 999px; text-decoration: none; font-weight: 600; }
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    <h1 class="title">涩图time No.197</h1>
-  </div>
+  <div class="header"><h1 class="title">涩图time No.197</h1></div>
 
   <div class="image-grid">
-    <p style="text-align:left;font-size:16px"># 葛生 - No.012 甜心糖果</p>
-    
     <div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjEwNzAzNzc4NzY_233723_Kybk_qwg39AP2cfB_1770256684" alt="1"></div></div>
-    <div class="image-item"><div class="img-wrap"><img data-src="https://wdcdn.qpic.cn/MTMxMDI2NjEwNzAzNzc4NzY_997111_YqrpyOlb_w3mXXVw_1770256685" alt="2"></div></div>
 
     <div class="explanation">
       <h2>本期无水印原图</h2>
-      <p>压缩包内含视频</p>
-      <a href="https://dl.setutime.com/zrsetu_197" target="_blank" class="preserve">点击保存</a>
+      <a href="#" target="_blank" class="preserve">点击保存内容</a>
     </div>
     
     <div class="collection-wrap">
-      <a href="https://setutime.com" target="_blank" class="collection">SetuTime 合集</a>
+      <a href="https://setutime.com" target="_blank" class="collection">全部合集</a>
     </div>
 
     <a href="#" id="prev-link" class="prev-next-link">
         <div class="prev-next-card">
-            <span class="next-text">跳转下一期 >>></span>
-            <span id="prev-sub" class="next-sub">Next Issue Gallery</span>
+            <div class="next-no-bg" id="next-no-val">196</div> 
+            <div class="next-text-wrap">
+                <span class="next-label">Next Gallery</span>
+                <span class="next-title">跳转下一期 >>></span>
+                <div class="next-line"></div>
+            </div>
         </div>
     </a>
 
-    <div class="fixed-button">
-      <a href="https://qm.qq.com/q/3mnmFYTUbe" target="_blank">qq：45503380 添加好友获取更新</a>
-    </div>
+    <div class="fixed-button"><a href="#">获取实时更新</a></div>
   </div>
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // 懒加载
-    if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    const wrap = img.parentElement;
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.onload = () => { wrap.classList.add('loaded'); };
-                    }
-                    observer.unobserve(img);
-                }
-            });
-        }, { rootMargin: "0px 0px 300px 0px" });
-        const imgs = document.querySelectorAll('.img-wrap img');
-        imgs.forEach(img => imageObserver.observe(img));
-    }
-
-    // 链接计算
-    const titleEl = document.querySelector('.title');
-    if (titleEl) {
-        const match = titleEl.innerText.match(/\d+/);
-        if (match) {
-            const currentNo = parseInt(match[0]);
-            const prevNo = currentNo - 1;
-            const prevLink = document.getElementById('prev-link');
-            if (prevLink) {
-                prevLink.href = `https://setutime.com/zrsetu/${prevNo}`;
+    // 1. 懒加载
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.onload = () => img.parentElement.classList.add('loaded');
+                observer.unobserve(img);
             }
-        }
+        });
+    });
+    document.querySelectorAll('.img-wrap img').forEach(img => observer.observe(img));
+
+    // 2. 动态逻辑
+    const title = document.querySelector('.title');
+    if (title) {
+        const no = parseInt(title.innerText.match(/\d+/)[0]);
+        document.getElementById('prev-link').href = `https://setutime.com/zrsetu/${no - 1}`;
+        document.getElementById('next-no-val').innerText = no - 1;
     }
 });
 </script>
